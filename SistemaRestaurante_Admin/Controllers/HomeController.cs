@@ -15,8 +15,13 @@ namespace SistemaRestaurante_Admin.Controllers
 
 		public IActionResult Index()
 		{
-			return View("/Views/Home/MenuAdmin.cshtml");
+			return View("/Views/Account/LoginAdmin.cshtml");
 		}
+		
+		public IActionResult VerMenuAdmin()
+		{
+			return View("/Views/Home/MenuAdmin.cshtml");
+        }
 
 		public IActionResult Privacy()
 		{

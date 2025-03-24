@@ -9,9 +9,9 @@ namespace SistemaRestaurante_Admin.Controllers.Cargos
             return View();
         }
 
-        public IActionResult CrearCargos()
+        public IActionResult VerCrearCargos()
         {
-            return View();
+            return View("/Views/Cargos/CrearCargos.cshtml");
         }
     }
 }
