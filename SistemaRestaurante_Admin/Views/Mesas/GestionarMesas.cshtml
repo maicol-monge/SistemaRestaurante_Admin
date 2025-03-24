@@ -1,0 +1,96 @@
+﻿@{
+    ViewBag.Title = "Gestionar Mesas";
+    Layout = "~/Views/Shared/LayoutPersonalizado.cshtml";
+}
+
+<div class="container mt-4">
+    <div class="card shadow">
+        <div class="card-body row">
+            <!-- Formulario de Gestión de Mesas -->
+            <div class="col-md-5">
+                <h5><strong>Gestionar mesa</strong> </h5>
+                <div class="d-flex justify-content-between">
+                    <div class="mb-3 w-25">
+                        <label class="form-label text-center">Número:</label>
+                        <input type="number" class="form-control" id="numeroMesa" min="1">
+                    </div>
+                    <div class="mb-3 w-25">
+                        <label class="form-label">Capacidad:</label>
+                        <input type="number" class="form-control" id="capacidadMesa" min="1">
+                    </div>
+                    <div class="mb-3 w-25">
+                        <label class="form-label">Estado:</label>
+                        <select class="form-control" id="estadoMesa">
+                            <option value="Libre">Libre</option>
+                            <option value="Ocupada">Ocupada</option>
+                        </select>
+                    </div>
+                </div>
+                <br />
+                <div class="d-flex gap-2">
+                    <button class="btn w-50" style="background-color: #FDD73C; font-weight: bold">Crear mesa</button>
+                    <button class="btn w-50" style="background-color: #0D3752; font-weight: bold; color:white">Modificar mesa</button>
+                    <button class="btn w-50" style="background-color: #AB1918; font-weight: bold; color:white">Eliminar mesa</button>
+                </div>
+                <br />
+                <button class="btn btn-outline-secondary mt-3">Cancelar</button>
+            </div>
+
+            <div class="col-md-1 d-flex justify-content-center">
+                <div class="vr"></div>
+            </div>
+
+            <!-- Lista de Mesas -->
+            <div class="col-md-6">
+                <h5>Mesas actuales</h5>
+                <div class="border rounded p-2" style="max-height: 300px; overflow-y: auto;">
+                    <div class="list-group">
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <strong>Mesa #1</strong><br>
+                                <small>Capacidad para 4 personas.</small>
+                            </div>
+                            <span class="badge bg-success">Libre</span>
+                        </div>
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <strong>Mesa #2</strong><br>
+                                <small>Capacidad para 4 personas.</small>
+                            </div>
+                            <span class="badge bg-success">Libre</span>
+                        </div>
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <strong>Mesa #3</strong><br>
+                                <small>Capacidad para 4 personas.</small>
+                            </div>
+
+                            <span class="badge bg-danger">Ocupada</span>
+                        </div>
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <strong>Mesa #4</strong><br>
+                                <small>Capacidad para 4 personas.</small>
+                            </div>
+                            <span class="badge bg-success">Libre</span>
+                        </div>
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <strong>Mesa #5</strong><br>
+                                <small>Capacidad para 4 personas.</small>
+                            </div>
+                            <span class="badge bg-danger">Ocupada</span>
+                        </div>
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <strong>Mesa #6</strong><br>
+                                <small>Capacidad para 4 personas.</small>
+                            </div>
+                            <span class="badge bg-success">Libre</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
