@@ -9,9 +9,9 @@ namespace SistemaRestaurante_Admin.Controllers.Mesas
             return View();
         }
 
-        public IActionResult GestionarMesas()
+        public IActionResult VerGestionarMesas()
         {
-            return View();
+            return View("/Views/Mesas/GestionarMesas.cshtml");
         }
     }
 }
