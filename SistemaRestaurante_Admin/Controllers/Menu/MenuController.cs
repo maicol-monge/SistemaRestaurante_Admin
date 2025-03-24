@@ -9,7 +9,7 @@ namespace SistemaRestaurante_Admin.Controllers.Menu
             return View();
         }
 
-        public IActionResult CrearMenu()
+        public IActionResult VerMenus()
         {
             return View("/Views/Menu/CrearMenu.cshtml");
         }
