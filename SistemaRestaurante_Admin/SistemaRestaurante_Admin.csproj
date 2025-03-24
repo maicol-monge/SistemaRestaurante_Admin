@@ -14,14 +14,14 @@
   <ItemGroup>
 
     <Folder Include="Controllers\Promociones\" />
-    <Folder Include="Models\Promociones\" />
-
     <Folder Include="Controllers\Account\" />
     <Folder Include="Controllers\Categoria\" />
     <Folder Include="Controllers\Combos\" />
     <Folder Include="Controllers\Empleados\" />
-    <Folder Include="Controllers\Menu\" />
     <Folder Include="Controllers\Mesas\" />
+    <Folder Include="Controllers\Menu\" />
+    
+    <Folder Include="Models\Promociones\" />
     <Folder Include="Models\Account\" />
     <Folder Include="Models\Categoria\" />
     <Folder Include="Models\Combos\" />
@@ -29,12 +29,15 @@
     <Folder Include="Models\Menu\" />
     <Folder Include="Models\Mesas\" />
     <Folder Include="Models\Platos\" />
+    
+    <Folder Include="Views\Promociones\" />    
     <Folder Include="Views\Categoria\" />
     <Folder Include="Views\Combos\" />
     <Folder Include="Views\Empleados\" />
-    <Folder Include="Views\Menu\" />
     <Folder Include="Views\Mesas\" />
-    <Folder Include="Views\Promociones\" />
+    <Folder Include="Views\Menu\" />
+
+    
   </ItemGroup>
 
 </Project>

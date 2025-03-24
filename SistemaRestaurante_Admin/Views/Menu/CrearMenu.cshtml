@@ -1,0 +1,292 @@
+﻿@{
+    ViewBag.Title = "Promociones";
+    Layout = "~/Views/Shared/LayoutPersonalizado.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Menús</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-4">
+        <div class="row">
+            <!-- Sección de Nuevo Menú -->
+            <div class="col-md-6">
+                <div class="card p-3">
+                    <h4>Nuevo menú</h4>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="form-label">Tipo de menú:</label>
+                            <select class="form-select">
+                                <option>Almuerzo</option>
+                                <option>Desayuno</option>
+                                <option>Cena</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Tipo de venta:</label>
+                            <select class="form-select">
+                                <option>Restaurante</option>
+                                <option>Online</option>
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="form-label">Hora inicio:</label>
+                            <input type="time" class="form-control">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Hora fin:</label>
+                            <input type="time" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Fecha inicio:</label>
+                            <input type="date" class="form-control">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Fecha fin:</label>
+                            <input type="date" class="form-control">
+                        </div>
+                    </div>
+                    <hr>
+
+                    <h5 class="mt-3">Seleccionar plato:</h5>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Pizza">
+                        <button class="btn btn-warning">Agregar</button>
+                    </div>                                                  
+
+
+                 <div class="card mx-auto" style="width: 100%; max-width: 600px; max-height: 200px; overflow-y: auto;">                       
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex align-items-center justify-content-between">
+                            <img src="https://i.ibb.co/21BqvGQ8/imgPizza.jpg" alt="Pizza" width="40" height="40" class="me-2">
+                            <span class="flex-grow-1 text-truncate">Pizza tradicional de pepperoni</span>
+                            <span>$12.99</span>
+                        </li>
+                        <li class="list-group-item d-flex align-items-center justify-content-between">
+                            <img src="https://i.ibb.co/21BqvGQ8/imgPizza.jpg" alt="Pizza" width="40" height="40" class="me-2">
+                            <span class="flex-grow-1 text-truncate">Pizza tradicional de pepperoni</span>
+                            <span>$12.99</span>
+                        </li>
+                         <li class="list-group-item d-flex align-items-center justify-content-between">
+                            <img src="https://i.ibb.co/21BqvGQ8/imgPizza.jpg" alt="Pizza" width="40" height="40" class="me-2">
+                            <span class="flex-grow-1 text-truncate">Pizza tradicional de pepperoni</span>
+                            <span>$12.99</span>
+                        </li>
+                         <li class="list-group-item d-flex align-items-center justify-content-between">
+                            <img src="https://i.ibb.co/21BqvGQ8/imgPizza.jpg" alt="Pizza" width="40" height="40" class="me-2">
+                            <span class="flex-grow-1 text-truncate">Pizza tradicional de pepperoni</span>
+                            <span>$12.99</span>
+                        </li>
+                         <li class="list-group-item d-flex align-items-center justify-content-between">
+                            <img src="https://i.ibb.co/21BqvGQ8/imgPizza.jpg" alt="Pizza" width="40" height="40" class="me-2">
+                            <span class="flex-grow-1 text-truncate">Pizza tradicional de pepperoni</span>
+                            <span>$12.99</span>
+                        </li>
+                         <li class="list-group-item d-flex align-items-center justify-content-between">
+                            <img src="https://i.ibb.co/21BqvGQ8/imgPizza.jpg" alt="Pizza" width="40" height="40" class="me-2">
+                            <span class="flex-grow-1 text-truncate">Pizza tradicional de pepperoni</span>
+                            <span>$12.99</span>
+                        </li>
+                         <li class="list-group-item d-flex align-items-center justify-content-between">
+                            <img src="https://i.ibb.co/21BqvGQ8/imgPizza.jpg" alt="Pizza" width="40" height="40" class="me-2">
+                            <span class="flex-grow-1 text-truncate">Pizza tradicional de pepperoni</span>
+                            <span>$12.99</span>
+                        </li>
+                    </ul>
+                </div>
+
+
+                    <div class="d-flex justify-content-between align-items-center mt-5">
+                        <h5 class="mb-0">Platos en el menú</h5>
+                        <button style="background-color: #0D3752; color: white; width: 10vh" class="btn btn-danger btn-sm">Quitar</button>
+                    </div>
+
+
+                   <div class="card mx-auto" style="width: 100%; max-width: 600px; max-height: 200px; overflow-y: auto;">  
+                        <ul class="list-group list-group-flush">
+                             <li class="list-group-item d-flex align-items-center justify-content-between">
+                            <img src="https://i.ibb.co/21BqvGQ8/imgPizza.jpg" alt="Pizza" width="40" height="40" class="me-2">
+                            <span class="flex-grow-1 text-truncate">Pizza tradicional de pepperoni</span>
+                            <span>$12.99</span>
+                        </li>
+                         <li class="list-group-item d-flex align-items-center justify-content-between">
+                            <img src="https://i.ibb.co/21BqvGQ8/imgPizza.jpg" alt="Pizza" width="40" height="40" class="me-2">
+                            <span class="flex-grow-1 text-truncate">Pizza tradicional de pepperoni</span>
+                            <span>$12.99</span>
+                        </li>
+                         <li class="list-group-item d-flex align-items-center justify-content-between">
+                            <img src="https://i.ibb.co/21BqvGQ8/imgPizza.jpg" alt="Pizza" width="40" height="40" class="me-2">
+                            <span class="flex-grow-1 text-truncate">Pizza tradicional de pepperoni</span>
+                            <span>$12.99</span>
+                        </li>
+                         <li class="list-group-item d-flex align-items-center justify-content-between">
+                            <img src="https://i.ibb.co/21BqvGQ8/imgPizza.jpg" alt="Pizza" width="40" height="40" class="me-2">
+                            <span class="flex-grow-1 text-truncate">Pizza tradicional de pepperoni</span>
+                            <span>$12.99</span>
+                        </li>
+                         <li class="list-group-item d-flex align-items-center justify-content-between">
+                            <img src="https://i.ibb.co/21BqvGQ8/imgPizza.jpg" alt="Pizza" width="40" height="40" class="me-2">
+                            <span class="flex-grow-1 text-truncate">Pizza tradicional de pepperoni</span>
+                            <span>$12.99</span>
+                        </li>
+                         <li class="list-group-item d-flex align-items-center justify-content-between">
+                            <img src="https://i.ibb.co/21BqvGQ8/imgPizza.jpg" alt="Pizza" width="40" height="40" class="me-2">
+                            <span class="flex-grow-1 text-truncate">Pizza tradicional de pepperoni</span>
+                            <span>$12.99</span>
+                        </li>
+                         <li class="list-group-item d-flex align-items-center justify-content-between">
+                            <img src="https://i.ibb.co/21BqvGQ8/imgPizza.jpg" alt="Pizza" width="40" height="40" class="me-2">
+                            <span class="flex-grow-1 text-truncate">Pizza tradicional de pepperoni</span>
+                            <span>$12.99</span>
+                        </li>
+                        </ul>
+                    </div>
+
+
+                    <h5 class="mt-5">Seleccionar combo:</h5>
+
+                     <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Mega">
+                        <button class="btn btn-warning">Agregar</button>
+                    </div>
+
+                       <div class="card mx-auto" style="width: 100%; max-width: 600px; max-height: 200px; overflow-y: auto;">  
+                            <ul class="list-group">
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span class="text-truncate">Mega combo familiar pizzamax</span>
+                                    <span>$32.99</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span class="text-truncate">Mega combo familiar pizzamax</span>
+                                    <span>$32.99</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span class="text-truncate">Mega combo familiar pizzamax</span>
+                                    <span>$32.99</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span class="text-truncate">Mega combo familiar pizzamax</span>
+                                    <span>$32.99</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span class="text-truncate">Mega combo familiar pizzamax</span>
+                                    <span>$32.99</span>
+                                </li>
+                            </ul>
+                        </div>
+
+
+                     <div class="d-flex justify-content-between align-items-center mt-5">
+                        <h5 class="mb-0">Combos en el menú</h5>
+                        <button style="background-color: #0D3752; color: white; width: 10vh" class="btn btn-danger btn-sm">Quitar</button>
+                    </div>
+
+
+                        <div class="card mx-auto" style="width: 100%; max-width: 600px; max-height: 200px; overflow-y: auto;">  
+                            <ul class="list-group">
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span class="text-truncate">Mega combo familiar pizzamax</span>
+                                    <span>$32.99</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span class="text-truncate">Mega combo familiar pizzamax</span>
+                                    <span>$32.99</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span class="text-truncate">Mega combo familiar pizzamax</span>
+                                    <span>$32.99</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span class="text-truncate">Mega combo familiar pizzamax</span>
+                                    <span>$32.99</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span class="text-truncate">Mega combo familiar pizzamax</span>
+                                    <span>$32.99</span>
+                                </li>
+                            </ul>
+                        </div>     
+                </div>
+            </div>
+
+
+            <!-- Sección de Menús Existentes -->
+            <div class="col-md-6">
+                <div class="card p-3">
+                    <h4>Menús existentes</h4>
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <strong>Menú #1</strong><br>
+                            Tipo de menú: Almuerzo<br>
+                            Tipo de venta: Restaurante<br>
+                            Desde: 01/01/25 Hasta: 31/12/25
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Menú #2</strong><br>
+                            Tipo de menú: Desayuno<br>
+                            Tipo de venta: Restaurante<br>
+                            Desde: 01/01/25 Hasta: 31/12/25
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Menú #3</strong><br>
+                            Tipo de menú: Desayuno<br>
+                            Tipo de venta: Restaurante<br>
+                            Desde: 01/01/25 Hasta: 31/12/25
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Menú #4</strong><br>
+                            Tipo de menú: Desayuno<br>
+                            Tipo de venta: Restaurante<br>
+                            Desde: 01/01/25 Hasta: 31/12/25
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Menú #5</strong><br>
+                            Tipo de menú: Desayuno<br>
+                            Tipo de venta: Restaurante<br>
+                            Desde: 01/01/25 Hasta: 31/12/25
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Menú #6</strong><br>
+                            Tipo de menú: Desayuno<br>
+                            Tipo de venta: Restaurante<br>
+                            Desde: 01/01/25 Hasta: 31/12/25
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Menú #7</strong><br>
+                            Tipo de menú: Desayuno<br>
+                            Tipo de venta: Restaurante<br>
+                            Desde: 01/01/25 Hasta: 31/12/25
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="mt-5 mb-5 d-flex justify-content-center w-50">
+                <div class="d-flex flex-column flex-md-row justify-content-center gap-3 w-100 w-md-50">
+                    <button class="btn w-100" style="background-color: #FDD73C; color: black;">Crear menú</button>
+                    <button class="btn w-100" style="background-color: #0D3752; color: white;">Modificar menú</button>
+                    <button class="btn w-100" style="background-color: #AB1918; color: white;">Eliminar menú</button>
+                </div>
+
+            </div>
+
+            <div>
+                <button class="btn mb-5 w-md-25" style="border: 2px solid black; color: black; width: 26vh;">Cancelar</button>
+            </div>
+
+        </div>
+
+
+    </div>
+</body>
+</html>
