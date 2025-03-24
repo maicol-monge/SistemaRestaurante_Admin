@@ -1,0 +1,18 @@
+﻿@media (max-width: 767.98px) {
+    .login-container {
+        background-image: url('https://i.ibb.co/PGp80w3d/login-1.png');
+        background-size: cover;
+        background-position: center;
+        color: white;
+    }
+
+    .login-box {
+        background: rgba(0, 0, 0, 0.8); /* Fondo oscuro semi-transparente */
+        padding: 20px;
+        border-radius: 10px;
+    }
+}
+
+.inputPassword::placeholder {
+    font-size: 2rem;
+}
