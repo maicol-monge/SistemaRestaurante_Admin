@@ -1,0 +1,83 @@
+﻿@{
+    ViewData["Title"] = "Gestionar empleados";
+}
+
+<div class="container mt-4">
+    
+    <div class="row">
+        <div class="col-md-7 border-end">
+            <h3>Gestionar empleado</h3>
+            <form>
+                <div class="d-flex justify-content-between align-content-center">
+                    <div class="col-md mb-3 pe-5">
+                        <label class="form-label fw-bold">Nombre:</label>
+                        <input type="text" class="form-control" placeholder="Nombre" />
+                    </div>
+                    <div class="col-md mb-3 pe-5">
+                        <label class="form-label fw-bold">Apellido:</label>
+                        <input type="text" class="form-control" placeholder="Apellido" />
+                    </div>
+                </div>
+                
+                <div class="d-flex justify-content-between align-content-center">
+                    <div class="col-md pe-5 mb-3">
+                        <label class="form-label fw-bold">Telefono:</label>
+                        <input type="text" class="form-control" placeholder="Teléfono" />
+                    </div>
+                    <div class="col-md pe-5 mb-3">
+                        <label class="form-label fw-bold">Código:</label>
+                        <input type="text" class="form-control" placeholder="Código" />
+                    </div>
+                </div>
+                
+                <div class="col-md-8 mb-3">
+                    <label class="form-label fw-bold">Contraseña:</label>
+                    <input type="password" class="form-control" placeholder="Contraseña" />
+                </div>
+                <div class="col-md-5 mb-3">
+                    <label class="form-label fw-bold">Cargo:</label>
+                    <select class="form-select">
+                        <option>Admin</option>
+                        <option>Gerente</option>
+                        <option>Repartidor</option>
+                        <option>Mesero</option>
+                        <option>Cocinera</option>
+                        <option>Lava platos</option>
+                    </select>
+                </div>
+                <div class="d-flex gap-2">
+                    <button type="button" class="btn btn-warning">Crear empleado</button>
+                    <button type="button" class="btn btn-primary">Modificar empleado</button>
+                    <button type="button" class="btn btn-danger">Eliminar empleado</button>
+                </div>
+                <button type="button" class="btn btn-outline-dark mt-5">Cancelar</button>
+            </form>
+        </div>
+        <div class="col-md-5">
+            <h3>Empleados</h3>
+            <div class="list-group">
+                <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center active">
+                    Mario Morales <span>Admin</span>
+                </a>
+                <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                    Maicol Monge <span>Gerente</span>
+                </a>
+                <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                    Wilber Rivas <span>Repartidor</span>
+                </a>
+                <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                    Ever Zamora <span>Mesero</span>
+                </a>
+                <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                    Eyleen Salinas <span>Cocinera</span>
+                </a>
+                <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                    Brenda Donis <span>Lava platos</span>
+                </a>
+                <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                    Paola Valeria <span>Lava platos</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
