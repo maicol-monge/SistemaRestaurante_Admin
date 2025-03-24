@@ -12,12 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-
-    <Folder Include="Controllers\Promociones\" />
-    <Folder Include="Controllers\Account\" />
-    <Folder Include="Controllers\Categoria\" />
     <Folder Include="Controllers\Combos\" />
-    <Folder Include="Controllers\Empleados\" />
     <Folder Include="Controllers\Mesas\" />
     <Folder Include="Controllers\Menu\" />
     
