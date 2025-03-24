@@ -15,7 +15,7 @@ namespace SistemaRestaurante_Admin.Controllers
 
 		public IActionResult Index()
 		{
-			return View();
+			return View("/Views/Home/MenuAdmin.cshtml");
 		}
 
 		public IActionResult Privacy()
