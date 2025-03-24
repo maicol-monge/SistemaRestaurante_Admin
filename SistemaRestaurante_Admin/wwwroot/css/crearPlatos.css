@@ -1,0 +1,14 @@
+﻿.imagen-container {
+    position: relative;
+    cursor: pointer;
+}
+
+.icono-imagen {
+    font-size: 5em; /* Ajusta el tamaño del icono */
+    color: #888; /* Ajusta el color del icono */
+}
+
+.cardScale:hover{
+    transition: 0.5s;
+    transform: scale(1.01);
+}
