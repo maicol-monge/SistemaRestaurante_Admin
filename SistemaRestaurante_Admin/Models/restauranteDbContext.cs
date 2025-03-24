@@ -9,7 +9,7 @@ namespace Sistema_de_Restaurante___Modulo_de_Administracion.Models
 		{
 		}
 
-		//Las tablas con sus modelos aqui
+		//Las tablas con sus modelos aqui :)
 
 
 	}
