@@ -1,0 +1,140 @@
+﻿@{
+    ViewData["Title"] = "Gestionar combos";
+    Layout = "~/Views/Shared/LayoutPersonalizado.cshtml";
+}
+
+<div class="mt-4 mx-5">
+    <div class="row">
+        <div class="col-md-7 border-end">
+            <h3>Nuevo combo</h3>
+            <form>
+                <div class="d-flex justify-content-between align-content-center">
+                    <div class="col-md mb-3 pe-5">
+                        <label class="form-label fw-bold">Nombre del combo:</label>
+                        <input type="text" class="form-control" placeholder="Mega combo familiar pizzamax" />
+                    </div>
+                    <div class="col-md mb-3 pe-5">
+                        <label class="form-label fw-bold">Precio:</label>
+                        <input type="text" class="form-control" placeholder="$ 12.99" />
+                    </div>
+                </div>
+
+                <div class="col-md-12 mb-3">
+                    <label class="form-label fw-bold">Descripción:</label>
+                    <textarea class="form-control" placeholder="Pizza tradicional de la casa, simple y deliciosa, todo lo que deseas en una pizza."></textarea>
+                </div>
+
+                <div class="col-md-5 mb-3">
+                    <label class="form-label fw-bold">Categoría:</label>
+                    <select class="form-select">
+                        <option>Pizzas</option>
+                        <option>Hamburguesas</option>
+                        <option>Bebidas</option>
+                    </select>
+                </div>
+
+                <div class="col-md-12 mb-3">
+                    <label class="form-label fw-bold">Seleccionar productos:</label>
+                    <div class="d-flex gap-2 my-3">
+                        <input type="text" class="form-control" placeholder="Buscar 🔍" />
+                        <button type="button" class="btn btn-warning">Agregar</button>
+                    </div>
+                     <div class="card mx-auto">  
+                        <ul class="list-group list-group-flush">
+                             <li class="list-group-item d-flex align-items-center justify-content-between">
+                            <img src="https://i.ibb.co/21BqvGQ8/imgPizza.jpg" alt="Pizza" width="40" height="40" class="me-2">
+                            <span class="flex-grow-1 text-truncate">Pizza tradicional de pepperoni</span>
+                            <span>$12.99</span>
+                        </li>
+                         <li class="list-group-item d-flex align-items-center justify-content-between">
+                            <img src="https://i.ibb.co/21BqvGQ8/imgPizza.jpg" alt="Pizza" width="40" height="40" class="me-2">
+                            <span class="flex-grow-1 text-truncate">Pizza tradicional de pepperoni</span>
+                            <span>$12.99</span>
+                        </li>
+                         <li class="list-group-item d-flex align-items-center justify-content-between">
+                            <img src="https://i.ibb.co/21BqvGQ8/imgPizza.jpg" alt="Pizza" width="40" height="40" class="me-2">
+                            <span class="flex-grow-1 text-truncate">Pizza tradicional de pepperoni</span>
+                            <span>$12.99</span>
+                        </li>
+                         <li class="list-group-item d-flex align-items-center justify-content-between">
+                            <img src="https://i.ibb.co/21BqvGQ8/imgPizza.jpg" alt="Pizza" width="40" height="40" class="me-2">
+                            <span class="flex-grow-1 text-truncate">Pizza tradicional de pepperoni</span>
+                            <span>$12.99</span>
+                        </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-12 mb-3">
+                    <div class="d-flex justify-content-between align-items-center my-3">
+                        <label class="form-label fw-bold">Productos en el combo:</label>
+                        <button style="background-color: #0D3752; color: white; width: 10vh" class="btn btn-danger btn-sm">Quitar</button>
+                    </div>
+                    
+                    
+                    <div class="card mx-auto">  
+                        <ul class="list-group list-group-flush">
+                             <li class="list-group-item d-flex align-items-center justify-content-between">
+                            <img src="https://i.ibb.co/21BqvGQ8/imgPizza.jpg" alt="Pizza" width="40" height="40" class="me-2">
+                            <span class="flex-grow-1 text-truncate">Pizza tradicional de pepperoni</span>
+                            <span>$12.99</span>
+                        </li>
+                         <li class="list-group-item d-flex align-items-center justify-content-between">
+                            <img src="https://i.ibb.co/21BqvGQ8/imgPizza.jpg" alt="Pizza" width="40" height="40" class="me-2">
+                            <span class="flex-grow-1 text-truncate">Pizza tradicional de pepperoni</span>
+                            <span>$12.99</span>
+                        </li>
+                         <li class="list-group-item d-flex align-items-center justify-content-between">
+                            <img src="https://i.ibb.co/21BqvGQ8/imgPizza.jpg" alt="Pizza" width="40" height="40" class="me-2">
+                            <span class="flex-grow-1 text-truncate">Pizza tradicional de pepperoni</span>
+                            <span>$12.99</span>
+                        </li>
+                         <li class="list-group-item d-flex align-items-center justify-content-between">
+                            <img src="https://i.ibb.co/21BqvGQ8/imgPizza.jpg" alt="Pizza" width="40" height="40" class="me-2">
+                            <span class="flex-grow-1 text-truncate">Pizza tradicional de pepperoni</span>
+                            <span>$12.99</span>
+                        </li>
+                         <li class="list-group-item d-flex align-items-center justify-content-between">
+                            <img src="https://i.ibb.co/21BqvGQ8/imgPizza.jpg" alt="Pizza" width="40" height="40" class="me-2">
+                            <span class="flex-grow-1 text-truncate">Pizza tradicional de pepperoni</span>
+                            <span>$12.99</span>
+                        </li>
+                         <li class="list-group-item d-flex align-items-center justify-content-between">
+                            <img src="https://i.ibb.co/21BqvGQ8/imgPizza.jpg" alt="Pizza" width="40" height="40" class="me-2">
+                            <span class="flex-grow-1 text-truncate">Pizza tradicional de pepperoni</span>
+                            <span>$12.99</span>
+                        </li>
+                         <li class="list-group-item d-flex align-items-center justify-content-between">
+                            <img src="https://i.ibb.co/21BqvGQ8/imgPizza.jpg" alt="Pizza" width="40" height="40" class="me-2">
+                            <span class="flex-grow-1 text-truncate">Pizza tradicional de pepperoni</span>
+                            <span>$12.99</span>
+                        </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="d-flex gap-2">
+                    <button type="button" class="btn btn-warning">Crear combo</button>
+                    <button type="button" class="btn btn-primary">Modificar combo</button>
+                    <button type="button" class="btn btn-danger">Eliminar combo</button>
+                </div>
+                <button type="button" class="btn btn-outline-dark mt-5" onclick="location.href='@Url.Action("VerMenuAdmin", "Home")'">Cancelar</button>
+            </form>
+        </div>
+
+        <div class="col-md-5">
+            <h3>Combos existentes</h3>
+            <div class="list-group">
+                <div class="list-group-item d-flex justify-content-between align-items-center active">
+                    Mega combo familiar pizzamax <span>$32.99</span>
+                </div>
+                <div class="list-group-item d-flex justify-content-between align-items-center">
+                    Mega combo familiar pizzamax <span>$32.99</span>
+                </div>
+                <div class="list-group-item d-flex justify-content-between align-items-center">
+                    Mega combo familiar pizzamax <span>$32.99</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
