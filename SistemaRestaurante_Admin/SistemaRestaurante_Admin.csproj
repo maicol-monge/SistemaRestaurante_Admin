@@ -21,14 +21,6 @@
   <ItemGroup>
     <Folder Include="Controllers\Mesas\" />
     <Folder Include="Controllers\Menu\" />
-    <Folder Include="Models\Categorias\" />
-    <Folder Include="Models\Empleado\" />
-    
-    <Folder Include="Models\Promociones\" />
-    <Folder Include="Models\Account\" />
-    <Folder Include="Models\Combos\" />
-    <Folder Include="Models\Menu\" />
-    <Folder Include="Models\Mesas\" />
     
     <Folder Include="Views\Promociones\" />
     <Folder Include="Views\Empleados\" />

@@ -1,4 +1,4 @@
-﻿namespace SistemaRestaurante_Admin.Models.Cargos
+﻿namespace SistemaRestaurante_Admin.Models
 {
     public class Cargo
     {
