@@ -2,6 +2,7 @@
 using Sistema_de_Restaurante___Modulo_de_Administracion.Models;
 using Microsoft.AspNetCore.Hosting;
 using SistemaRestaurante_Admin.Models;
+using SistemaRestaurante_Admin.Models.Servicios;
 
 namespace SistemaRestaurante_Admin.Controllers.Platos
 {
@@ -23,6 +24,7 @@ namespace SistemaRestaurante_Admin.Controllers.Platos
             return View();
         }
 
+        [Authentication]
         public IActionResult VerPlatos()
         {
             ViewBag.PlatillosExistentes = _context.Platos.ToList();
@@ -30,6 +32,7 @@ namespace SistemaRestaurante_Admin.Controllers.Platos
             return View("/Views/Platos/CrearPlatos.cshtml");
         }
 
+        [Authentication]
         [HttpPost]
         public async Task<IActionResult> CrearPlato(string nombre, string descripcion, decimal precio, int categoria, IFormFile imagen)
         {
@@ -88,6 +91,7 @@ namespace SistemaRestaurante_Admin.Controllers.Platos
             }
         }
 
+        [Authentication]
         [HttpPost]
         public async Task<IActionResult> Modificar(int id, string nombre, string descripcion, decimal precio, int categoria, IFormFile imagen)
         {
@@ -125,6 +129,7 @@ namespace SistemaRestaurante_Admin.Controllers.Platos
             }
         }
 
+        [Authentication]
         [HttpPost]
         public async Task<IActionResult> Eliminar(int id)
         {
