@@ -53,12 +53,12 @@
                         </div>
                     </div>
                     <div class="d-md-flex justify-content-between">
-                        <button type="submit" class="btn btn-primary my-2 cardScale" id="btnCrear" style="background-color:#FDD73C; border: 0; color: #040404; font-weight: bold">Crear</button>
-                        <button type="button" class="btn btn-primary my-2 cardScale" id="btnModificar" style="background-color: #0D3752; border: 0; font-weight: bold">Modificar</button>
-                        <button type="button" class="btn btn-danger my-2 cardScale" id="btnEliminar" style="font-weight: bold">Eliminar</button>
+                        <button type="submit" class="btn btn-primary col-md-3 col-12 my-2 cardScale" id="btnCrear" style="background-color:#FDD73C; border: 0; color: #040404; font-weight: bold">Crear</button>
+                        <button type="button" class="btn btn-primary col-md-3 col-12 my-2 cardScale" id="btnModificar" disabled="true" style="background-color: #0D3752; border: 0; font-weight: bold">Modificar</button>
+                        <button type="button" class="btn btn-danger col-md-3 col-12 my-2 cardScale" id="btnEliminar" disabled="true" style="font-weight: bold">Eliminar</button>
                     </div>
                     <div class="mt-5">
-                        <a href="@Url.Action("VerPlatos")" class="btn col-md-3 col-12 mb-5 cardScale" style="border: 3px solid black; font-weight: bold">Cancelar</a>
+                        <a href="@Url.Action("VerPlatos")" class="btn col-md-3 col-12 mb-5 cardScale" id="btnCancelar" style="border: 3px solid black; font-weight: bold; display:none">Cancelar</a>
                     </div>
                 </div>
             </form>
@@ -161,7 +161,10 @@
                     // Cambiar el texto del botón de Crear a Actualizar
                     document.getElementById('btnCrear').style.display = 'none';
                     document.getElementById('btnModificar').style.display = 'block';
+                    document.getElementById('btnModificar').disabled= false;
                     document.getElementById('btnEliminar').style.display = 'block';
+                    document.getElementById('btnEliminar').disabled= false;
+                    document.getElementById('btnCancelar').style.display = 'block';
 
                     // Resaltar la tarjeta seleccionada
                     platillosCards.forEach(c => c.style.border = 'none');
@@ -170,7 +173,7 @@
             });
 
             // Botón Cancelar para limpiar el formulario
-            document.querySelector('a[href*="VerPlatos"]').addEventListener('click', function(e) {
+            document.getElementById('btnCancelar').addEventListener('click', function(e) {
                 e.preventDefault();
                 limpiarFormulario();
                 window.location.href = this.href;
