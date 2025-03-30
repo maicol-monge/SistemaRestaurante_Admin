@@ -15,15 +15,14 @@
     <Folder Include="Controllers\Combos\" />
     <Folder Include="Controllers\Mesas\" />
     <Folder Include="Controllers\Menu\" />
+    <Folder Include="Models\Categorias\" />
+    <Folder Include="Models\Empleado\" />
     
     <Folder Include="Models\Promociones\" />
     <Folder Include="Models\Account\" />
-    <Folder Include="Models\Categoria\" />
     <Folder Include="Models\Combos\" />
-    <Folder Include="Models\Empleados\" />
     <Folder Include="Models\Menu\" />
     <Folder Include="Models\Mesas\" />
-    <Folder Include="Models\Platos\" />
     
     <Folder Include="Views\Promociones\" />    
     <Folder Include="Views\Categoria\" />
