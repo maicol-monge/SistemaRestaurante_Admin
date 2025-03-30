@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SistemaRestaurante_Admin.Models;
 
 namespace Sistema_de_Restaurante___Modulo_de_Administracion.Models
 {
@@ -10,7 +11,10 @@ namespace Sistema_de_Restaurante___Modulo_de_Administracion.Models
 		}
 
 		//Las tablas con sus modelos aqui :)
+		public DbSet<Empleados> Empleados { get; set; }
+		public DbSet<Platos> Platos { get; set; }
+		public DbSet<Categoria> Categoria { get; set; }
 
 
-	}
+    }
 }
