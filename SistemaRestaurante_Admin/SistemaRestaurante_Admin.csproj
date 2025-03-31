@@ -28,7 +28,6 @@
     <Folder Include="Models\Combos\" />
     <Folder Include="Models\Empleados\" />
     <Folder Include="Models\Menu\" />
-    <Folder Include="Models\Mesas\" />
     <Folder Include="Models\Platos\" />
     
     <Folder Include="Views\Promociones\" />
