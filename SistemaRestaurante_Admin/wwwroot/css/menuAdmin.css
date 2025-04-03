@@ -1,0 +1,29 @@
+﻿.btnMenu {
+    background-color: #FED734;
+    font-weight: bold;
+    color: #003554;
+    font-size: 1.5rem;
+    width: 40vh;
+    height: 10vh;
+    border-radius: 15px;
+    margin: 5px; /* Añade margen para separar los botones */
+}
+
+    .btnMenu:hover {
+        transition: 1s;
+        transform: scale(1.1);
+        background-color: #AB1918;
+        color: white;
+    }
+
+.imgScale:hover {
+    transition: 1s;
+    transform: scale(1.2);
+}
+
+@media (max-width: 768px) {
+    .btnMenu {
+        width: 50vw; /* Los botones ocupan el 90% del ancho en móviles */
+        font-size: 1.2rem; /* Reduce el tamaño de la fuente en móviles */
+    }
+}

@@ -1,0 +1,183 @@
+﻿@using SistemaRestaurante_Admin.Models.Mesas
+@{
+    ViewBag.Title = "Gestionar Mesas";
+    Layout = "~/Views/Shared/LayoutPersonalizado.cshtml";
+    @model List<mesas>;
+}
+
+<div class="container mt-4">
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    <div class="card shadow">
+        <div class="card-body row">
+            <!-- Formulario de Gestión de Mesas -->
+            <div class="col-md-5">
+                <h5><strong>Gestionar mesa</strong> </h5>
+                <div class="d-flex justify-content-between">
+                    <div class="mb-3 w-25">
+                        <label class="form-label text-center">Número:</label>
+                        <input type="number" class="form-control" id="numeroMesa" min="1">
+                    </div>
+                    <div class="mb-3 w-25">
+                        <label class="form-label">Capacidad:</label>
+                        <input type="number" class="form-control" id="capacidadMesa" min="1">
+                    </div>
+                    <div class="mb-3 w-25">
+                        <label class="form-label">Estado:</label>
+                        <select class="form-control" id="dispoMesa">
+                            <option value="libre">libre</option>
+                            <option value="ocupado">ocupado</option>
+                        </select>
+                    </div>
+                </div>
+                <br />
+                <div class="d-flex gap-2">
+                    <form class="w-50" id="formInsert" method="post" action="@Url.Action("InsertarMesa", "Mesas")">
+                        <input type="hidden" id="mesaNumero_ins" name="numero" />
+                        <input type="hidden" id="mesaCapacidad_ins" name="capacidad" />
+                        <input type="hidden" id="mesaDispo_ins" name="disponibilidad" />
+                        <button type="submit" class="btn" style="background-color: #FDD73C; font-weight: bold" onclick="insertarMesa()" id="btn_create">Crear mesa</button>
+                    </form>
+
+                    <form class="w-50" id="formEdit" method="post" action="@Url.Action("EditarMesa", "Mesas")">
+                        <input type="hidden" id="mesaId" name="id" />
+                        <input type="hidden" id="mesaNumero" name="numero" />
+                        <input type="hidden" id="mesaCapacidad" name="capacidad" />
+                        <input type="hidden" id="mesaDispo" name="disponibilidad" />
+                        <button type="submit" class="btn " style="background-color: #0D3752; font-weight: bold; color:white" id="btn_edit" onclick="editarMesa()" disabled>Modificar mesa</button>
+                    </form>
+
+                    <form class="w-50" id="formDelete" method="post" action="@Url.Action("EliminarMesa", "Mesas")">
+                        <input type="hidden" id="mesaIdd" name="id" />
+                        <button type="submit" class="btn " style="background-color: #AB1918; font-weight: bold; color:white" id="btn_delete" onclick="eliminarMesa()" disabled>Eliminar mesa</button>
+                    </form>
+                </div>
+                <br />
+                <button class="btn btn-outline-secondary mt-3" onclick="location.href='@Url.Action("VerMenuAdmin", "Home")'">Cancelar</button>
+                <button class="btn btn-outline-primary mt-3" id="btn_clear" onclick="clearSelection()">Limpiar selección</button>
+            </div>
+
+            <div class="col-md-1 d-flex justify-content-center">
+                <div class="vr"></div>
+            </div>
+
+            <!-- Lista de Mesas -->
+            <div class="col-md-6">
+                <h5>Mesas actuales</h5>
+                <div class="border rounded p-2" style="max-height: 300px; overflow-y: auto;">
+                    @if (Model != null && Model.Any())
+                    {
+                        <div class="list-group">
+                            @foreach (var mesa in Model)
+                            {
+                                <div class="list-group-item d-flex justify-content-between align-items-center mesa-item"
+                                     data-id="@mesa.id"
+                                     data-numero="@mesa.numero"
+                                     data-capacidad="@mesa.capacidad"
+                                     data-disponible="@mesa.disponibilidad"
+                                     data-estado="@mesa.estado"
+                                     onclick="selectMesa(this)"
+                                     style="cursor: pointer;">
+                                    <div>
+                                        <strong>Mesa #@mesa.numero</strong><br>
+                                        <small>Capacidad para @mesa.capacidad personas.</small>
+                                    </div>
+                                    <span class="badge @(mesa.disponibilidad == "libre" ? "bg-success" : "bg-danger")">
+                                        @mesa.disponibilidad
+                                    </span>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <p>No hay mesas disponibles.</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+
+
+<script>
+    var mesa_id;
+
+    function selectMesa(mesaElement) {
+        var numeroMesa = mesaElement.getAttribute("data-numero");
+        var capacidadMesa = mesaElement.getAttribute("data-capacidad");
+        var disponibilidadMesa = mesaElement.getAttribute("data-disponible");
+        var estadoMesa = mesaElement.getAttribute("data-estado");
+        mesa_id = mesaElement.getAttribute("data-id");
+        var btnCreate = document.getElementById("btn_create");
+        var btnEdit = document.getElementById("btn_edit");
+        var btnDelete = document.getElementById("btn_delete");
+
+        document.getElementById("numeroMesa").value = numeroMesa;
+        document.getElementById("capacidadMesa").value = capacidadMesa;
+        document.getElementById("dispoMesa").value = disponibilidadMesa
+
+        btnCreate.disabled = true;
+
+        btnEdit.disabled = false;
+        btnDelete.disabled = false;
+
+        var mesaItems = document.querySelectorAll(".mesa-item");
+        mesaItems.forEach(function (item) {
+            item.style.backgroundColor = "white"; // O color por defecto
+        });
+
+        mesaElement.style.backgroundColor = "#FDD73C";
+        mesaElement.style.transition = "background-color 0.3s ease-in-out";
+
+        document.getElementById("mesaId").value = mesa_id;
+        document.getElementById("mesaNumero").value = numeroMesa;
+        document.getElementById("mesaCapacidad").value = capacidadMesa;
+        document.getElementById("mesaDispo").value = disponibilidadMesa
+    }
+
+    function editarMesa() {
+        document.getElementById("mesaNumero").value = document.getElementById("numeroMesa").value;
+        document.getElementById("mesaCapacidad").value = document.getElementById("capacidadMesa").value;
+        document.getElementById("mesaDispo").value = document.getElementById("dispoMesa").value;
+    }
+
+    function eliminarMesa() {
+        document.getElementById("mesaIdd").value = mesa_id;
+    }
+
+    function insertarMesa() {
+        document.getElementById("mesaNumero_ins").value = document.getElementById("numeroMesa").value;
+        document.getElementById("mesaCapacidad_ins").value = document.getElementById("capacidadMesa").value;
+        document.getElementById("mesaDispo_ins").value = document.getElementById("dispoMesa").value;
+    }
+
+    function clearSelection() {
+        document.getElementById("numeroMesa").value = "";
+        document.getElementById("capacidadMesa").value = "";
+        document.getElementById("dispoMesa").value = "libre";
+
+        document.getElementById("btn_create").disabled = false;
+        document.getElementById("btn_edit").disabled = true;
+        document.getElementById("btn_delete").disabled = true;
+
+        var mesaItems = document.querySelectorAll(".mesa-item");
+        mesaItems.forEach(function (item) {
+            item.style.backgroundColor = "";
+        });
+    }
+</script>

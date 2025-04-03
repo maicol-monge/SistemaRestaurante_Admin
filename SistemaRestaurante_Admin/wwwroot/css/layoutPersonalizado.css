@@ -1,0 +1,57 @@
+﻿
+.custom-navbar {
+    background-color: #AB1918;
+    color: white;
+    border-radius: 2vh;
+}
+
+.custom-navbar a {
+    color: white;
+    text-decoration: none;
+}
+
+.content-container {
+    padding: 20px;
+}
+
+.footer {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.logo-desktop {
+    display: block;
+}
+
+.logo-mobile {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .logo-desktop {
+        display: none;
+    }
+
+    .logo-mobile {
+        display: block;
+    }
+
+
+    .custom-navbar img {
+        height: 8vh;
+        margin-bottom: 10px;
+    }
+
+    .user-profile {
+        margin-top: 10px;
+    }
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+.dropdown-menu a{
+    color: red;
+}
+

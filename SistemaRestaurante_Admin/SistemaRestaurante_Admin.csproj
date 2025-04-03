@@ -7,8 +7,27 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Views\Categoria\**" />
+    <Content Remove="Views\Categoria\**" />
+    <EmbeddedResource Remove="Views\Categoria\**" />
+    <None Remove="Views\Categoria\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\Mesas\" />
+    <Folder Include="Controllers\Menu\" />
+    
+    <Folder Include="Views\Promociones\" />
+    <Folder Include="Views\Empleados\" />
+    <Folder Include="Views\Mesas\" />
+    <Folder Include="Views\Menu\" />
+
+    
   </ItemGroup>
 
 </Project>
