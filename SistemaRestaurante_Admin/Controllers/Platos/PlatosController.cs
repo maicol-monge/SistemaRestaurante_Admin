@@ -42,6 +42,9 @@ namespace SistemaRestaurante_Admin.Controllers.Platos
                 if (string.IsNullOrEmpty(nombre))
                     ModelState.AddModelError("nombre", "El nombre es requerido");
 
+                if (string.IsNullOrEmpty(descripcion))
+                    ModelState.AddModelError("descripcion", "La descripción es requerida");
+
                 if (precio <= 0)
                     ModelState.AddModelError("precio", "El precio debe ser mayor que cero");
 
