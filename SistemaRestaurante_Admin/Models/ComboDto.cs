@@ -2,7 +2,7 @@
 {
     public class ComboDto
     {
-        //Por favor no tocar esto, sirve para transportar los datos del backend del combo al frontend pli <3
+        //Por favor no tocar esto, sirve para transportar los datos del backend del combo al frontend <3
 
         public int Id { get; set; }
         public string Nombre { get; set; }
