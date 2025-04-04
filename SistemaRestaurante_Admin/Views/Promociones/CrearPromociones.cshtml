@@ -1,7 +1,14 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Mvc.ModelBinding.Validation
+@model SistemaRestaurante_Admin.Models.PromocionViewModel
+@{
     ViewBag.Title = "Promociones";
     Layout = "~/Views/Shared/LayoutPersonalizado.cshtml";
+
+    var esEdicion = Model.Promocion.id > 0;
+    var fechaInicioDefault = DateTime.Now.ToString("yyyy-MM-dd");
+    var fechaFinDefault = DateTime.Now.AddDays(7).ToString("yyyy-MM-dd");
 }
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -10,243 +17,498 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Promociones - Foodie</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .scrollable-list {
+            max-height: 150px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+        }
+
+        .combo-selected {
+            background-color: #fff3cd;
+        }
+
+        .combo-actions {
+            display: flex;
+            gap: 5px;
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 0.875em;
+            margin-top: 0.25rem;
+        }
+
+        .promo-activa {
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+            .promo-activa:hover {
+                background-color: #f8f9fa;
+            }
+
+        .promo-seleccionada {
+            background-color: #e9ecef;
+            border-left: 4px solid #0d6efd;
+        }
+    </style>
 </head>
-<body>
-    @*     class="container mt-4"
-    *@
-    <div class="row">
+<body >
+
+
+    <div class="row mx-5 pt-5">
         <!-- Sección Nueva Promoción -->
         <div class="col-lg-6 mb-4">
-            <h3>Nueva promoción</h3>
-            <form>
+            <h3>@(esEdicion ? "Editar promoción" : "Nueva promoción")</h3>
+
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show">
+                    @TempData["SuccessMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show">
+                    @TempData["ErrorMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+
+            <form id="formPromocion" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="Promocion.id" id="Promocion_id" />
+                <input type="hidden" asp-for="Promocion.CombosSeleccionados" id="combosSeleccionados" />
+
                 <div class="mb-3">
                     <label class="form-label">Nombre de la promo:</label>
-                    <input type="text" class="form-control" placeholder="25% OFF en la primer compra">
+                    <input type="text" class="form-control" asp-for="Promocion.nombre" required>
+                    <span asp-validation-for="Promocion.nombre" class="text-danger"></span>
+                    @if (TempData["Error_Promocion.nombre"] != null)
+                    {
+                        <span class="text-danger">@TempData["Error_Promocion.nombre"]</span>
+                    }
                 </div>
+
                 <div class="row">
                     <div class="col-6 mb-3">
                         <label class="form-label">Descuento:</label>
-                        <div class="input-group">
+                        <div class="input-group has-validation">
                             <span class="input-group-text">%</span>
-                            <input type="number" class="form-control" value="25">
+                            <input type="number"
+                                   class="form-control"
+                                   asp-for="Promocion.descuento"
+                                   min="1"
+                                   max="100"
+                                   required>
+                            <div class="invalid-feedback w-100">
+                                <span asp-validation-for="Promocion.descuento" class="text-danger"></span>
+                                @if (TempData["Error_Promocion.descuento"] != null)
+                                {
+                                    <span class="text-danger">@TempData["Error_Promocion.descuento"]</span>
+                                }
+                            </div>
                         </div>
                     </div>
                     <div class="col-6 mb-3">
                         <label class="form-label">Categoría:</label>
-                        <select class="form-select">
-                            <option>Pizzas</option>
+                        <select class="form-select" asp-for="Promocion.categoria_id" required>
+                            <option value="">Seleccione una categoría</option>
+                            @foreach (var categoria in Model.Categorias ?? new List<SistemaRestaurante_Admin.Models.Categoria>())
+                            {
+                                <option value="@categoria.id">@categoria.nombre</option>
+                            }
                         </select>
+                        <span asp-validation-for="Promocion.categoria_id" class="text-danger"></span>
+                        @if (TempData["Error_Promocion.categoria_id"] != null)
+                        {
+                            <span class="text-danger">@TempData["Error_Promocion.categoria_id"]</span>
+                        }
                     </div>
                 </div>
+
                 <div class="mb-3">
                     <label class="form-label">Descripción:</label>
-                    <textarea class="form-control" rows="3">Pizza tradicional de la casa...</textarea>
+                    <textarea class="form-control" rows="3" asp-for="Promocion.descripcion" required></textarea>
+                    <span asp-validation-for="Promocion.descripcion" class="text-danger"></span>
+                    @if (TempData["Error_Promocion.descripcion"] != null)
+                    {
+                        <span class="text-danger">@TempData["Error_Promocion.descripcion"]</span>
+                    }
                 </div>
+
+                <!-- Sección de Combos -->
                 <div class="mb-3">
                     <label class="form-label">Seleccionar combo:</label>
-                    <div class="d-flex">
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Mega">
-                        </div>
-                        <div class="ms-2">
-                            <button type="button" class="btn btn-warning">Agregar</button>
-                        </div>
-                    </div>
-                    <div style="max-height: 150px; overflow-y: auto;">
-                        <ul class="list-group mt-2">
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                Mega combo familiar pizzamax
-
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                Mega combo familiar pizzamax
-
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                Mega combo familiar pizzamax
-
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                Mega combo familiar pizzamax
-
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                Mega combo familiar pizzamax
-
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                Mega combo familiar pizzamax
-
-                            </li>
-                        </ul>
-
+                    <div class="d-flex mb-4">
+                        <select class="form-select" id="comboSelect">
+                            @foreach (var combo in Model.CombosDisponibles ?? new List<SistemaRestaurante_Admin.Models.Combo>())
+                            {
+                                <option value="@combo.id" data-nombre="@combo.nombre" data-precio="@combo.precio">
+                                    @combo.nombre - @combo.precio.ToString("C")
+                                </option>
+                            }
+                        </select>
+                        <button type="button" class="btn btn-warning ms-2 w-25" id="btnAgregarCombo">Agregar</button>
                     </div>
 
-                </div>
-                <div class="mb-3">
-                    <div class="d-flex">
-                        <div class="input-group">
-                            <label class="form-label pb-4">Combos en la promoción:</label>
-
+                    <div class="row">
+                        <div class="col-md-6 mt-1">
+                            <label class="form-label">Combos disponibles:</label>
+                            <div class="scrollable-list mb-3">
+                                <ul class="list-group" id="listaCombosDisponibles">
+                                    @foreach (var combo in Model.CombosDisponibles ?? new List<SistemaRestaurante_Admin.Models.Combo>())
+                                    {
+                                        <li class="list-group-item d-flex justify-content-between align-items-center" data-id="@combo.id">
+                                            @combo.nombre
+                                            <span class="">@combo.precio.ToString("C")</span>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
                         </div>
-                        <div class="ms-2">
-                            <button type="button" class="btn btn-secondary" style="width: 90px;"> Quitar</button>
-
+                        <div class="col-md-6">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <label class="form-label mb-0">Combos en promoción:</label>
+                                <button type="button" class="btn btn-secondary  w-50" id="btnLimpiarCombos" style="background-color: #0D3752;">Quitar todos</button>
+                            </div>
+                            <div class="scrollable-list">
+                                <ul class="list-group" id="listaCombosSeleccionados">
+                                    <!-- Combos seleccionados aparecerán aquí -->
+                                </ul>
+                            </div>
+                            <span id="errorCombos" class="error-message" style="display:none;">Debe seleccionar al menos un combo</span>
                         </div>
-
-                    </div>
-
-                    <div style="max-height: 150px; overflow-y: auto;">
-                        <ul class="list-group">
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                Mega combo familiar pizzamax
-                                <div>
-                                    <span class="me-2">$32.99</span>
-                                </div>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                Mega combo familiar pizzamax
-                                <div>
-                                    <span class="me-2">$32.99</span>
-                                </div>
-                            </li>
-
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                Pizza mediana 2x1
-                                <div>
-                                    <span class="me-2">$15.99</span>
-                                </div>
-                            </li>
-
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                Combo almuerzo + bebida
-                                <div>
-                                    <span class="me-2">$9.50</span>
-                                </div>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                Combo almuerzo + bebida
-                                <div>
-                                    <span class="me-2">$9.50</span>
-                                </div>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                Combo almuerzo + bebida
-                                <div>
-                                    <span class="me-2">$9.50</span>
-                                </div>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                Combo almuerzo + bebida
-                                <div>
-                                    <span class="me-2">$9.50</span>
-                                </div>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                Combo almuerzo + bebida
-                                <div>
-                                    <span class="me-2">$9.50</span>
-                                </div>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                Combo almuerzo + bebida
-                                <div>
-                                    <span class="me-2">$9.50</span>
-                                </div>
-                            </li>
-
-
-                        </ul>
                     </div>
                 </div>
+
+                <!-- Fechas con valores por defecto -->
                 <div class="row mb-3">
                     <div class="col-6">
                         <label class="form-label">Desde:</label>
-                        <input type="date" class="form-control" value="2025-03-10">
+                        <input type="date" class="form-control" asp-for="Promocion.FechaInicioVista"
+                               value="@(esEdicion ? Model.Promocion.FechaInicioVista.ToString("yyyy-MM-dd") : fechaInicioDefault)"
+                               id="fechaInicioInput">
+                        <span asp-validation-for="Promocion.FechaInicioVista" class="text-danger"></span>
                     </div>
                     <div class="col-6">
                         <label class="form-label">Hasta:</label>
-                        <input type="date" class="form-control" value="2025-05-10">
+                        <input type="date" class="form-control" asp-for="Promocion.FechaFinVista"
+                               value="@(esEdicion ? Model.Promocion.FechaFinVista.ToString("yyyy-MM-dd") : fechaFinDefault)"
+                               id="fechaFinInput">
+                        <span asp-validation-for="Promocion.FechaFinVista" class="text-danger"></span>
                     </div>
                 </div>
-                <div class="d-flex justify-content-between">
-                    <button type="submit" class="btn btn-success">Crear promo</button>
-                    <button type="button" class="btn btn-primary">Modificar promo</button>
-                    <button type="button" class="btn btn-danger">Eliminar promo</button>
 
+                <div class="d-flex gap-4">
+                    <button type="button" class="btn  w-100" id="btnCrearPromo" style="background-color: #FDD73C;" @(esEdicion ? "disabled" : "")>
+                        Crear promo
+                    </button>
+
+                    <button type="button" class="btn btn-primary w-100" id="btnModificarPromo" style="background-color: #0D3752;"
+                    @(esEdicion ? "" : "disabled")>
+                        Modificar promo
+                    </button>
+
+                    <button type="button" class="btn btn-danger w-100" id="btnEliminarPromo" style="background-color: #AB1918;"
+                    @(esEdicion ? "" : "disabled")>
+                        Eliminar promo
+                    </button>
                 </div>
+
 
                 <div class="pt-4">
-                    <button type="button" class="btn btn-outline-dark rounded-1.5 px-4 py-1 " style="border-width: 2px; font-size: 1rem;">Cancelar</button>
+                    <a href="@Url.Action("VerPromociones", "Promociones")"
+                       class="btn btn-outline-dark rounded-1 px-4 py-2 w-25 w-md-auto"
+                       style="border-width: 2px; font-size: 1rem; text-align: center; width: 260px;">
+                        Cancelar
+                    </a>
                 </div>
-
             </form>
         </div>
 
         <!-- Sección Promociones Activas -->
         <div class="col-lg-6">
             <h3>Promociones activas disponibles</h3>
-            <div class="list-group" style="max-height: 300px; overflow-y: auto;scrollbar-color: red transparent;">
-                <div class="list-group-item d-flex justify-content-between">
-                    <div>
-                        <h5 class="mb-1">25% OFF en la primer compra</h5>
-                        <p class="mb-1">Aplica en primera compra online para todos los productos, utilizable una sola vez.</p>
-                    </div>
-
-                    <div class="ms-3 w-50 fs-6 d-flex flex-column justify-content-center align-items-center" style="border-left: 2px solid gray;">
-                        <div>Desde: 10/03/25</div>
-                        <div>Hasta: 10/05/25</div>
-                    </div>
-
-                </div>
-
-                <div class="list-group-item d-flex justify-content-between">
-                    <div>
-                        <h5 class="mb-1">25% OFF en la primer compra</h5>
-                        <p class="mb-1">Aplica en primera compra online para todos los productos, utilizable una sola vez.</p>
-                    </div>
-
-                    <div class="ms-3 w-50 fs-6 d-flex flex-column justify-content-center align-items-center" style="border-left: 2px solid gray;">
-                        <div>Desde: 10/03/25</div>
-                        <div>Hasta: 10/05/25</div>
-                    </div>
-
-                </div>
-
-                <div class="list-group-item d-flex justify-content-between">
-                    <div>
-                        <h5 class="mb-1">25% OFF en la primer compra</h5>
-                        <p class="mb-1">Aplica en primera compra online para todos los productos, utilizable una sola vez.</p>
-                    </div>
-
-                    <div class="ms-3 w-50 fs-6 d-flex flex-column justify-content-center align-items-center" style="border-left: 2px solid gray;">
-                        <div>Desde: 10/03/25</div>
-                        <div>Hasta: 10/05/25</div>
-                    </div>
-
-                </div>
-
-                <div class="list-group-item d-flex justify-content-between">
-                    <div>
-                        <h5 class="mb-1">25% OFF en la primer compra</h5>
-                        <p class="mb-1">Aplica en primera compra online para todos los productos, utilizable una sola vez.</p>
-                    </div>
-
-                    <div class="ms-3 w-50 fs-6 d-flex flex-column justify-content-center align-items-center" style="border-left: 2px solid gray;">
-                        <div>Desde: 10/03/25</div>
-                        <div>Hasta: 10/05/25</div>
-                    </div>
-
-                </div>
-
-
-
-
-
+            <div class="list-group scrollable-list" style="max-height: 800px;" id="lista-promociones-activas">
+                @if (Model.PromocionesActivas?.Any() == true)
+                {
+                    @foreach (var promocion in Model.PromocionesActivas)
+                    {
+                        <div class="list-group-item d-flex justify-content-between promo-activa @(Model.Promocion.id == promocion.id ? "promo-seleccionada" : "")"
+                             data-id="@promocion.id" onclick="seleccionarPromocion(@promocion.id)">
+                            <div>
+                                <h5 class="mb-1">@promocion.nombre</h5>
+                                <p class="mb-1">@promocion.descripcion</p>
+                                <small class="text-muted">Descuento: @promocion.descuento%</small>
+                            </div>
+                            <div class="ms-3 w-50 fs-6 d-flex flex-column justify-content-center align-items-center" style="border-left: 2px solid gray;">
+                                <div>Desde: @promocion.FechaInicioVista.ToString("dd/MM/yy")</div>
+                                <div>Hasta: @promocion.FechaFinVista.ToString("dd/MM/yy")</div>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="alert alert-info">No hay promociones activas</div>
+                }
             </div>
-
         </div>
     </div>
 
+    @section Scripts {
+        <script>
+            var combosSeleccionados = [];
+
+            @if (!string.IsNullOrEmpty(Model.Promocion.CombosSeleccionados))
+            {
+                <text>
+                        var comboIds = '@Model.Promocion.CombosSeleccionados'.split(',');
+                        var combosDisponibles = @Json.Serialize(Model.CombosDisponibles ?? new List<SistemaRestaurante_Admin.Models.Combo>());
+
+                        comboIds.forEach(function(id) {
+                                        var comboId = parseInt(id);
+                        var combo = combosDisponibles.find(function(c) { return c.id === comboId; });
+                        if (combo) {
+                            combosSeleccionados.push({
+                                id: combo.id,
+                                nombre: combo.nombre,
+                                precio: combo.precio
+                            });
+                                        }
+                                    });
+                </text>
+            }
+
+                document.addEventListener('DOMContentLoaded', function () {
+                    const comboSelect = document.getElementById('comboSelect');
+                    const btnAgregarCombo = document.getElementById('btnAgregarCombo');
+                    const btnLimpiarCombos = document.getElementById('btnLimpiarCombos');
+                    const listaCombosSeleccionados = document.getElementById('listaCombosSeleccionados');
+                    const inputCombosSeleccionados = document.getElementById('combosSeleccionados');
+                    const formPromocion = document.getElementById('formPromocion');
+                    const errorCombos = document.getElementById('errorCombos');
+                    const promoId = document.getElementById('Promocion_id').value;
+                    const btnCrearPromo = document.getElementById('btnCrearPromo');
+                    const btnModificarPromo = document.getElementById('btnModificarPromo');
+                    const btnEliminarPromo = document.getElementById('btnEliminarPromo');
+                    const fechaInicioInput = document.getElementById('fechaInicioInput');
+                    const fechaFinInput = document.getElementById('fechaFinInput');
+                    const esEdicion = promoId > 0;
+                    const hoy = new Date();
+                    hoy.setHours(0, 0, 0, 0); 
+                    const hoyISO = hoy.toISOString().split('T')[0];
+
+                    fechaFinInput.min = hoyISO;
+
+                    if (!esEdicion) {
+                        fechaInicioInput.min = hoyISO;
+                    }
+
+                    actualizarCombosSeleccionados();
+
+                    // Función para actualizar combos seleccionados
+                    function actualizarCombosSeleccionados() {
+                        listaCombosSeleccionados.innerHTML = '';
+
+                        combosSeleccionados.forEach(function (combo) {
+                            const li = document.createElement('li');
+                            li.className = 'list-group-item d-flex justify-content-between align-items-center';
+                            li.dataset.id = combo.id;
+                            li.innerHTML = `
+                                        <span>${combo.nombre}</span>
+                                        <div class="combo-actions">
+                                                            <span class="me-2">$${parseFloat(combo.precio).toFixed(2)}</span>
+
+                                                    <button type="button" class="btn btn-outline-danger btn-quitar" style="font-size: 1rem; border-radius: 15px; padding: 0.05rem 1rem;"> X </button>  
+                                       </div>
+                                    `;
+                            listaCombosSeleccionados.appendChild(li);
+                        });
+
+                        inputCombosSeleccionados.value = combosSeleccionados.map(function (c) { return c.id; }).join(',');
+                        errorCombos.style.display = combosSeleccionados.length === 0 ? 'block' : 'none';
+
+                        document.querySelectorAll('#listaCombosDisponibles li').forEach(function (item) {
+                            var isSelected = combosSeleccionados.some(function (c) { return c.id == item.dataset.id; });
+                            item.classList.toggle('combo-selected', isSelected);
+                        });
+                    }
+
+                    // Agregar combo
+                    btnAgregarCombo.addEventListener('click', function () {
+                        const option = comboSelect.selectedOptions[0];
+                        const comboId = parseInt(option.value);
+
+                        var yaExiste = combosSeleccionados.some(function (c) { return c.id === comboId; });
+                        if (yaExiste) {
+                            alert('Este combo ya fue agregado');
+                            return;
+                        }
+
+                        combosSeleccionados.push({
+                            id: comboId,
+                            nombre: option.dataset.nombre,
+                            precio: option.dataset.precio
+                        });
+
+                        actualizarCombosSeleccionados();
+                    });
+
+                    // Quitar combo individual
+                    listaCombosSeleccionados.addEventListener('click', function (e) {
+                        if (e.target.classList.contains('btn-quitar')) {
+                            const comboId = parseInt(e.target.closest('li').dataset.id);
+                            combosSeleccionados = combosSeleccionados.filter(function (c) { return c.id !== comboId; });
+                            actualizarCombosSeleccionados();
+                        }
+                    });
+
+                    // Limpiar todos los combos
+                    btnLimpiarCombos.addEventListener('click', function () {
+                        combosSeleccionados = [];
+                        actualizarCombosSeleccionados();
+                    });
+
+                    // Botón Crear promo
+                    btnCrearPromo.addEventListener('click', function (e) {
+                        if (!validarFormulario()) {
+                            e.preventDefault();
+                        } else {
+                            formPromocion.action = '@Url.Action("CrearPromocion", "Promociones")';
+                            formPromocion.submit();
+                        }
+                    });
+
+                    // Botón Modificar promo
+                    btnModificarPromo.addEventListener('click', function (e) {
+                        if (!validarFormulario()) {
+                            e.preventDefault();
+                        } else {
+                            formPromocion.action = '@Url.Action("ModificarPromocion", "Promociones")';
+                            formPromocion.submit();
+                        }
+                    });
+
+                    // Botón Eliminar promo
+                    btnEliminarPromo.addEventListener('click', async function (e) {
+                        e.preventDefault();
+                        if (confirm('¿Está seguro que desea eliminar esta promoción?')) {
+                            const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+
+                            try {
+                                const response = await fetch('@Url.Action("EliminarPromocion", "Promociones")', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/x-www-form-urlencoded',
+                                        'RequestVerificationToken': token
+                                    },
+                                    body: `id=${promoId}`
+                                });
+
+                                if (response.redirected) {
+                                    window.location.href = response.url;
+                                } else {
+                                    const result = await response.json();
+                                    if (!result.success) {
+                                        alert(result.message || 'Error al eliminar');
+                                    }
+                                    window.location.reload();
+                                }
+                            } catch (error) {
+                                console.error('Error:', error);
+                                alert('Error de conexión');
+                                window.location.reload();
+                            }
+                        }
+                    });
+
+                    function validarFormulario() {
+                        document.querySelectorAll('.text-danger').forEach(el => {
+                            el.textContent = '';
+                        });
+
+                        let valido = true;
+
+                        // Validar campo Descuento (ejemplo específico)
+                        const descuentoInput = document.querySelector('#Promocion_descuento');
+                        if (!descuentoInput.value.trim() || isNaN(parseInt(descuentoInput.value))) {
+                            const errorElement = descuentoInput.closest('.input-group').querySelector('.invalid-feedback');
+                            errorElement.style.display = 'block';
+                            errorElement.querySelector('span').textContent = 'El descuento es requerido';
+                            valido = false;
+                        } else {
+                            const errorElement = descuentoInput.closest('.input-group').querySelector('.invalid-feedback');
+                            errorElement.style.display = 'none';
+                        }
+
+
+                        // Validar campos requeridos
+                        const camposRequeridos = [
+                            { selector: '#Promocion_nombre', mensaje: 'El nombre es requerido' },
+                            { selector: '#Promocion_descuento', mensaje: 'El descuento es requerido' },
+                            { selector: '#Promocion_categoria_id', mensaje: 'La categoría es requerida' },
+                            { selector: '#Promocion_descripcion', mensaje: 'La descripción es requerida' }
+                        ];
+
+                        camposRequeridos.forEach(campo => {
+                            const elemento = document.querySelector(campo.selector);
+                            if (!elemento.value.trim()) {
+                                const errorElement = elemento.nextElementSibling;
+                                if (errorElement && errorElement.classList.contains('text-danger')) {
+                                    errorElement.textContent = campo.mensaje;
+                                }
+                                valido = false;
+                            }
+                        });
+
+                        // Validar combos
+                        if (combosSeleccionados.length === 0) {
+                            errorCombos.style.display = 'block';
+                            errorCombos.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            valido = false;
+                        }
+
+                        // Tu validación de fechas existente (se mantiene igual)
+                        const fechaInicio = new Date(fechaInicioInput.value);
+                        const fechaFin = new Date(fechaFinInput.value);
+                        fechaInicio.setHours(0, 0, 0, 0);
+                        fechaFin.setHours(0, 0, 0, 0);
+
+                        
+
+                        if (!valido) {
+                            // Desplazarse al primer error
+                            const primerError = document.querySelector('.text-danger:not(:empty)');
+                            if (primerError) {
+                                primerError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            }
+                        }
+
+                        return valido;
+                    }
+                });
+
+            @if (TempData["ErrorMessage"] != null)
+            {
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>¡Error!</strong> @TempData["ErrorMessage"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+            }
+
+            // Función para seleccionar promoción
+            function seleccionarPromocion(id) {
+                combosSeleccionados = [];
+                document.getElementById('listaCombosSeleccionados').innerHTML = '';
+
+                window.location.href = '@Url.Action("VerPromociones", "Promociones")?id=' + id;
+            }
+        </script>
+    }
 </body>
 </html>

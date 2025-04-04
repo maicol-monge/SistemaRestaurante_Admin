@@ -1,9 +1,29 @@
-﻿@{
+﻿@using SistemaRestaurante_Admin.Models.Cargos
+@{
     ViewBag.Title = "Gestionar Cargos";
     Layout = "~/Views/Shared/LayoutPersonalizado.cshtml";
+    @model List<cargo>;
+    int id_cargo = 0;
+
 }
 
 <div class="container mt-4">
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
     <div class="card shadow">
 
         <div class="card-body row">
@@ -11,16 +31,32 @@
             <div class="col-md-5">
                 <h5>Gestionar Cargos</h5>
                 <div class="mb-3">
-                    <label class="form-label"><strong>Nombre del cargo:</strong></label>
+                    <label class="form-label" id="name_cargo"><strong>Nombre del cargo:</strong></label>
                     <input type="text" class="form-control w-50" id="nombreCargo">
                 </div>
                 <div class="d-flex gap-2">
-                    <button class="btn w-50" style="background-color: #FDD73C; font-weight: bold">Crear cargo</button>
-                    <button class="btn w-50" style="background-color: #0D3752; font-weight: bold; color:white">Modificar cargo</button>
-                    <button class="btn w-50" style="background-color: #AB1918; font-weight: bold; color:white">Eliminar cargo</button>
+
+                    <form class="w-50" id="formInsert" method="post" action="@Url.Action("InsertarCargo", "Cargos")">
+                        <input type="hidden" id="cargoNombre_ins" name="nombre" />
+                        <button type="submit" class="btn" id="btn_create" style="background-color: #FDD73C; font-weight: bold" onclick="insertarCargo()">Crear cargo</button>
+                    </form>
+                    
+                    
+                    <form class="w-50" id="formEdit" method="post" action="@Url.Action("EditarCargo", "Cargos")">
+                        <input type="hidden" id="cargoId" name="id" />
+                        <input type="hidden" id="cargoNombre" name="nombre" />
+                        <button type="submit" class="btn " style="background-color: #0D3752; font-weight: bold; color:white" id="btn_edit" onclick="editarCargo()" disabled>Modificar cargo</button>
+                    </form>
+
+                    <form class="w-50" id="formDelete" method="post" action="@Url.Action("EliminarCargo", "Cargos")">
+                        <input type="hidden" id="cargoIdd" name="id" />
+                        <button type="submit" class="btn " style="background-color: #AB1918; font-weight: bold; color:white" id="btn_delete" onclick="eliminarCargo()" disabled>Eliminar cargo</button>
+                    </form>
+
                 </div>
                 <br />
-                <button class="btn btn-outline-secondary mt-3">Cancelar</button>
+                <button class="btn btn-outline-secondary mt-3" onclick="location.href='@Url.Action("VerMenuAdmin", "Home")'">Cancelar</button>
+                <button class="btn btn-outline-primary mt-3" id="btn_clear" onclick="clearSelection()">Limpiar selección</button>
             </div>
 
             <div class="col-md-1 d-flex justify-content-center">
@@ -31,17 +67,95 @@
             <div class="col-md-6">
                 <h5>Cargos actuales</h5>
                 <div class="border rounded p-2" style="max-height: 200px; overflow-y: auto;">
-                    <input type="text" class="form-control mb-2" value="Administrador" readonly>
-                    <input type="text" class="form-control mb-2" value="Gerente" readonly>
-                    <input type="text" class="form-control mb-2" value="Repartidor" readonly>
-                    <input type="text" class="form-control mb-2" value="Mesero" readonly>
-                    <input type="text" class="form-control mb-2" value="Cocinero" readonly>
-                    <input type="text" class="form-control mb-2" value="Lava platos" readonly>
-                    <input type="text" class="form-control mb-2" value="Vigilante" readonly>
-                    <input type="text" class="form-control mb-2" value="Otro Cargo" readonly>
+                    @if (Model != null && Model.Any())
+                    {
+                        @foreach (var cargo in Model)
+                        {
+                            <p class="cargo-item" data-nombre="@cargo.nombre" data-id="@cargo.id" onclick="selectCargo(this)" style="cursor: pointer; padding: 5px;">
+                                @cargo.nombre
+                            </p>
+                        }
+                    }
+                    else
+                    {
+                        <p>No hay cargos disponibles.</p>
+                    }
                 </div>
             </div>
         </div>
     </div>
 
 </div>
+
+<script>
+    var cargo_id;
+    var cargo_name = getElementById("nombreCargo").value;
+    // Función para manejar la selección de un cargo
+    function selectCargo(cargoElement) {
+
+        var nombreCargo = cargoElement.getAttribute("data-nombre");
+        var cargoId = cargoElement.getAttribute("data-id"); // Aquí se obtiene el ID del cargo
+        var nombreInput = document.getElementById("nombreCargo");
+        var btnCreate = document.getElementById("btn_create");
+        var btnEdit = document.getElementById("btn_edit");
+        var btnDelete = document.getElementById("btn_delete");
+        var cargoItems = document.querySelectorAll(".cargo-item");
+
+        
+        nombreInput.value = nombreCargo;
+
+        
+        btnCreate.disabled = true;
+        
+        btnEdit.disabled = false;
+        btnDelete.disabled = false;
+
+        cargoItems.forEach(function (item) {
+            item.style.backgroundColor = "";
+        });
+
+        
+        cargoElement.style.backgroundColor = "#FDD73C";
+
+        document.getElementById("cargoId").value = cargoId;
+        document.getElementById("cargoNombre").value = nombreCargo;
+        cargo_id = cargoId;
+        //document.getElementById("cargoId").value = cargoId;
+    }
+
+    function editarCargo() {
+        document.getElementById("cargoNombre").value = document.getElementById("nombreCargo").value;
+        //document.getElementById("cargoId").value
+    }
+
+    function eliminarCargo() {
+        document.getElementById("cargoIdd").value = cargo_id;
+	}
+
+    function insertarCargo() {
+        document.getElementById("cargoNombre_ins").value = document.getElementById("nombreCargo").value;;
+	}
+
+    // Función para limpiar la selección
+    function clearSelection() {
+        var nombreInput = document.getElementById("nombreCargo");
+        var btnCreate = document.getElementById("btn_create");
+        var btnEdit = document.getElementById("btn_edit");
+        var btnDelete = document.getElementById("btn_delete");
+        var cargoItems = document.querySelectorAll(".cargo-item");
+
+        // Limpiar el campo de texto
+        nombreInput.value = "";
+
+        // Habilitar el botón "Crear cargo"
+        btnCreate.disabled = false;
+        // Deshabilitar los botones de "Modificar" y "Eliminar"
+        btnEdit.disabled = true;
+        btnDelete.disabled = true;
+
+        // Quitar la clase de selección del cargo
+        cargoItems.forEach(function (item) {
+            item.style.backgroundColor = ""; // Quitar el color de fondo de los cargos
+        });
+    }
+</script>
