@@ -21,22 +21,25 @@
                     <h2 class="text-md-start text-center">Nuevo Platillo</h2>
                     <div class="d-md-flex d-flex flex-md-row flex-column align-items-center">
                         <div class="imagen-container d-flex justify-content-center align-items-center w-75 cardScale" style="border: 1px solid #adadad; border-radius: 10px; height: 30vh">
-                            <i class="bi bi-image icono-imagen" id="icono-imagen" style="color: #AB1918; font-size: 3rem;"></i>
+                            <i class="bi bi-image icono-imagen" id="icono-imagen" style="color: #AB1918; font-size: 8rem;"></i>
                             <img id="imagen-seleccionada" style="display: none; max-width: 100%; max-height: 100%; object-fit: contain;">
                             <input type="file" id="selector-imagen" name="imagen" accept="image/*" style="display: none;">
                         </div>
                         <div class="w-100">
                             <h4 class="text-md-start ms-md-3 text-center mt-5 mt-md-0" style="font-weight:600">Nombre del platillo</h4>
-                            <input class="form-control ms-md-3 p-3" style="height: 10vh" type="text" name="nombre" id="nombre" required>
+                            <input class="form-control ms-md-3 p-3" style="height: 10vh" type="text" name="nombre" id="nombre" required oninvalid="this.setCustomValidity('Por favor, ingrese un nombre de platillo')"
+                                   oninput="this.setCustomValidity('')"/>
                         </div>
                     </div>
                     <div class="my-5">
                         <h3>Descripción</h3>
-                        <input class="form-control p-3 w-100" type="text" name="descripcion" id="descripcion" style="height: 12vh" required />
+                        <input class="form-control p-3 w-100" type="text" name="descripcion" id="descripcion" style="height: 12vh" required oninvalid ="this.setCustomValidity('Por favor, ingrese una descripción del platillo')"
+                               oninput="this.setCustomValidity('')"/>
                         <div class="d-md-flex flex-column flex-md-row justify-content-between">
                             <div class="col-12 col-md-5">
                                 <h4>Precio:</h4>
-                                <input class="form-control w-100" type="number" name="precio" id="precio" step="0.01" min="0" required />
+                                <input class="form-control w-100" type="number" name="precio" id="precio" step="0.01" min="0" required oninvalid="this.setCustomValidity('Por favor, ingrese un precio para el platillo')"
+                                       oninput="this.setCustomValidity('')"/>
                             </div>
                             <div class="col-12 col-md-5">
                                 <h4>Categoria:</h4>
