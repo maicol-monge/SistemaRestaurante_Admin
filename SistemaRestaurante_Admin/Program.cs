@@ -15,6 +15,11 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
+builder.Services.AddControllersWithViews(options =>
+{
+    options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
+});
+
 builder.Services.AddDistributedMemoryCache();
 
 builder.Services.AddSession(options =>
