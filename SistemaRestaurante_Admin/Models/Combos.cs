@@ -12,10 +12,9 @@ namespace SistemaRestaurante_Admin.Models
         public string Descripcion { get; set; }
         public int Estado { get; set; }
 
-        // Relación con Categoría
         [Column("categoria_id")]
-        public int CategoriaId { get; set; }  // ID de la categoría
-        public Categoria Categoria { get; set; }  // Propiedad de navegación
+        public int CategoriaId { get; set; }  
+        public Categoria Categoria { get; set; } 
 
     }
 }
