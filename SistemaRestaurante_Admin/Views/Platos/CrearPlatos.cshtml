@@ -48,7 +48,7 @@
                                     {
                                         foreach (var categoria in ViewBag.Categorias)
                                         {
-                                            <option value="@categoria.Id">@categoria.Nombre</option>
+                                            <option value="@categoria.id">@categoria.nombre</option>
                                         }
                                     }
                                 </select>
@@ -171,7 +171,7 @@
 
                     // Resaltar la tarjeta seleccionada
                     platillosCards.forEach(c => c.style.border = 'none');
-                    this.style.border = '2px solid #FDD73C';
+                    this.style.border = '2px solid red';
                 });
             });
 
