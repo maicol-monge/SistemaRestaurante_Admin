@@ -81,7 +81,7 @@
                         </div>
                     </div>
                 <div class="d-flex gap-2">
-                    <button type="button" class="btn btn-warning" onclick="crearCombo()">Crear combo</button>
+                    <button type="button" class="btn btn-warning" id="crearComboBtn" onclick="crearCombo()">Crear combo</button>
                     <button type="button" class="botonModificar" onclick="actualizarCombo()">Modificar combo</button>
                     <button type="button" class="btn btn-danger" onclick="eliminarCombo()">Eliminar combo</button>
                     <button type="reset" class="btn btn-secondary" onclick="limpiarFormulario()">Limpiar</button>
@@ -96,6 +96,20 @@
             </div>
 
             <script>
+                function manejarSeleccionCombo() {
+                    const comboSeleccionado = document.getElementById('comboId').value; // Aquí se asume que el ID del combo seleccionado se guarda en un campo oculto
+                    const crearComboBtn = document.getElementById('crearComboBtn'); // Botón de "Crear combo"
+
+                    if (comboSeleccionado) {
+                        crearComboBtn.disabled = true;
+                    } else {
+                        crearComboBtn.disabled = false;
+                    }
+                }
+
+                // Llamar a esta función cada vez que se seleccione o deseleccione un combo
+                document.getElementById('comboId').addEventListener('change', manejarSeleccionCombo);
+
 
                 function validarFormulario() {
                     const nombre = document.getElementById('nombreCombo').value.trim();
@@ -374,37 +388,41 @@
                         alert("Seleccione un combo existente para eliminar.");
                     }
                 }
+                function limpiarFormulario() {
+                    // Resetear el formulario
+                    document.getElementById('comboForm').reset();
+                    document.getElementById('comboId').value = ""; // Vaciar el campo oculto que guarda el ID del combo
+                    document.getElementById('tituloFormulario').innerText = "Nuevo combo";
 
-            function limpiarFormulario() {
-                // Resetear el formulario
-                document.getElementById('comboForm').reset();
-                document.getElementById('comboId').value = "";
-                document.getElementById('tituloFormulario').innerText = "Nuevo combo";
+                    // Limpiar la lista de productos seleccionados
+                    const platosSeleccionados = document.getElementById('platosSeleccionados');
+                    platosSeleccionados.innerHTML = ""; // Elimina todos los elementos dentro del contenedor
 
-                // Limpiar la lista de productos seleccionados
-                const platosSeleccionados = document.getElementById('platosSeleccionados');
-                platosSeleccionados.innerHTML = ""; // Elimina todos los elementos dentro del contenedor
+                    // Desmarcar todos los platos
+                    const checkboxes = document.querySelectorAll('.plato-checkbox');
+                    checkboxes.forEach(checkbox => {
+                        checkbox.checked = false;
+                    });
 
-                // Desmarcar todos los platos
-                const checkboxes = document.querySelectorAll('.plato-checkbox');
-                checkboxes.forEach(checkbox => {
-                    checkbox.checked = false;
-                });
-            }
+                    // Llamar a manejarSeleccionCombo para habilitar el botón "Crear combo"
+                    manejarSeleccionCombo();  // Esto habilitará el botón de "Crear combo"
+                }
+
 
             </script>
-
-
 
             <div class="col-md-5">
                 <h3>Combos existentes</h3>
                 <div id="combosContainer" class="list-group">
+                    <!-- Campo oculto para almacenar el ID del combo seleccionado -->
+                    <input type="hidden" id="comboId" name="comboId" value="" /> <!-- Este campo almacenará el ID del combo seleccionado -->
                     @if (ViewBag.Combos != null && ViewBag.Combos.Count > 0)
                     {
                         foreach (var combo in ViewBag.Combos)
                         {
                             <div class="combo-item list-group-item d-flex justify-content-between align-items-center"
-                                 onclick="cargarCombo(@combo.Id)">
+                                 onclick="seleccionarCombo(@combo.Id, this)">
+                                <!-- 'this' pasa el combo seleccionado -->
                                 <div class="combo-info">
                                     <h5 class="mb-1">@combo.Nombre</h5>
                                     <p class="mb-0 text-muted">@combo.Descripcion</p>
@@ -424,10 +442,37 @@
 
 
 
-
-
-
             <script>
+                function seleccionarCombo(idCombo, comboElement) {
+                    // Asigna el ID del combo seleccionado al campo oculto
+                    document.getElementById('comboId').value = idCombo;
+
+                    // Resaltar el combo seleccionado visualmente
+                    const comboItems = document.querySelectorAll('.combo-item');
+                    comboItems.forEach(item => item.classList.remove('selected-combo')); // Eliminar el resaltado de otros combos
+                    comboElement.classList.add('selected-combo'); // Resaltar el combo seleccionado
+
+                    // Deshabilitar el botón "Crear combo" cuando se ha seleccionado un combo
+                    manejarSeleccionCombo(idCombo);
+
+                    // Cargar los detalles del combo
+                    cargarCombo(idCombo);
+                }
+
+                function manejarSeleccionCombo() {
+                    const comboSeleccionado = document.getElementById('comboId').value; // Obtener el valor del campo oculto
+                    const crearComboBtn = document.getElementById('crearComboBtn'); // Botón de "Crear combo"
+
+                    if (comboSeleccionado) {
+                        // Deshabilitar el botón "Crear combo" cuando se ha seleccionado un combo
+                        crearComboBtn.disabled = true;
+                    } else {
+                        // Habilitar el botón "Crear combo" cuando no se ha seleccionado un combo
+                        crearComboBtn.disabled = false;
+                    }
+                }
+
+
                 function cargarCombo(id) {
                     fetch(`/Combos/ObtenerCombo?id=${id}`)
                         .then(response => response.json())
@@ -444,8 +489,13 @@
                             document.getElementById('descripcionCombo').value = combo.descripcion;
                             document.getElementById('categoriaCombo').value = combo.categoriaId;
 
-                            // Cargar los productos seleccionados en el div
-                            cargarProductosCombo(combo.platos);
+                            // Cargar los productos seleccionados en el div (si existen productos)
+                            if (combo.platos && combo.platos.length > 0) {
+                                cargarProductosCombo(combo.platos);
+                            } else {
+                                // Si no hay productos, limpiar el div
+                                document.getElementById('platosSeleccionados').innerHTML = "";
+                            }
                         })
                         .catch(error => {
                             alert("Error al cargar el combo.");
@@ -453,30 +503,23 @@
                         });
                 }
 
-                function cargarProductosCombo(productos) {
+                // Cargar los productos seleccionados en el div
+                function cargarProductosCombo(platos) {
                     const platosSeleccionados = document.getElementById('platosSeleccionados');
-                    platosSeleccionados.innerHTML = ""; // Limpiar el contenido anterior
+                    platosSeleccionados.innerHTML = ""; // Limpiar el contenido antes de agregar los nuevos productos
 
-                    if (productos.length === 0) {
-                        platosSeleccionados.innerHTML = "<li class='list-group-item'>No hay productos en este combo.</li>";
-                        return;
-                    }
-
-                    productos.forEach(producto => {
+                    platos.forEach(plato => {
                         const li = document.createElement('li');
                         li.className = "product-item list-group-item d-flex justify-content-between align-items-center";
-                        li.id = `plato-${producto.id}`;
-
                         li.innerHTML = `
-                                <img src="${producto.imagen}" alt="${producto.nombre}" class="product-img" style="width: 40px; height: 40px;">
-                                <span class="flex-grow-1 text-truncate">${producto.nombre}</span>
-                                <span class="product-price">$${parseFloat(producto.precio).toFixed(2)}</span>
-                                <button class="btn btn-sm btn-danger" onclick="eliminarPlato(${producto.id})">X</button>
-                                <input type="hidden" name="platosSeleccionados" value="${producto.id}">
-                            `;
+                            <img src="${plato.imagen}" alt="${plato.nombre}" class="product-img">
+                            <span class="flex-grow-1 text-truncate">${plato.nombre}</span>
+                            <span class="product-price">$${parseFloat(plato.precio).toFixed(2)}</span>
+                        `;
                         platosSeleccionados.appendChild(li);
                     });
                 }
+
             </script>
 
 
