@@ -8,6 +8,10 @@
 
     <link rel="stylesheet" href="~/css/crearCombos.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+    <style>
+
+    </style>
+
 </head>
     <div class="mt-4 mx-5">
         <div class="row">
@@ -38,7 +42,7 @@
                         <select id="categoriaCombo" name="categoriaId" class="form-select" required>
                             @foreach (var categoria in ViewBag.Categorias)
                             {
-                                <option value="@categoria.Id">@categoria.Nombre</option>
+                                <option value="@categoria.id">@categoria.nombre</option>
                             }
                         </select>
                     </div>
@@ -47,26 +51,26 @@
                         <label class="form-label fw-bold">Buscar plato:</label>
                         <div class="input-group">
                             <input type="text" id="searchPlato" class="form-control" placeholder="Buscar platos..." />
-                            <button class="btn btn-warning" onclick="buscarPlato()">Buscar</button>
+                            <button class="btn btn-warning" type="button" onclick="buscarPlato()">Buscar</button>
                         </div>
                     </div>
-
                     <div class="col-md-12 mb-3">
                         <label class="form-label fw-bold">Seleccionar productos:</label>
                         <div class="card mx-auto">
                             <ul id="listaPlatos" class="list-group list-group-flush">
                                 @foreach (var plato in ViewBag.Platos)
                                 {
-                                    <li class="product-item list-group-item d-flex justify-content-between align-items-center"
-                                        onclick="agregarPlato('@plato.Nombre', @plato.Precio, @plato.Id, '@plato.Imagen')">
+                                    <li class="product-item list-group-item d-flex justify-content-between align-items-center plato-item"
+                                        data-nombre="@plato.Nombre" onclick="agregarPlato('@plato.Nombre', @plato.Precio, @plato.Id, '@plato.Imagen')">
                                         <img src="@plato.Imagen" alt="@plato.Nombre" class="product-img">
-                                        <span class="flex-grow-1 text-truncate">@plato.Nombre</span>
+                                        <span class="flex-grow-1 text-truncate plato-nombre">@plato.Nombre</span>
                                         <span class="product-price">$@plato.Precio</span>
                                     </li>
                                 }
                             </ul>
                         </div>
                     </div>
+
 
                     <div class="col-md-12 mb-3">
                         <label class="form-label fw-bold">Productos seleccionados:</label>
@@ -76,18 +80,23 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="d-flex gap-2">
-                        <button type="button" class="btn btn-warning" onclick="crearCombo()">Crear combo</button>
-                        <button type="button" class="btn btn-info" onclick="actualizarCombo()">Modificar combo</button>
-                        <button type="button" class="btn btn-danger" onclick="eliminarCombo()">Eliminar combo</button>
-                        <button type="reset" class="btn btn-secondary" onclick="limpiarFormulario()">Limpiar</button>
-                    </div>
+                <div class="d-flex gap-2">
+                    <button type="button" class="btn btn-warning" onclick="crearCombo()">Crear combo</button>
+                    <button type="button" class="botonModificar" onclick="actualizarCombo()">Modificar combo</button>
+                    <button type="button" class="btn btn-danger" onclick="eliminarCombo()">Eliminar combo</button>
+                    <button type="reset" class="btn btn-secondary" onclick="limpiarFormulario()">Limpiar</button>
+                </div>
 
+                <!-- Botón Cancelar -->
+                <div class="d-flex justify-content-start mt-3">
+                    <button type="button" class="btn btn-outline-dark" onclick="location.href='@Url.Action("VerMenuAdmin", "Home")'">Cancelar</button>
+                </div>
 
                 </form>
             </div>
 
             <script>
+
                 function validarFormulario() {
                     const nombre = document.getElementById('nombreCombo').value.trim();
                     const precio = document.getElementById('precioCombo').value.trim();
@@ -204,26 +213,27 @@
                     }
                 }
 
-
                 function buscarPlato() {
-                    const input = document.getElementById('searchPlato').value.toLowerCase();
+                    const input = document.getElementById('searchPlato').value.toLowerCase().trim(); // Obtenemos la búsqueda, convertida a minúsculas y sin espacios
                     const listaPlatos = document.getElementById('listaPlatos');
-                    const items = listaPlatos.getElementsByClassName('plato-item');
+                    const items = listaPlatos.getElementsByClassName('plato-item'); // Accedemos a todos los productos
                     let encontrado = false;
 
+                    // Iteramos sobre todos los platos de la lista
                     for (let i = 0; i < items.length; i++) {
-                        const nombrePlato = items[i].getElementsByClassName('plato-nombre')[0];
-                        const txtValue = nombrePlato.textContent || nombrePlato.innerText;
+                        // Obtenemos el nombre del plato del atributo 'data-nombre'
+                        const nombrePlato = items[i].getAttribute('data-nombre').toLowerCase().trim(); // Convertimos a minúsculas y eliminamos espacios
 
-                        // Verificar si el nombre del plato contiene el texto ingresado
-                        if (txtValue.toLowerCase().includes(input)) {
-                            items[i].style.display = "";  // Mostrar el elemento encontrado
+                        // Verificamos si el nombre del plato contiene la búsqueda ingresada
+                        if (nombrePlato.includes(input)) {
+                            items[i].style.display = "";  // Mostrar el plato que coincide con la búsqueda
                             encontrado = true;
                         } else {
-                            items[i].style.display = "none";  // Ocultar el elemento no coincidente
+                            items[i].style.display = "none";  // Ocultar los platos que no coinciden
                         }
                     }
 
+                    // Si no se encuentra ningún plato que coincida, mostramos un mensaje
                     if (!encontrado) {
                         alert("No se encontraron platos que coincidan con la búsqueda.");
                     }
@@ -365,17 +375,23 @@
                     }
                 }
 
-                function limpiarFormulario() {
-                    document.getElementById('comboForm').reset();
-                    document.getElementById('comboId').value = "";
-                    document.getElementById('tituloFormulario').innerText = "Nuevo combo";
+            function limpiarFormulario() {
+                // Resetear el formulario
+                document.getElementById('comboForm').reset();
+                document.getElementById('comboId').value = "";
+                document.getElementById('tituloFormulario').innerText = "Nuevo combo";
 
-                    // Desmarcar todos los platos
-                    const checkboxes = document.querySelectorAll('.plato-checkbox');
-                    checkboxes.forEach(checkbox => {
-                        checkbox.checked = false;
-                    });
-                }
+                // Limpiar la lista de productos seleccionados
+                const platosSeleccionados = document.getElementById('platosSeleccionados');
+                platosSeleccionados.innerHTML = ""; // Elimina todos los elementos dentro del contenedor
+
+                // Desmarcar todos los platos
+                const checkboxes = document.querySelectorAll('.plato-checkbox');
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+            }
+
             </script>
 
 

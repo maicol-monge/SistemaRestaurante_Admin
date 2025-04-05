@@ -145,10 +145,10 @@
                     <label class="form-label">Seleccionar combo:</label>
                     <div class="d-flex mb-4">
                         <select class="form-select" id="comboSelect">
-                            @foreach (var combo in Model.CombosDisponibles ?? new List<SistemaRestaurante_Admin.Models.Combo>())
+                            @foreach (var combo in Model.CombosDisponibles ?? new List<SistemaRestaurante_Admin.Models.Combos>())
                             {
-                                <option value="@combo.id" data-nombre="@combo.nombre" data-precio="@combo.precio">
-                                    @combo.nombre - @combo.precio.ToString("C")
+                                <option value="@combo.Id" data-nombre="@combo.Nombre" data-precio="@combo.Precio">
+                                    @combo.Nombre - @combo.Precio.ToString("C")
                                 </option>
                             }
                         </select>
@@ -160,11 +160,11 @@
                             <label class="form-label">Combos disponibles:</label>
                             <div class="scrollable-list mb-3">
                                 <ul class="list-group" id="listaCombosDisponibles">
-                                    @foreach (var combo in Model.CombosDisponibles ?? new List<SistemaRestaurante_Admin.Models.Combo>())
+                                    @foreach (var combo in Model.CombosDisponibles ?? new List<SistemaRestaurante_Admin.Models.Combos>())
                                     {
-                                        <li class="list-group-item d-flex justify-content-between align-items-center" data-id="@combo.id">
-                                            @combo.nombre
-                                            <span class="">@combo.precio.ToString("C")</span>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center" data-id="@combo.Id">
+                                            @combo.Nombre
+                                            <span class="">@combo.Precio.ToString("C")</span>
                                         </li>
                                     }
                                 </ul>
@@ -268,7 +268,7 @@
             {
                 <text>
                         var comboIds = '@Model.Promocion.CombosSeleccionados'.split(',');
-                        var combosDisponibles = @Json.Serialize(Model.CombosDisponibles ?? new List<SistemaRestaurante_Admin.Models.Combo>());
+                        var combosDisponibles = @Json.Serialize(Model.CombosDisponibles ?? new List<SistemaRestaurante_Admin.Models.Combos>());
 
                         comboIds.forEach(function(id) {
                                         var comboId = parseInt(id);
