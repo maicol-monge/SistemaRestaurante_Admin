@@ -22,7 +22,7 @@ namespace SistemaRestaurante_Admin.Controllers.Combos
             try
             {
                 var categorias = await _context.Categoria
-                    .Where(c => c.Estado == 1)
+                    .Where(c => c.estado == 1)
                     .ToListAsync();
 
                 var platos = await _context.Platos
