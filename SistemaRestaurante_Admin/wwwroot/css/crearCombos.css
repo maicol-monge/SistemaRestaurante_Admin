@@ -1,0 +1,218 @@
+﻿<style >
+.combo-item {
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    margin: 10px 0;
+    padding: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.combo-item:hover {
+    background-color: #f8f9fa;
+}
+
+.combo-item.active {
+    background-color: #e9ecef;
+    border-color: #007bff;
+}
+
+.combo-item h5 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.combo-item p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+.combo-price {
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.combo-divider {
+    margin: 8px 0;
+    border-top: 1px solid #dee2e6;
+}
+
+.combo-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+/*estilo para productosseleccionados
+*/
+.product-item {
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    margin: 5px 0;
+    padding: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+    .product-item:hover {
+        background-color: #f8f9fa;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .product-item.active {
+        background-color: #e9ecef;
+        border-color: #007bff;
+    }
+
+.product-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 5px;
+    object-fit: cover;
+}
+
+.product-price {
+    font-weight: bold;
+    color: #333;
+    white-space: nowrap;
+}
+
+.list-group-flush {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+    .list-group-flush::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .list-group-flush::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 3px;
+    }
+
+    .list-group-flush::-webkit-scrollbar-thumb {
+        background: #c82333;
+        border-radius: 3px;
+    }
+
+        .list-group-flush::-webkit-scrollbar-thumb:hover {
+            background: #dc3545;
+        }
+
+/*productosseleccionado del combo
+*/
+.product-item {
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    margin: 5px 0;
+    padding: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+    .product-item:hover {
+        background-color: #f8f9fa;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .product-item.active {
+        background-color: #e9ecef;
+        border-color: #007bff;
+    }
+
+.product-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 5px;
+    object-fit: cover;
+}
+
+.product-price {
+    font-weight: bold;
+    color: #333;
+    white-space: nowrap;
+}
+
+.list-group-flush {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+    .list-group-flush::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .list-group-flush::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 3px;
+    }
+
+    .list-group-flush::-webkit-scrollbar-thumb {
+        background: #c82333;
+        border-radius: 3px;
+    }
+
+        .list-group-flush::-webkit-scrollbar-thumb:hover {
+            background: #dc3545;
+        }
+/* Botón Modificar Combo */
+.botonModificar {
+    background-color: #0D3752;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+    .botonModificar:hover {
+        background-color: #093044;
+    }
+
+/* Botón Crear Combo */
+.btn-warning {
+    background-color: #FFC107;
+    color: black;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+    .btn-warning:hover {
+        background-color: #e0a800;
+    }
+
+/* Botón Eliminar Combo */
+.btn-danger {
+    background-color: #DC3545;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+    .btn-danger:hover {
+        background-color: #c82333;
+    }
+
+/* Espaciado entre botones */
+.d-flex.gap-2 > button {
+    margin: 5px;
+}
+
+
+
+</style >
