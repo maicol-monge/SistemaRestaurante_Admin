@@ -61,7 +61,13 @@
                         <button type="button" class="btn btn-danger col-md-3 col-12 my-2 cardScale" id="btnEliminar" disabled="true" style="font-weight: bold">Eliminar</button>
                     </div>
                     <div class="mt-5">
-                        <a href="@Url.Action("VerPlatos")" class="btn col-md-3 col-12 mb-5 cardScale" id="btnCancelar" style="border: 3px solid black; font-weight: bold; display:none">Cancelar</a>
+                        <a href="@Url.Action("VerPlatos")"
+                           class="btn col-md-3 col-12 mb-5 cardScale disabled-link"
+                           id="btnCancelar"
+                           style="border: 3px solid black; font-weight: bold; pointer-events: none; opacity: 0.4;">
+                            Cancelar
+                        </a>
+                        <a href="@Url.Action("VerMenuAdmin", "Home")" class="btn col-md-3 col-12 mb-5 cardScale" id="btnVolver" style="border: 3px solid black; font-weight: bold;">Volver al menú</a>
                     </div>
                 </div>
             </form>
@@ -103,6 +109,7 @@
     </div>
 
     <script>
+                
         document.addEventListener('DOMContentLoaded', function() {
             // Manejo de la imagen
             const iconoImagen = document.getElementById('icono-imagen');
@@ -162,12 +169,21 @@
                     iconoImagen.style.display = 'none';
 
                     // Cambiar el texto del botón de Crear a Actualizar
-                    document.getElementById('btnCrear').style.display = 'none';
-                    document.getElementById('btnModificar').style.display = 'block';
-                    document.getElementById('btnModificar').disabled= false;
-                    document.getElementById('btnEliminar').style.display = 'block';
+
+                    document.getElementById('btnCrear').disabled = true;
+                    document.getElementById('btnModificar').disabled = false;
                     document.getElementById('btnEliminar').disabled= false;
-                    document.getElementById('btnCancelar').style.display = 'block';
+                    document.getElementById('btnCancelar').style.opacity = '1';
+                    document.getElementById('btnCancelar').style.pointerEvents = "auto";
+                    
+                    
+
+
+                    //document.getElementById('btnModificar').style.display = 'block';
+                    // document.getElementById('btnModificar').disabled= false;
+                    // document.getElementById('btnEliminar').style.display = 'block';
+                    // document.getElementById('btnEliminar').disabled= false;
+                    // document.getElementById('btnCancelar').style.display = 'block';
 
                     // Resaltar la tarjeta seleccionada
                     platillosCards.forEach(c => c.style.border = 'none');
@@ -180,6 +196,9 @@
                 e.preventDefault();
                 limpiarFormulario();
                 window.location.href = this.href;
+                document.getElementById('btnCancelar').style.pointerEvents = "none";
+                document.getElementById('btnCancelar').style.opacity= "0.4";
+                
             });
 
             function limpiarFormulario() {
@@ -196,6 +215,17 @@
                 document.getElementById('btnEliminar').style.display = 'none';
                 document.querySelectorAll('.platillo-card').forEach(c => c.style.border = 'none');
             }
+
+            // Verificar que haya imagen seleccionada
+            const formulario = document.querySelector('form');
+            formulario.addEventListener('submit', function (e) {
+                const archivoImagen = selectorImagen.files[0];
+
+                if (!archivoImagen) {
+                    e.preventDefault(); // Evita el envío del formulario
+                    alert('Por favor, seleccione una imagen para el platillo.');
+                }
+            });
         });
                 // Manejar el botón Modificar
         document.getElementById('btnModificar').addEventListener('click', function() {
@@ -212,6 +242,7 @@
                 form.submit();
             }
         });
+
     </script>
 </body>
 </html>
