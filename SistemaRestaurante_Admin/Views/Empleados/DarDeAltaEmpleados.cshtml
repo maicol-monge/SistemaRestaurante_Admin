@@ -47,11 +47,11 @@
 				
 				<div class="col-md mb-3 pe-5">
 					<label class="form-label fw-bold" id="telefono_empleado"><strong>Teléfono:</strong></label>
-					<input type="text" class="form-control w-50" id="telefonoEmpleado">
+					<input type="text" class="form-control w-50" id="telefonoEmpleado" placeholder="####-####">
 				</div>
 				<div class="col-md mb-3 pe-5">
 					<label class="form-label fw-bold" id="codigo_empleado"><strong>Código:</strong></label>
-					<input type="text" class="form-control w-50" id="codigoEmpleado">
+					<input type="text" class="form-control w-50" id="codigoEmpleado" placeholder="######">
 				</div>
 			</div>
 
@@ -98,14 +98,15 @@
 
 				<form class="w-50 d-flex justify-content-end" id="formDelete" method="post" action="@Url.Action("EliminarEmpleado", "Empleados")">
 					<input type="hidden" id="empleadoIdd" name="id" />
-					<button type="submit" class="btn" style="background-color: #AB1918; font-weight: bold; color:white" id="btn_delete" onclick="eliminarEmpleado()" disabled>Eliminar empleado</button>
+					<button type="button" class="btn" style="background-color: #AB1918; font-weight: bold; color:white" id="btn_delete" onclick="confirmarEliminacion()" disabled>Eliminar empleado</button>
 				</form>
+
 
 			</div>
 			<br />
 			<div class="d-flex justify-content-between">
-				<button class="btn btn-outline-dark mt-3" onclick="location.href='@Url.Action("VerMenuAdmin", "Home")'">Cancelar</button>
-				<button class="btn btn-outline-primary mt-3" id="btn_clear" onclick="clearSelection()">Limpiar selección</button>
+				<button class="btn btn-outline-primary mt-3" onclick="location.href='@Url.Action("VerMenuAdmin", "Home")'">Volver a Menú</button>
+				<button class="btn btn-outline-dark mt-3" id="btn_clear" onclick="clearSelection()">Cancelar</button>
 			</div>
 		</div>
 
@@ -200,9 +201,19 @@
 		document.getElementById("empleadoCargo").value = document.getElementById("cargoEmpleado").value;
 	}
 
-	function eliminarEmpleado() {
-		document.getElementById("empleadoIdd").value = empleado_id;
+	function confirmarEliminacion() {
+		if (confirm("¿Está seguro de que desea eliminar este empleado?")) {
+			eliminarEmpleado();
+		}
 	}
+
+	function eliminarEmpleado() {
+		var empleadoId = document.getElementById("empleadoId").value;
+		document.getElementById("empleadoIdd").value = empleadoId;
+		document.getElementById("formDelete").submit();
+	}
+
+
 
 	function insertarEmpleado() {
 		document.getElementById("empleadoNombre_ins").value = document.getElementById("nombreEmpleado").value;
@@ -236,11 +247,77 @@
 		btnCreate.disabled = false;
 		btnEdit.disabled = true;
 		btnDelete.disabled = true;
+		codigoInput.disabled = false;
 
 		empleadoItems.forEach(function (item) {
 			item.style.backgroundColor = "";
 		});
 	}
 </script>
+
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+		const nombreInput = document.getElementById('nombreEmpleado');
+		const apellidoInput = document.getElementById('apellidoEmpleado');
+		const telefonoInput = document.getElementById('telefonoEmpleado');
+		const codigoInput = document.getElementById('codigoEmpleado');
+		const formInsert = document.getElementById('formInsert');
+
+		// Formato Teléfono ####-####
+		telefonoInput.addEventListener('input', function (e) {
+			let value = e.target.value.replace(/\D/g, '');
+			if (value.length > 4) {
+				value = value.slice(0, 4) + '-' + value.slice(4, 8);
+			}
+			e.target.value = value.slice(0, 9);
+		});
+
+		// Formato Código ######
+		codigoInput.addEventListener('input', function (e) {
+			let value = e.target.value.replace(/\D/g, '');
+			e.target.value = value.slice(0, 6);
+		});
+
+
+		formInsert.addEventListener('submit', function (e) {
+			let valid = true;
+			let messages = [];
+
+			if (nombreInput.value.trim() === '') {
+				valid = false;
+				messages.push('El campo Nombre es obligatorio.');
+			}
+
+			if (apellidoInput.value.trim() === '') {
+				valid = false;
+				messages.push('El campo Apellido es obligatorio.');
+			}
+
+			if (!/^\d{4}-\d{4}$/.test(telefonoInput.value)) {
+				valid = false;
+				messages.push('El teléfono debe tener el formato ####-####.');
+			}
+
+			if (!/^\d{6}$/.test(codigoInput.value)) {
+				valid = false;
+				messages.push('El código debe tener el formato ######.');
+			}
+
+			if (!valid) {
+				e.preventDefault();
+				alert(messages.join('\n'));
+			} else {
+				// Si todo es válido, seteamos los valores ocultos para enviar
+				document.getElementById('empleadoNombre_ins').value = nombreInput.value;
+				document.getElementById('empleadoApellido_ins').value = apellidoInput.value;
+				document.getElementById('empleadoTelefono_ins').value = telefonoInput.value;
+				document.getElementById('empleadoCodigo_ins').value = codigoInput.value;
+				document.getElementById('empleadoContrasena_ins').value = document.getElementById('contrasenaEmpleado').value;
+				document.getElementById('empleadoCargo_ins').value = document.getElementById('cargoEmpleado').value;
+			}
+		});
+	});
+</script>
+
 
 

@@ -60,6 +60,31 @@ namespace SistemaRestaurante_Admin.Controllers.Empleados
 				return RedirectToAction("VerEmpleados");
 			}
 
+			if (string.IsNullOrEmpty(apellido))
+			{
+				TempData["Error"] = "El apellido del empleado es requerido.";
+				return RedirectToAction("VerEmpleados");
+			}
+
+			if (string.IsNullOrEmpty(telefono))
+			{
+				TempData["Error"] = "El teléfono del empleado es requerido.";
+				return RedirectToAction("VerEmpleados");
+			}
+
+			if (string.IsNullOrEmpty(codigo.ToString()))
+			{
+				TempData["Error"] = "El código del empleado es requerido.";
+				return RedirectToAction("VerEmpleados");
+			}
+			if (string.IsNullOrEmpty(contrasena))
+			{
+				TempData["Error"] = "La contraseña del empleado es requerida.";
+				return RedirectToAction("VerEmpleados");
+			}
+
+
+
 			// Verificar si el empleado ya existe en la base de datos (activo o inactivo)
 			var empleadoExistente = _context.Empleados.FirstOrDefault(e => e.codigo == codigo);
 
