@@ -34,8 +34,9 @@ namespace SistemaRestaurante_Admin.Controllers.Account
         [AllowAnonymous]
         public IActionResult Authenticate(int codigoEmpleado, string contrasena)
         {
+            var cargo = _context.cargo.FirstOrDefault(c => c.nombre == "Administrador");
             var empleado = _context.Empleados
-                .FirstOrDefault(e => e.codigo == codigoEmpleado);
+                .FirstOrDefault(e => e.codigo == codigoEmpleado && e.cargo_Id == cargo.id);
 
             if (empleado != null && empleado.contrasena == contrasena)
             {
