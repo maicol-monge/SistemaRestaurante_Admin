@@ -147,8 +147,8 @@ namespace SistemaRestaurante_Admin.Controllers.Promociones
                         .ToList();
 
                     var combosExistentes = await _context.Combos
-                        .Where(c => comboIds.Contains(c.id) && c.estado == 1)
-                        .Select(c => c.id)
+                        .Where(c => comboIds.Contains(c.Id) && c.Estado == 1)
+                        .Select(c => c.Id)
                         .ToListAsync();
 
                     if (combosExistentes.Count != comboIds.Count)
@@ -270,8 +270,8 @@ namespace SistemaRestaurante_Admin.Controllers.Promociones
                         .ToList();
 
                     var combosExistentes = await _context.Combos
-                        .Where(c => nuevosComboIds.Contains(c.id) && c.estado == 1)
-                        .Select(c => c.id)
+                        .Where(c => nuevosComboIds.Contains(c.Id) && c.Estado == 1)
+                        .Select(c => c.Id)
                         .ToListAsync();
 
                     if (combosExistentes.Count != nuevosComboIds.Count)
@@ -407,13 +407,14 @@ namespace SistemaRestaurante_Admin.Controllers.Promociones
         }
 
 
-        private async Task<List<Combo>> ObtenerCombosDisponiblesAsync()
+        private async Task<List<Models.Combos>> ObtenerCombosDisponiblesAsync()
         {
             return await _context.Combos
-                .Where(c => c.estado == 1)
+                .Where(c => c.Estado == 1)
                 .AsNoTracking()
                 .ToListAsync();
         }
+
 
         private async Task<List<Promocion>> ObtenerPromocionesActivasAsync()
         {

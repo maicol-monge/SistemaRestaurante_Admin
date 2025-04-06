@@ -3,138 +3,527 @@
     Layout = "~/Views/Shared/LayoutPersonalizado.cshtml";
 }
 
-<div class="mt-4 mx-5">
-    <div class="row">
-        <div class="col-md-7 border-end">
-            <h3>Nuevo combo</h3>
-            <form>
-                <div class="d-flex justify-content-between align-content-center">
-                    <div class="col-md mb-3 pe-5">
-                        <label class="form-label fw-bold">Nombre del combo:</label>
-                        <input type="text" class="form-control" placeholder="Mega combo familiar pizzamax" />
-                    </div>
-                    <div class="col-md mb-3 pe-5">
-                        <label class="form-label fw-bold">Precio:</label>
-                        <input type="text" class="form-control" placeholder="$ 12.99" />
-                    </div>
-                </div>
+<head>
+    <meta charset="utf-8" />
 
-                <div class="col-md-12 mb-3">
-                    <label class="form-label fw-bold">Descripción:</label>
-                    <textarea class="form-control" placeholder="Pizza tradicional de la casa, simple y deliciosa, todo lo que deseas en una pizza."></textarea>
-                </div>
+    <link rel="stylesheet" href="~/css/crearCombos.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+    <style>
 
-                <div class="col-md-5 mb-3">
-                    <label class="form-label fw-bold">Categoría:</label>
-                    <select class="form-select">
-                        <option>Pizzas</option>
-                        <option>Hamburguesas</option>
-                        <option>Bebidas</option>
-                    </select>
-                </div>
+    </style>
 
-                <div class="col-md-12 mb-3">
-                    <label class="form-label fw-bold">Seleccionar productos:</label>
-                    <div class="d-flex gap-2 my-3">
-                        <input type="text" class="form-control" placeholder="Buscar 🔍" />
-                        <button type="button" class="btn btn-warning">Agregar</button>
-                    </div>
-                     <div class="card mx-auto">  
-                        <ul class="list-group list-group-flush">
-                             <li class="list-group-item d-flex align-items-center justify-content-between">
-                            <img src="https://i.ibb.co/21BqvGQ8/imgPizza.jpg" alt="Pizza" width="40" height="40" class="me-2">
-                            <span class="flex-grow-1 text-truncate">Pizza tradicional de pepperoni</span>
-                            <span>$12.99</span>
-                        </li>
-                         <li class="list-group-item d-flex align-items-center justify-content-between">
-                            <img src="https://i.ibb.co/21BqvGQ8/imgPizza.jpg" alt="Pizza" width="40" height="40" class="me-2">
-                            <span class="flex-grow-1 text-truncate">Pizza tradicional de pepperoni</span>
-                            <span>$12.99</span>
-                        </li>
-                         <li class="list-group-item d-flex align-items-center justify-content-between">
-                            <img src="https://i.ibb.co/21BqvGQ8/imgPizza.jpg" alt="Pizza" width="40" height="40" class="me-2">
-                            <span class="flex-grow-1 text-truncate">Pizza tradicional de pepperoni</span>
-                            <span>$12.99</span>
-                        </li>
-                         <li class="list-group-item d-flex align-items-center justify-content-between">
-                            <img src="https://i.ibb.co/21BqvGQ8/imgPizza.jpg" alt="Pizza" width="40" height="40" class="me-2">
-                            <span class="flex-grow-1 text-truncate">Pizza tradicional de pepperoni</span>
-                            <span>$12.99</span>
-                        </li>
-                        </ul>
-                    </div>
-                </div>
+</head>
+    <div class="mt-4 mx-5">
+        <div class="row">
+            <div class="col-md-7 border-end">
+                <h3 id="tituloFormulario">Nuevo combo</h3>
+                <form id="comboForm" method="post" action="/Combos/CrearCombo">
+                    <!-- Campo oculto para el ID del combo -->
+                    <input type="hidden" id="comboId" name="id" />
 
-                <div class="col-md-12 mb-3">
-                    <div class="d-flex justify-content-between align-items-center my-3">
-                        <label class="form-label fw-bold">Productos en el combo:</label>
-                        <button style="background-color: #0D3752; color: white; width: 10vh" class="btn btn-danger btn-sm">Quitar</button>
+                    <div class="d-flex justify-content-between align-content-center">
+                        <div class="col-md mb-3 pe-5">
+                            <label class="form-label fw-bold">Nombre del combo:</label>
+                            <input type="text" id="nombreCombo" name="nombre" class="form-control" placeholder="Nombre del combo" required />
+                        </div>
+                        <div class="col-md mb-3 pe-5">
+                            <label class="form-label fw-bold">Precio:</label>
+                            <input type="text" id="precioCombo" name="precio" class="form-control" placeholder="$12.99" required />
+                        </div>
                     </div>
-                    
-                    
-                    <div class="card mx-auto">  
-                        <ul class="list-group list-group-flush">
-                             <li class="list-group-item d-flex align-items-center justify-content-between">
-                            <img src="https://i.ibb.co/21BqvGQ8/imgPizza.jpg" alt="Pizza" width="40" height="40" class="me-2">
-                            <span class="flex-grow-1 text-truncate">Pizza tradicional de pepperoni</span>
-                            <span>$12.99</span>
-                        </li>
-                         <li class="list-group-item d-flex align-items-center justify-content-between">
-                            <img src="https://i.ibb.co/21BqvGQ8/imgPizza.jpg" alt="Pizza" width="40" height="40" class="me-2">
-                            <span class="flex-grow-1 text-truncate">Pizza tradicional de pepperoni</span>
-                            <span>$12.99</span>
-                        </li>
-                         <li class="list-group-item d-flex align-items-center justify-content-between">
-                            <img src="https://i.ibb.co/21BqvGQ8/imgPizza.jpg" alt="Pizza" width="40" height="40" class="me-2">
-                            <span class="flex-grow-1 text-truncate">Pizza tradicional de pepperoni</span>
-                            <span>$12.99</span>
-                        </li>
-                         <li class="list-group-item d-flex align-items-center justify-content-between">
-                            <img src="https://i.ibb.co/21BqvGQ8/imgPizza.jpg" alt="Pizza" width="40" height="40" class="me-2">
-                            <span class="flex-grow-1 text-truncate">Pizza tradicional de pepperoni</span>
-                            <span>$12.99</span>
-                        </li>
-                         <li class="list-group-item d-flex align-items-center justify-content-between">
-                            <img src="https://i.ibb.co/21BqvGQ8/imgPizza.jpg" alt="Pizza" width="40" height="40" class="me-2">
-                            <span class="flex-grow-1 text-truncate">Pizza tradicional de pepperoni</span>
-                            <span>$12.99</span>
-                        </li>
-                         <li class="list-group-item d-flex align-items-center justify-content-between">
-                            <img src="https://i.ibb.co/21BqvGQ8/imgPizza.jpg" alt="Pizza" width="40" height="40" class="me-2">
-                            <span class="flex-grow-1 text-truncate">Pizza tradicional de pepperoni</span>
-                            <span>$12.99</span>
-                        </li>
-                         <li class="list-group-item d-flex align-items-center justify-content-between">
-                            <img src="https://i.ibb.co/21BqvGQ8/imgPizza.jpg" alt="Pizza" width="40" height="40" class="me-2">
-                            <span class="flex-grow-1 text-truncate">Pizza tradicional de pepperoni</span>
-                            <span>$12.99</span>
-                        </li>
-                        </ul>
-                    </div>
-                </div>
 
+                    <div class="col-md-12 mb-3">
+                        <label class="form-label fw-bold">Descripción:</label>
+                        <textarea id="descripcionCombo" name="descripcion" class="form-control" placeholder="Descripción del combo" required></textarea>
+                    </div>
+
+                    <div class="col-md-5 mb-3">
+                        <label class="form-label fw-bold">Categoría:</label>
+                        <select id="categoriaCombo" name="categoriaId" class="form-select" required>
+                            @foreach (var categoria in ViewBag.Categorias)
+                            {
+                                <option value="@categoria.id">@categoria.nombre</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-md-12 mb-3">
+                        <label class="form-label fw-bold">Buscar plato:</label>
+                        <div class="input-group">
+                            <input type="text" id="searchPlato" class="form-control" placeholder="Buscar platos..." />
+                            <button class="btn btn-warning" type="button" onclick="buscarPlato()">Buscar</button>
+                        </div>
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label class="form-label fw-bold">Seleccionar productos:</label>
+                        <div class="card mx-auto">
+                            <ul id="listaPlatos" class="list-group list-group-flush">
+                                @foreach (var plato in ViewBag.Platos)
+                                {
+                                    <li class="product-item list-group-item d-flex justify-content-between align-items-center plato-item"
+                                        data-nombre="@plato.Nombre" onclick="agregarPlato('@plato.Nombre', @plato.Precio, @plato.Id, '@plato.Imagen')">
+                                        <img src="@plato.Imagen" alt="@plato.Nombre" class="product-img">
+                                        <span class="flex-grow-1 text-truncate plato-nombre">@plato.Nombre</span>
+                                        <span class="product-price">$@plato.Precio</span>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-12 mb-3">
+                        <label class="form-label fw-bold">Productos seleccionados:</label>
+                        <div class="card mx-auto">
+                            <ul id="platosSeleccionados" class="list-group list-group-flush">
+                                <!-- Aquí se cargarán los productos que forman parte del combo -->
+                            </ul>
+                        </div>
+                    </div>
                 <div class="d-flex gap-2">
-                    <button type="button" class="btn btn-warning">Crear combo</button>
-                    <button type="button" class="btn btn-primary">Modificar combo</button>
-                    <button type="button" class="btn btn-danger">Eliminar combo</button>
+                    <button type="button" class="btn btn-warning" id="crearComboBtn" onclick="crearCombo()">Crear combo</button>
+                    <button type="button" class="botonModificar" onclick="actualizarCombo()">Modificar combo</button>
+                    <button type="button" class="btn btn-danger" onclick="eliminarCombo()">Eliminar combo</button>
+                    <button type="reset" class="btn btn-secondary" onclick="limpiarFormulario()">Limpiar</button>
                 </div>
-                <button type="button" class="btn btn-outline-dark mt-5" onclick="location.href='@Url.Action("VerMenuAdmin", "Home")'">Cancelar</button>
-            </form>
-        </div>
 
-        <div class="col-md-5">
-            <h3>Combos existentes</h3>
-            <div class="list-group">
-                <div class="list-group-item d-flex justify-content-between align-items-center active">
-                    Mega combo familiar pizzamax <span>$32.99</span>
+                <!-- Botón Cancelar -->
+                <div class="d-flex justify-content-start mt-3">
+                    <button type="button" class="btn btn-outline-dark" onclick="location.href='@Url.Action("VerMenuAdmin", "Home")'">Cancelar</button>
                 </div>
-                <div class="list-group-item d-flex justify-content-between align-items-center">
-                    Mega combo familiar pizzamax <span>$32.99</span>
-                </div>
-                <div class="list-group-item d-flex justify-content-between align-items-center">
-                    Mega combo familiar pizzamax <span>$32.99</span>
+
+                </form>
+            </div>
+
+            <script>
+                function manejarSeleccionCombo() {
+                    const comboSeleccionado = document.getElementById('comboId').value; // Aquí se asume que el ID del combo seleccionado se guarda en un campo oculto
+                    const crearComboBtn = document.getElementById('crearComboBtn'); // Botón de "Crear combo"
+
+                    if (comboSeleccionado) {
+                        crearComboBtn.disabled = true;
+                    } else {
+                        crearComboBtn.disabled = false;
+                    }
+                }
+
+                // Llamar a esta función cada vez que se seleccione o deseleccione un combo
+                document.getElementById('comboId').addEventListener('change', manejarSeleccionCombo);
+
+
+                function validarFormulario() {
+                    const nombre = document.getElementById('nombreCombo').value.trim();
+                    const precio = document.getElementById('precioCombo').value.trim();
+                    const descripcion = document.getElementById('descripcionCombo').value.trim();
+                    const categoria = document.getElementById('categoriaCombo').value;
+                    const platosSeleccionados = document.querySelectorAll('input[name="platosSeleccionados"]');
+
+                    if (!nombre || !precio || !descripcion || categoria === "" || platosSeleccionados.length === 0) {
+                        alert("Todos los campos son obligatorios y debe seleccionar al menos un producto.");
+                        return false;
+                    }
+
+                    // Validación numérica para el precio
+                    if (isNaN(precio) || parseFloat(precio) <= 0) {
+                        alert("El precio debe ser un número positivo.");
+                        return false;
+                    }
+
+                    return true;
+                }
+
+                function cargarProductosCombo(productos) {
+                    const platosSeleccionados = document.getElementById('platosSeleccionados');
+                    platosSeleccionados.innerHTML = ""; // Limpiar el contenido anterior
+
+                    if (productos.length === 0) {
+                        platosSeleccionados.innerHTML = "<li class='list-group-item'>No hay productos en este combo.</li>";
+                        return;
+                    }
+
+                    productos.forEach(producto => {
+                        const li = document.createElement('li');
+                        li.className = "product-item list-group-item d-flex justify-content-between align-items-center";
+                        li.id = `plato-${producto.id}`;
+
+                        li.innerHTML = `
+                                <img src="${producto.imagen}" alt="${producto.nombre}" class="product-img" style="width: 40px; height: 40px;">
+                                <span class="flex-grow-1 text-truncate">${producto.nombre}</span>
+                                <span class="product-price">$${parseFloat(producto.precio).toFixed(2)}</span>
+                                <button class="btn btn-sm btn-danger" onclick="eliminarPlato(${producto.id})">X</button>
+                                <input type="hidden" name="platosSeleccionados" value="${producto.id}">
+                            `;
+                        platosSeleccionados.appendChild(li);
+                    });
+                }
+
+
+                function cargarCombo(id) {
+                    fetch(`/Combos/ObtenerCombo?id=${id}`)
+                        .then(response => response.json())
+                        .then(combo => {
+                            if (!combo) {
+                                alert("Combo no encontrado");
+                                return;
+                            }
+
+                            // Cargar datos del combo en el formulario
+                            document.getElementById('comboId').value = combo.id;
+                            document.getElementById('nombreCombo').value = combo.nombre;
+                            document.getElementById('precioCombo').value = combo.precio;
+                            document.getElementById('descripcionCombo').value = combo.descripcion;
+                            document.getElementById('categoriaCombo').value = combo.categoriaId;
+
+                            // Verificar si hay platos asociados
+                            if (combo.Platos && combo.Platos.length > 0) {
+                                cargarProductosCombo(combo.Platos);
+                            } else {
+                                cargarProductosCombo([]);
+                            }
+                        })
+                        .catch(error => {
+                            alert("Error al cargar el combo.");
+                            console.error(error);
+                        });
+                }
+
+                function eliminarPlato(id) {
+                    const plato = document.getElementById(`plato-${id}`);
+                    if (plato) {
+                        plato.remove();
+                    }
+                }
+
+                function agregarPlato(nombre, precio, id, imagenUrl) {
+                    const platosSeleccionados = document.getElementById('platosSeleccionados');
+
+                    // Verificar si el plato ya está en la lista
+                    if (document.getElementById(`plato-${id}`)) {
+                        alert("Este plato ya está seleccionado.");
+                        return;
+                    }
+
+                    // Crear el elemento de lista para el plato seleccionado
+                    const li = document.createElement('li');
+                    li.className = "product-item list-group-item d-flex justify-content-between align-items-center";
+                    li.id = `plato-${id}`;
+
+                    li.innerHTML = `
+                            <img src="${imagenUrl}" alt="${nombre}" class="product-img" style="width: 40px; height: 40px;">
+                            <span class="flex-grow-1 text-truncate">${nombre}</span>
+                            <span class="product-price">$${precio.toFixed(2)}</span>
+                            <button class="btn btn-sm btn-danger" onclick="eliminarPlato(${id})">X</button>
+                            <input type="hidden" name="platosSeleccionados" value="${id}">
+                        `;
+
+                    // Agregar el plato seleccionado a la lista
+                    platosSeleccionados.appendChild(li);
+                }
+
+                function eliminarPlato(id) {
+                    const plato = document.getElementById(`plato-${id}`);
+                    if (plato) {
+                        plato.remove();
+                    }
+                }
+
+                function buscarPlato() {
+                    const input = document.getElementById('searchPlato').value.toLowerCase().trim(); // Obtenemos la búsqueda, convertida a minúsculas y sin espacios
+                    const listaPlatos = document.getElementById('listaPlatos');
+                    const items = listaPlatos.getElementsByClassName('plato-item'); // Accedemos a todos los productos
+                    let encontrado = false;
+
+                    // Iteramos sobre todos los platos de la lista
+                    for (let i = 0; i < items.length; i++) {
+                        // Obtenemos el nombre del plato del atributo 'data-nombre'
+                        const nombrePlato = items[i].getAttribute('data-nombre').toLowerCase().trim(); // Convertimos a minúsculas y eliminamos espacios
+
+                        // Verificamos si el nombre del plato contiene la búsqueda ingresada
+                        if (nombrePlato.includes(input)) {
+                            items[i].style.display = "";  // Mostrar el plato que coincide con la búsqueda
+                            encontrado = true;
+                        } else {
+                            items[i].style.display = "none";  // Ocultar los platos que no coinciden
+                        }
+                    }
+
+                    // Si no se encuentra ningún plato que coincida, mostramos un mensaje
+                    if (!encontrado) {
+                        alert("No se encontraron platos que coincidan con la búsqueda.");
+                    }
+                }
+
+                function cargarCombo(id) {
+                    fetch(`/Combos/ObtenerCombo?id=${id}`)
+                        .then(response => response.json())
+                        .then(combo => {
+                            document.getElementById('comboId').value = combo.id;
+                            document.getElementById('nombreCombo').value = combo.nombre;
+                            document.getElementById('precioCombo').value = combo.precio;
+                            document.getElementById('descripcionCombo').value = combo.descripcion;
+                            document.getElementById('categoriaCombo').value = combo.categoriaId;
+
+                            // Marcar los platos del combo
+                            const checkboxes = document.querySelectorAll('.plato-checkbox');
+                            checkboxes.forEach(checkbox => {
+                                checkbox.checked = combo.Platos.includes(parseInt(checkbox.value));
+                            });
+
+                            // Cambiar el título para indicar que es una edición
+                            document.getElementById('tituloFormulario').innerText = "Editar combo";
+                        });
+                }
+
+                function crearCombo() {
+                    if (!validarFormulario()) return;
+
+                    const nombre = document.getElementById('nombreCombo').value.trim();
+                    const precio = parseFloat(document.getElementById('precioCombo').value.trim());
+                    const descripcion = document.getElementById('descripcionCombo').value.trim();
+                    const categoria = parseInt(document.getElementById('categoriaCombo').value);
+                    const platosSeleccionados = Array.from(document.querySelectorAll('input[name="platosSeleccionados"]')).map(input => parseInt(input.value));
+
+                    fetch('/Combos/CrearCombo', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            nombre: nombre,
+                            precio: precio,
+                            descripcion: descripcion,
+                            categoriaId: categoria,
+                            platosSeleccionados: platosSeleccionados
+                        })
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            alert(data.message);
+                            if (data.success) {
+                                location.reload();
+                            }
+                        })
+                        .catch(error => {
+                            alert("Ocurrió un error al crear el combo.");
+                            console.error("Error en el frontend:", error);
+                        });
+                }
+
+                function actualizarCombo() {
+                    const id = parseInt(document.getElementById('comboId').value);
+                    const nombre = document.getElementById('nombreCombo').value.trim();
+                    const precio = parseFloat(document.getElementById('precioCombo').value.trim());
+                    const descripcion = document.getElementById('descripcionCombo').value.trim();
+                    const categoria = parseInt(document.getElementById('categoriaCombo').value);
+                    const platosSeleccionados = Array.from(document.querySelectorAll('input[name="platosSeleccionados"]')).map(input => parseInt(input.value));
+
+                    // Validación antes de enviar
+                    if (!id || !nombre || isNaN(precio) || !descripcion || isNaN(categoria) || platosSeleccionados.length === 0) {
+                        alert("Todos los campos son obligatorios y debe seleccionar al menos un plato.");
+                        return;
+                    }
+
+                    // Mostrar el JSON en consola para depuración
+                    console.log("Datos enviados:", {
+                        id: id,
+                        nombre: nombre,
+                        precio: precio,
+                        descripcion: descripcion,
+                        categoriaId: categoria,
+                        platosSeleccionados: platosSeleccionados
+                    });
+
+                    fetch('/Combos/EditarCombo', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            id: id,
+                            nombre: nombre,
+                            precio: precio,
+                            descripcion: descripcion,
+                            categoriaId: categoria,
+                            platosSeleccionados: platosSeleccionados
+                        })
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                alert(data.message);
+                                location.reload();
+                            } else {
+                                alert(data.message);
+                            }
+                        })
+                        .catch(error => {
+                            alert("Error al actualizar el combo.");
+                            console.error("Error en el frontend:", error);
+                        });
+                }
+
+                function eliminarCombo() {
+                    const id = document.getElementById('comboId').value;
+                    if (id) {
+                        if (confirm("¿Está seguro de eliminar el combo?")) {
+                            fetch(`/Combos/EliminarCombo`, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify(id)  // Enviar el ID como número directamente
+                            })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.message) {
+                                        alert(data.message);
+                                        location.reload();
+                                    } else {
+                                        alert("Error al eliminar el combo");
+                                    }
+                                })
+                                .catch(error => console.error("Error al eliminar:", error));
+                        }
+                    } else {
+                        alert("Seleccione un combo existente para eliminar.");
+                    }
+                }
+                function limpiarFormulario() {
+                    // Resetear el formulario
+                    document.getElementById('comboForm').reset();
+                    document.getElementById('comboId').value = ""; // Vaciar el campo oculto que guarda el ID del combo
+                    document.getElementById('tituloFormulario').innerText = "Nuevo combo";
+
+                    // Limpiar la lista de productos seleccionados
+                    const platosSeleccionados = document.getElementById('platosSeleccionados');
+                    platosSeleccionados.innerHTML = ""; // Elimina todos los elementos dentro del contenedor
+
+                    // Desmarcar todos los platos
+                    const checkboxes = document.querySelectorAll('.plato-checkbox');
+                    checkboxes.forEach(checkbox => {
+                        checkbox.checked = false;
+                    });
+
+                    // Llamar a manejarSeleccionCombo para habilitar el botón "Crear combo"
+                    manejarSeleccionCombo();  // Esto habilitará el botón de "Crear combo"
+                }
+
+
+            </script>
+
+            <div class="col-md-5">
+                <h3>Combos existentes</h3>
+                <div id="combosContainer" class="list-group">
+                    <!-- Campo oculto para almacenar el ID del combo seleccionado -->
+                    <input type="hidden" id="comboId" name="comboId" value="" /> <!-- Este campo almacenará el ID del combo seleccionado -->
+                    @if (ViewBag.Combos != null && ViewBag.Combos.Count > 0)
+                    {
+                        foreach (var combo in ViewBag.Combos)
+                        {
+                            <div class="combo-item list-group-item d-flex justify-content-between align-items-center"
+                                 onclick="seleccionarCombo(@combo.Id, this)">
+                                <!-- 'this' pasa el combo seleccionado -->
+                                <div class="combo-info">
+                                    <h5 class="mb-1">@combo.Nombre</h5>
+                                    <p class="mb-0 text-muted">@combo.Descripcion</p>
+                                </div>
+                                <span class="combo-price fw-bold">$@combo.Precio</span>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="list-group-item">
+                            No hay combos registrados.
+                        </div>
+                    }
                 </div>
             </div>
+
+
+
+            <script>
+                function seleccionarCombo(idCombo, comboElement) {
+                    // Asigna el ID del combo seleccionado al campo oculto
+                    document.getElementById('comboId').value = idCombo;
+
+                    // Resaltar el combo seleccionado visualmente
+                    const comboItems = document.querySelectorAll('.combo-item');
+                    comboItems.forEach(item => item.classList.remove('selected-combo')); // Eliminar el resaltado de otros combos
+                    comboElement.classList.add('selected-combo'); // Resaltar el combo seleccionado
+
+                    // Deshabilitar el botón "Crear combo" cuando se ha seleccionado un combo
+                    manejarSeleccionCombo(idCombo);
+
+                    // Cargar los detalles del combo
+                    cargarCombo(idCombo);
+                }
+
+                function manejarSeleccionCombo() {
+                    const comboSeleccionado = document.getElementById('comboId').value; // Obtener el valor del campo oculto
+                    const crearComboBtn = document.getElementById('crearComboBtn'); // Botón de "Crear combo"
+
+                    if (comboSeleccionado) {
+                        // Deshabilitar el botón "Crear combo" cuando se ha seleccionado un combo
+                        crearComboBtn.disabled = true;
+                    } else {
+                        // Habilitar el botón "Crear combo" cuando no se ha seleccionado un combo
+                        crearComboBtn.disabled = false;
+                    }
+                }
+
+
+                function cargarCombo(id) {
+                    fetch(`/Combos/ObtenerCombo?id=${id}`)
+                        .then(response => response.json())
+                        .then(combo => {
+                            if (!combo) {
+                                alert("Combo no encontrado");
+                                return;
+                            }
+
+                            // Cargar datos del combo en el formulario
+                            document.getElementById('comboId').value = combo.id;
+                            document.getElementById('nombreCombo').value = combo.nombre;
+                            document.getElementById('precioCombo').value = combo.precio;
+                            document.getElementById('descripcionCombo').value = combo.descripcion;
+                            document.getElementById('categoriaCombo').value = combo.categoriaId;
+
+                            // Cargar los productos seleccionados en el div (si existen productos)
+                            if (combo.platos && combo.platos.length > 0) {
+                                cargarProductosCombo(combo.platos);
+                            } else {
+                                // Si no hay productos, limpiar el div
+                                document.getElementById('platosSeleccionados').innerHTML = "";
+                            }
+                        })
+                        .catch(error => {
+                            alert("Error al cargar el combo.");
+                            console.error(error);
+                        });
+                }
+
+                // Cargar los productos seleccionados en el div
+                function cargarProductosCombo(platos) {
+                    const platosSeleccionados = document.getElementById('platosSeleccionados');
+                    platosSeleccionados.innerHTML = ""; // Limpiar el contenido antes de agregar los nuevos productos
+
+                    platos.forEach(plato => {
+                        const li = document.createElement('li');
+                        li.className = "product-item list-group-item d-flex justify-content-between align-items-center";
+                        li.innerHTML = `
+                            <img src="${plato.imagen}" alt="${plato.nombre}" class="product-img">
+                            <span class="flex-grow-1 text-truncate">${plato.nombre}</span>
+                            <span class="product-price">$${parseFloat(plato.precio).toFixed(2)}</span>
+                        `;
+                        platosSeleccionados.appendChild(li);
+                    });
+                }
+
+            </script>
+
+
         </div>
     </div>
-</div>
+
+
