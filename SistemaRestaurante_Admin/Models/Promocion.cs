@@ -15,12 +15,10 @@ namespace SistemaRestaurante_Admin.Models
         public string descripcion { get; set; }
 
         [Range(1, 100, ErrorMessage = "El descuento debe ser entre 1% y 100%")]
-        public decimal descuento { get; set; }
+        public decimal? descuento { get; set; }
 
         [Required(ErrorMessage = "Debe seleccionar una categoría")]
         public int categoria_id { get; set; }
-
-
 
         public int estado { get; set; }
 
@@ -49,17 +47,17 @@ namespace SistemaRestaurante_Admin.Models
         public DateTime fecha_fin { get; set; }
         public int estado { get; set; }
 
-        public virtual Combo Combo { get; set; }
+        public virtual Combos Combo { get; set; }
         public virtual Promocion Promocion { get; set; }
     }
 
-    public class Combo
-    {
-        public int id { get; set; }
-        public string nombre { get; set; }
-        public string descripcion { get; set; }
-        public decimal precio { get; set; }
-        public int categoria_id { get; set; }
-        public int estado { get; set; }
-    }
+    //public class Combo
+    //{
+    //    public int id { get; set; }
+    //    public string nombre { get; set; }
+    //    public string descripcion { get; set; }
+    //    public decimal precio { get; set; }
+    //    public int categoria_id { get; set; }
+    //    public int estado { get; set; }
+    //}
 }
