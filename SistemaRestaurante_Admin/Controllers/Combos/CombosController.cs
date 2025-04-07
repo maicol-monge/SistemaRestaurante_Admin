@@ -21,19 +21,22 @@ namespace SistemaRestaurante_Admin.Controllers.Combos
         {
             try
             {
+                // Obtener las categorías activas
                 var categorias = await _context.Categoria
                     .Where(c => c.estado == 1)
                     .ToListAsync();
 
+                // Obtener los platos activos
                 var platos = await _context.Platos
                     .Where(p => p.Estado == 1)
                     .ToListAsync();
 
+                // Obtener todos los combos, sin filtrar por estado, para que se muestren tanto los activos como los inactivos
                 var combos = await _context.Combos
-                    .Include(c => c.Categoria)
-                    .Where(c => c.Estado == 1)
-                    .ToListAsync();
+                    .Include(c => c.Categoria)  // Incluir la categoría del combo
+                    .ToListAsync();  // No filtrar por estado, para obtener todos los combos
 
+                // Pasar los datos a la vista
                 ViewBag.Categorias = categorias;
                 ViewBag.Platos = platos;
                 ViewBag.Combos = combos;
@@ -45,6 +48,8 @@ namespace SistemaRestaurante_Admin.Controllers.Combos
                 return BadRequest($"Error al obtener los combos: {ex.Message}");
             }
         }
+
+
 
 
 
@@ -192,7 +197,6 @@ namespace SistemaRestaurante_Admin.Controllers.Combos
             }
         }
 
-
         [HttpPost]
         public async Task<IActionResult> EliminarCombo([FromBody] int id)
         {
@@ -202,6 +206,9 @@ namespace SistemaRestaurante_Admin.Controllers.Combos
                 if (combo == null)
                     return NotFound(new { message = "Combo no encontrado" });
 
+                // Cambiar el estado del combo a 0 (inactivo)
+                combo.Estado = 0;  // Esto asume que la columna 'estado' está en la tabla 'combos'
+
                 // Eliminar los platos asociados al combo en la tabla Platos_Combos
                 var platosCombo = _context.Platos_Combo.Where(pc => pc.ComboId == id);
                 if (platosCombo.Any())
@@ -209,16 +216,17 @@ namespace SistemaRestaurante_Admin.Controllers.Combos
                     _context.Platos_Combo.RemoveRange(platosCombo);
                 }
 
-                _context.Combos.Remove(combo);
+                // Guardar los cambios
                 await _context.SaveChangesAsync();
 
-                return Ok(new { message = "Combo eliminado correctamente" });
+                return Ok(new { message = "Combo desactivado correctamente" });
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = $"Error al eliminar el combo: {ex.Message}" });
+                return BadRequest(new { message = $"Error al desactivar el combo: {ex.Message}" });
             }
         }
+
 
 
     }
