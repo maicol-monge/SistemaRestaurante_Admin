@@ -25,6 +25,12 @@ namespace Sistema_de_Restaurante___Modulo_de_Administracion.Models
         public DbSet<Combo> Combos { get; set; }
         public DbSet<ComboPromocion> ComboPromocion { get; set; }
 
+
+
+        public DbSet<Menu> Menu { get; set; }
+        public DbSet<MenuPlato> Menu_Plato { get; set; }
+        public DbSet<MenuCombo> Menu_Combo { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             
