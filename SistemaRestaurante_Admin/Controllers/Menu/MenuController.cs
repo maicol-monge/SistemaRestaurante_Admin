@@ -69,15 +69,15 @@ namespace SistemaRestaurante_Admin.Controllers.Menu
         public IActionResult ListaCombos(int IdMenu)
         {
             var combosDelMenu = (from menu_combo in _context.Menu_Combo
-                                 join combo in _context.Combos on menu_combo.combo_id equals combo.id
+                                 join combo in _context.Combos on menu_combo.combo_id equals combo.Id
                                  join menu in _context.Menu on menu_combo.menu_id equals menu.id
-                                 where menu_combo.menu_id == IdMenu && menu_combo.estado ==1 && combo.estado ==1 && menu.estado ==1
+                                 where menu_combo.menu_id == IdMenu && menu_combo.estado ==1 && combo.Estado ==1 && menu.estado ==1
                                  select new
                                  {
-                                     ComboId = combo.id,
-                                     NombreCombo = combo.nombre,
-                                     DescripcionCombo = combo.descripcion,
-                                     PrecioCombo= combo.precio
+                                     ComboId = combo.Id,
+                                     NombreCombo = combo.Nombre,
+                                     DescripcionCombo = combo.Descripcion,
+                                     PrecioCombo= combo.Precio
                                  }).ToList();
 
 

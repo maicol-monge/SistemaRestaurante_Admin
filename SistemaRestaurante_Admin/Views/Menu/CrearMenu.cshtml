@@ -125,13 +125,13 @@
                             @foreach (var combo in Model.Combos)
                             {
                                 <li class="list-group-item d-flex align-items-center">
-                                    <input type="checkbox" class="form-check-input me-2 combo-checkbox" value="@combo.id" />
+                                    <input type="checkbox" class="form-check-input me-2 combo-checkbox" value="@combo.Id" />
                                     <div class="d-flex flex-column filtro-texto">
-                                        <strong>@combo.nombre</strong>
-                                        @combo.descripcion
+                                        <strong>@combo.Nombre</strong>
+                                        @combo.Descripcion
                                     </div>
                                     <div class="ms-auto">
-                                        <span>@combo.precio.ToString("C")</span>
+                                        <span>@combo.Precio.ToString("C")</span>
                                     </div>
                                 </li>
                             }
