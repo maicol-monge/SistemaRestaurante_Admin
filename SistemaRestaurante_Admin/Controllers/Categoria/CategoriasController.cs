@@ -37,7 +37,7 @@ namespace SistemaRestaurante_Admin.Controllers.Categoria
             }
 
             // Verificar si la categoría ya existe en la base de datos (activa o inactiva)
-            var categoriaExistente = _context.Categoria.FirstOrDefault(c => c.nombre == nombre);
+            var categoriaExistente = _context.Categoria.FirstOrDefault(c => c.nombre.ToLower() == nombre.ToLower());
 
             if (categoriaExistente != null)
             {
@@ -70,7 +70,13 @@ namespace SistemaRestaurante_Admin.Controllers.Categoria
         [HttpPost]
         public IActionResult EditarCategoria(int id, string nombre)
         {
-            var categoria = _context.Categoria.FirstOrDefault(c => c.id == id);
+			if (string.IsNullOrEmpty(nombre))
+			{
+				TempData["Error"] = "El nombre de la categoría es requerido.";
+				return RedirectToAction("VerCategorias");
+			}
+
+			var categoria = _context.Categoria.FirstOrDefault(c => c.id == id);
 
             if (categoria == null)
             {

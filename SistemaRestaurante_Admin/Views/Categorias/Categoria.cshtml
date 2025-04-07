@@ -49,14 +49,14 @@
 
 				<form class="w-50 d-flex justify-content-end" id="formDelete" method="post" action="@Url.Action("EliminarCategoria", "Categorias")">
 					<input type="hidden" id="categoriaIdd" name="id" />
-					<button type="submit" class="btn " style="background-color: #AB1918; font-weight: bold; color:white" id="btn_delete" onclick="eliminarCategoria()" disabled>Eliminar categoría</button>
+					<button type="button" class="btn" style="background-color: #AB1918; font-weight: bold; color:white" id="btn_delete" onclick="confirmarEliminacion()" disabled>Eliminar categoría</button>
 				</form>
 
 			</div>
 			<br />
 			<div class="d-flex justify-content-between">
-				<button class="btn btn-outline-dark mt-3" onclick="location.href='@Url.Action("VerMenuAdmin", "Home")'">Cancelar</button>
-				<button class="btn btn-outline-primary mt-3" id="btn_clear" onclick="clearSelection()">Limpiar selección</button>
+				<button class="btn btn-outline-primary mt-3" onclick="location.href='@Url.Action("VerMenuAdmin", "Home")'">Volver a Menú</button>
+				<button class="btn btn-outline-dark mt-3" id="btn_clear" onclick="clearSelection()">Cancelar</button>
 			</div>
 
 		</div>
@@ -126,8 +126,17 @@
 		document.getElementById("categoriaNombre").value = document.getElementById("nombreCategoria").value;
 	}
 
+
+	function confirmarEliminacion() {
+		if (confirm("¿Está seguro de que desea eliminar esta categoria?")) {
+			eliminarCategoria();
+		}
+	}
+
 	function eliminarCategoria() {
-		document.getElementById("categoriaIdd").value = categoria_id;
+		var empleadoId = document.getElementById("categoriaId").value;
+		document.getElementById("categoriaIdd").value = empleadoId;
+		document.getElementById("formDelete").submit();
 	}
 
 	function insertarCategoria() {
