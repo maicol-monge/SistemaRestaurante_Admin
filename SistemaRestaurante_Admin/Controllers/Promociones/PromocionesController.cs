@@ -29,13 +29,13 @@ namespace SistemaRestaurante_Admin.Controllers.Promociones
         {
             var viewModel = new PromocionViewModel
             {
-                Promocion = new Promocion(),
+                Promocion = new Promocion(), 
                 Categorias = await _context.Categoria.Where(c => c.estado == 1).ToListAsync(),
                 CombosDisponibles = await ObtenerCombosDisponiblesAsync(),
                 PromocionesActivas = await ObtenerPromocionesActivasAsync()
             };
 
-            if (id.HasValue && id > 0)
+            if (id.HasValue && id > 0 && !TempData.ContainsKey("SuccessMessage"))
             {
                 var promocionEditar = await _context.Promociones
                     .Include(p => p.ComboPromociones)
@@ -195,6 +195,11 @@ namespace SistemaRestaurante_Admin.Controllers.Promociones
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ModificarPromocion(PromocionViewModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return await RecargarViewModelYRetornarVista(model);
+            }
+
             try
             {
                 Console.WriteLine($"Fecha Inicio Recibida (Modif): {model.Promocion.FechaInicioVista}");
@@ -205,13 +210,27 @@ namespace SistemaRestaurante_Admin.Controllers.Promociones
                 var hoy = DateTime.Today;
 
                 bool tieneErrores = false;
+
                 if (fechaInicio == fechaFin)
                 {
                     ModelState.AddModelError("Promocion.FechaFinVista", "La fecha de fin no puede ser igual a la fecha de inicio");
                     tieneErrores = true;
                 }
 
-               
+                if (model.Promocion.id > 0)
+                {
+                    var originalFechas = await _context.ComboPromocion
+                        .Where(cp => cp.promocion_id == model.Promocion.id)
+                        .Select(cp => cp.fecha_inicio)
+                        .ToListAsync();
+
+                    if (originalFechas.Any() && fechaInicio < originalFechas.Min())
+                    {
+                        ModelState.AddModelError("Promocion.FechaInicioVista", "La nueva fecha de inicio no puede ser menor a la fecha original");
+                        tieneErrores = true;
+                    }
+                }
+
                 if (fechaFin < hoy)
                 {
                     ModelState.AddModelError("Promocion.FechaFinVista", "La fecha de fin no puede ser anterior a hoy");
@@ -328,45 +347,6 @@ namespace SistemaRestaurante_Admin.Controllers.Promociones
             }
         }
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> EliminarPromocion(int id)
-        //{
-        //    using var transaction = await _context.Database.BeginTransactionAsync();
-
-        //    try
-        //    {
-        //        var promocion = await _context.Promociones
-        //            .Include(p => p.ComboPromociones)
-        //            .FirstOrDefaultAsync(p => p.id == id);
-
-        //        if (promocion == null)
-        //        {
-        //            TempData["ErrorMessage"] = "La promoción no existe";
-        //            return RedirectToAction("VerPromociones");
-        //        }
-
-        //        promocion.estado = 0;
-
-        //        foreach (var comboPromo in promocion.ComboPromociones)
-        //        {
-        //            comboPromo.estado = 0;
-        //        }
-
-        //        await _context.SaveChangesAsync();
-        //        await transaction.CommitAsync();
-
-        //        TempData["SuccessMessage"] = "Promoción modificada exitosamente!";
-        //        return RedirectToAction("VerPromociones");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        await transaction.RollbackAsync();
-        //        TempData["ErrorMessage"] = $"Error al eliminar: {ex.Message}";
-        //    }
-
-        //    return RedirectToAction("VerPromociones");
-        //}
 
         [HttpPost]
         [ValidateAntiForgeryToken]
