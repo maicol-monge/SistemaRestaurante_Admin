@@ -11,7 +11,7 @@ namespace SistemaRestaurante_Admin.Models
         public Promocion Promocion { get; set; } = new Promocion();
 
         [ValidateNever]
-        public List<Combo> CombosDisponibles { get; set; }
+        public List<Combos> CombosDisponibles { get; set; }
 
         [ValidateNever]
         public List<Promocion> PromocionesActivas { get; set; }
