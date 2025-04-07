@@ -30,11 +30,10 @@ namespace SistemaRestaurante_Admin.Controllers.Combos
                 var platos = await _context.Platos
                     .Where(p => p.Estado == 1)
                     .ToListAsync();
-
-                // Obtener todos los combos, sin filtrar por estado, para que se muestren tanto los activos como los inactivos
                 var combos = await _context.Combos
-                    .Include(c => c.Categoria)  // Incluir la categoría del combo
-                    .ToListAsync();  // No filtrar por estado, para obtener todos los combos
+                            .Where(c => c.Estado == 1)  // Filtramos solo los combos activos
+                            .Include(c => c.Categoria)  // Incluir la categoría del combo
+                            .ToListAsync();
 
                 // Pasar los datos a la vista
                 ViewBag.Categorias = categorias;
@@ -165,13 +164,6 @@ namespace SistemaRestaurante_Admin.Controllers.Combos
                 combo.Precio = comboDto.Precio;
                 combo.Descripcion = comboDto.Descripcion;
                 combo.CategoriaId = comboDto.CategoriaId;
-
-                // Si el combo estaba inactivo, cambiar a activo==1, pero si no es necesario borrar
-                
-                if (combo.Estado == 0)
-                {
-                    combo.Estado = 1;
-                }
 
                 // Eliminar los platos antiguos del combo
                 var platosExistentes = _context.Platos_Combo.Where(pc => pc.ComboId == comboDto.Id).ToList();
