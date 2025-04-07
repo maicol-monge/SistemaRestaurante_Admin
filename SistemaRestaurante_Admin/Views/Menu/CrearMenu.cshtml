@@ -69,10 +69,10 @@
 
                     <!-- Selección de platos -->
                     <h5 class="mt-3">Seleccionar plato:</h5>
-                    <div class="input-group mb-3">
-                        <input type="text" id="buscarPlatoSeleccion" class="form-control" placeholder="Pizza">
+                    <div class="mb-3 d-flex justify-content-end">
                         <button id="btnAgregarPlatos" class="btn btn-warning">Agregar</button>
                     </div>
+
 
                     <div class="card mx-auto" style="width: 100%; max-width: 600px; max-height: 300px; overflow-y: auto;">  
                         <ul class="list-group list-group-flush" id="listaPlatosSeleccion">
@@ -115,10 +115,10 @@
 
                     <!-- Selección de combo -->
                     <h5 class="mt-5">Seleccionar combo:</h5>
-                    <div class="input-group mb-3">
-                        <input type="text" id="buscarComboSeleccion" class="form-control" placeholder="Mega">
+                    <div class="mb-3 d-flex justify-content-end">
                         <button id="btnAgregarCombos" class="btn btn-warning">Agregar</button>
                     </div>
+
 
                     <div class="card mx-auto" style="width: 100%; max-width: 600px; max-height: 300px; overflow-y: auto;">
                         <ul class="list-group" id="listaCombosSeleccion">
@@ -240,6 +240,8 @@
 
     // actualizarBotones();      
         //____________________________________________________________________________
+
+
 
 
 
@@ -411,7 +413,7 @@
 
 
 
-         document.getElementById('btnBorrar').addEventListener('click', function () {
+    document.getElementById('btnBorrar').addEventListener('click', function () {
         console.log("Botón de borrar clickeado");
         const menuIdSeleccionado = document.getElementById('menuSeleccionado').innerText;
         if (menuIdSeleccionado == null) {
@@ -420,45 +422,47 @@
         }
         console.log(menuIdSeleccionado);
           // Mostrar el mensaje de confirmación antes de continuar
-    const confirmacion = confirm("¿Estás seguro de que deseas borrar este menú?");
+        const confirmacion = confirm("¿Estás seguro de que deseas borrar este menú?");
 
-    if (confirmacion) {
-        // Mostrar en consola el id del menú
-        console.log("menuIdSeleccionado:", menuIdSeleccionado);
+        if (confirmacion) {
+            // Mostrar en consola el id del menú
+            console.log("menuIdSeleccionado:", menuIdSeleccionado);
 
-        // Crear el objeto a enviar con solo el id del menú
-        const datos = {
-            id: parseInt(menuIdSeleccionado)
-        };
+            // Crear el objeto a enviar con solo el id del menú
+            const datos = {
+                id: parseInt(menuIdSeleccionado)
+            };
 
-        console.log("Datos a enviar:", datos);
+            console.log("Datos a enviar:", datos);
 
-        // Enviar la solicitud de eliminación al servidor
-        fetch('/Menu/EliminarMenu', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(datos)
-        })
-        .then(response => {
-            console.log("Estado de la respuesta:", response.status);
-            return response.json();
-        })
-        .then(data => {
-            console.log("Datos recibidos del servidor:", data);
-            if (data.message === "Menú eliminado exitosamente") {
-                alert("¡Menú eliminado con éxito!");
-            } else {
-                alert("Error al eliminar el menú: " + data.message);
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert("Hubo un error al eliminar el menú.");
-        });
-    }
-    
+            // Enviar la solicitud de eliminación al servidor
+            fetch('/Menu/EliminarMenu', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(datos)
+            })
+            .then(response => {
+                console.log("Estado de la respuesta:", response.status);
+                return response.json();
+            })
+            .then(data => {
+                console.log("Datos recibidos del servidor:", data);
+                if (data.message === "Menú eliminado exitosamente") {
+                    alert("¡Menú eliminado con éxito!");
+                } else {
+                    alert("Error al eliminar el menú: " + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert("Hubo un error al eliminar el menú.");
+            });
+        }
+        cargarListaPlatos();
+        cargarListaCombos();
+        cargarListaMenus();
 
         
     });
@@ -508,8 +512,69 @@
         $('#listaCombosSeleccion').empty();
         cargarListaPlatos();
         cargarListaCombos();
+        cargarListaMenus();
 
     });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //LLamar a actualizar la lista menus (aún no)
+        function cargarListaMenus() {
+        fetch('/Menu/ActualizarListaMenus', {
+            method: 'GET',
+        })
+        .then(response => response.json())
+        .then(data => {
+            const contenedor = document.getElementById('contenedorMenus');
+            contenedor.innerHTML = ''; // Limpiar contenido anterior
+
+            data.forEach(menu => {
+                const item = `
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">${menu.tipoMenu}</h5>
+                            <p class="card-text">
+                                <strong>Tipo de venta:</strong> ${menu.tipoVenta}<br>
+                                <strong>Hora:</strong> ${menu.horaInicio} - ${menu.horaFin}<br>
+                                <strong>Fecha:</strong> ${menu.fechaInicio} - ${menu.fechaFin}
+                            </p>
+                        </div>
+                    </div>
+                `;
+                contenedor.innerHTML += item;
+            });
+        })
+        .catch(error => {
+            console.error("Error al cargar los menús:", error);
+        });
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
