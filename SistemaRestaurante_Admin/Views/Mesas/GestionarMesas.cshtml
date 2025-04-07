@@ -45,14 +45,14 @@
                 </div>
                 <br />
                 <div class="d-flex gap-2">
-                    <form class="w-50" id="formInsert" method="post" action="@Url.Action("InsertarMesa", "Mesas")">
+                    <form class="w-50 d-flex justify-content-start" id="formInsert" method="post" action="@Url.Action("InsertarMesa", "Mesas")">
                         <input type="hidden" id="mesaNumero_ins" name="numero" />
                         <input type="hidden" id="mesaCapacidad_ins" name="capacidad" />
                         <input type="hidden" id="mesaDispo_ins" name="disponibilidad" />
                         <button type="submit" class="btn" style="background-color: #FDD73C; font-weight: bold" onclick="insertarMesa()" id="btn_create">Crear mesa</button>
                     </form>
 
-                    <form class="w-50" id="formEdit" method="post" action="@Url.Action("EditarMesa", "Mesas")">
+                    <form class="w-50 d-flex justify-content-center" id="formEdit" method="post" action="@Url.Action("EditarMesa", "Mesas")">
                         <input type="hidden" id="mesaId" name="id" />
                         <input type="hidden" id="mesaNumero" name="numero" />
                         <input type="hidden" id="mesaCapacidad" name="capacidad" />
@@ -60,14 +60,17 @@
                         <button type="submit" class="btn " style="background-color: #0D3752; font-weight: bold; color:white" id="btn_edit" onclick="editarMesa()" disabled>Modificar mesa</button>
                     </form>
 
-                    <form class="w-50" id="formDelete" method="post" action="@Url.Action("EliminarMesa", "Mesas")">
+                    <form class="w-50 d-flex justify-content-end" id="formDelete" method="post" action="@Url.Action("EliminarMesa", "Mesas")">
                         <input type="hidden" id="mesaIdd" name="id" />
                         <button type="submit" class="btn " style="background-color: #AB1918; font-weight: bold; color:white" id="btn_delete" onclick="eliminarMesa()" disabled>Eliminar mesa</button>
                     </form>
                 </div>
                 <br />
-                <button class="btn btn-outline-secondary mt-3" onclick="location.href='@Url.Action("VerMenuAdmin", "Home")'">Cancelar</button>
-                <button class="btn btn-outline-primary mt-3" id="btn_clear" onclick="clearSelection()">Limpiar selección</button>
+                <div class="d-flex justify-content-between">
+                    <button class="btn btn-outline-dark mt-3" id="btn_clear" onclick="clearSelection()">Cancelar</button>
+                    <button class="btn btn-outline-dark mt-3" onclick="location.href='@Url.Action("VerMenuAdmin", "Home")'">Volver al Menú</button>
+                </div>
+                
             </div>
 
             <div class="col-md-1 d-flex justify-content-center">

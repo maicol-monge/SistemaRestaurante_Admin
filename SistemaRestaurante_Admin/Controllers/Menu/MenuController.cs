@@ -27,9 +27,11 @@ namespace SistemaRestaurante_Admin.Controllers.Menu
 
 
             var listaPlatos = (from platos in _context.Platos
+                               where platos.Estado ==1
                                select platos).ToList();
 
             var listaCombos = (from combos in _context.Combos
+                               where combos.Estado ==1
                                select combos).ToList();
 
             var Vistaa = new ListasModelo
@@ -102,11 +104,40 @@ namespace SistemaRestaurante_Admin.Controllers.Menu
         }
 
 
+        [HttpGet]
+        public IActionResult ActualizarListaMenus()
+        {
+            var listaMenus = _context.Menu
+                .Where(m => m.estado == 1)
+                .Select(m => new
+                {
+                    id = m.id,
+                    tipoMenu = m.tipo_menu,
+                    tipoVenta = m.tipo_venta,
+                    horaInicio = m.hora_inicio,
+                    horaFin = m.hora_fin,
+                    fechaInicio = m.fecha_inicio,
+                    fechaFin = m.fecha_fin
+                })
+                .ToList();
+
+            return Json(listaMenus);
+        }
+
+
+
+
+
         [HttpPost]
         public IActionResult CrearMenu([FromBody] CrearMenuRequest datos)
         {
-            if (datos.PlatosSeleccionados == null || datos.CombosSeleccionados == null ||
-                string.IsNullOrEmpty(datos.TipoMenu) || string.IsNullOrEmpty(datos.TipoVenta))
+            //if (datos.PlatosSeleccionados == null || datos.CombosSeleccionados == null ||
+            //    string.IsNullOrEmpty(datos.TipoMenu) || string.IsNullOrEmpty(datos.TipoVenta))
+            //{
+            //    return BadRequest(new { message = "Datos incompletos o inválidos." });
+            //}
+            
+            if (datos == null)
             {
                 return BadRequest(new { message = "Datos incompletos o inválidos." });
             }
