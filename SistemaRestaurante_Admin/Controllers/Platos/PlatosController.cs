@@ -3,6 +3,8 @@ using Sistema_de_Restaurante___Modulo_de_Administracion.Models;
 using Microsoft.AspNetCore.Hosting;
 using SistemaRestaurante_Admin.Models;
 using SistemaRestaurante_Admin.Models.Servicios;
+using Microsoft.EntityFrameworkCore;
+using SistemaRestaurante_Admin.Models.Cargos;
 
 namespace SistemaRestaurante_Admin.Controllers.Platos
 {
@@ -27,7 +29,12 @@ namespace SistemaRestaurante_Admin.Controllers.Platos
         [Authentication]
         public IActionResult VerPlatos()
         {
-            ViewBag.PlatillosExistentes = _context.Platos.ToList();
+            //solo los platillos activos
+            var platillos = (from p in _context.Platos
+                             where p.Estado == 1
+                             select p)
+                             .ToList();
+            ViewBag.PlatillosExistentes = platillos;
             ViewBag.Categorias = _context.Categoria.ToList();
             return View("/Views/Platos/CrearPlatos.cshtml");
         }
@@ -82,6 +89,7 @@ namespace SistemaRestaurante_Admin.Controllers.Platos
                 _context.Platos.Add(nuevoPlato);
                 await _context.SaveChangesAsync();
 
+                TempData["Success"] = "Platillo creado exitosamente.";
                 return RedirectToAction("VerPlatos");
             }
             catch (Exception ex)
@@ -121,6 +129,7 @@ namespace SistemaRestaurante_Admin.Controllers.Platos
                 _context.Platos.Update(platillo);
                 await _context.SaveChangesAsync();
 
+                TempData["Success"] = "Platillo modificado exitosamente.";
                 return RedirectToAction("VerPlatos");
             }
             catch (Exception ex)
@@ -144,9 +153,11 @@ namespace SistemaRestaurante_Admin.Controllers.Platos
                     return NotFound();
                 }
 
-                _context.Platos.Remove(platillo);
-                await _context.SaveChangesAsync();
+                platillo.Estado = 0;
+                _context.Entry(platillo).State = EntityState.Modified;
+                _context.SaveChanges();
 
+                TempData["Success"] = "Platillo eliminado exitosamente.";
                 return RedirectToAction("VerPlatos");
             }
             catch (Exception ex)
