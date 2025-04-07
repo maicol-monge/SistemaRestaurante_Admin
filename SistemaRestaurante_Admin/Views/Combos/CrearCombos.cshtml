@@ -472,7 +472,14 @@
 
 
             <script>
-            function seleccionarCombo(idCombo, comboElement) {
+            function seleccionarCombo(idCombo, comboElement, estado) {
+                // Si el combo está inactivo (estado == 0), no permitimos que se seleccione
+                if (estado == 0) {
+                    alert("Este combo está inactivo y no puede ser seleccionado.");
+                    return;  // Detenemos la ejecución de la función si el combo está inactivo
+                }
+
+                // Si el combo está activo, continuamos con la selección
                 // Asigna el ID del combo seleccionado al campo oculto
                 document.getElementById('comboId').value = idCombo;
 
@@ -487,8 +494,8 @@
                 // Cargar los detalles del combo seleccionado
                 cargarCombo(idCombo);  // Llamar la función que maneja los detalles del combo
 
-                // Aquí puedes asegurarte de que no haya lógica que desactive el combo de alguna manera.
             }
+
 
 
                 function manejarSeleccionCombo() {
