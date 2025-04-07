@@ -166,6 +166,13 @@ namespace SistemaRestaurante_Admin.Controllers.Combos
                 combo.Descripcion = comboDto.Descripcion;
                 combo.CategoriaId = comboDto.CategoriaId;
 
+                // Si el combo estaba inactivo, cambiar a activo==1, pero si no es necesario borrar
+                
+                if (combo.Estado == 0)
+                {
+                    combo.Estado = 1;
+                }
+
                 // Eliminar los platos antiguos del combo
                 var platosExistentes = _context.Platos_Combo.Where(pc => pc.ComboId == comboDto.Id).ToList();
                 if (platosExistentes.Any())
@@ -197,6 +204,7 @@ namespace SistemaRestaurante_Admin.Controllers.Combos
             }
         }
 
+
         [HttpPost]
         public async Task<IActionResult> EliminarCombo([FromBody] int id)
         {
@@ -209,23 +217,20 @@ namespace SistemaRestaurante_Admin.Controllers.Combos
                 // Cambiar el estado del combo a 0 (inactivo)
                 combo.Estado = 0;  // Esto asume que la columna 'estado' está en la tabla 'combos'
 
-                // Eliminar los platos asociados al combo en la tabla Platos_Combos
-                var platosCombo = _context.Platos_Combo.Where(pc => pc.ComboId == id);
-                if (platosCombo.Any())
-                {
-                    _context.Platos_Combo.RemoveRange(platosCombo);
-                }
+                // Los platos asociados al combo en la tabla Platos_Combos no se eliminan, solo desactivamos el combo
+                // No eliminar los platos de la tabla intermedia
 
                 // Guardar los cambios
                 await _context.SaveChangesAsync();
 
-                return Ok(new { message = "Combo desactivado correctamente" });
+                return Ok(new { message = "Combo desactivado correctamente, los platos no fueron eliminados." });
             }
             catch (Exception ex)
             {
                 return BadRequest(new { message = $"Error al desactivar el combo: {ex.Message}" });
             }
         }
+
 
 
 
