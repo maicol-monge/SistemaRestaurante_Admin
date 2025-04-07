@@ -131,8 +131,13 @@ namespace SistemaRestaurante_Admin.Controllers.Menu
         [HttpPost]
         public IActionResult CrearMenu([FromBody] CrearMenuRequest datos)
         {
-            if (datos.PlatosSeleccionados == null || datos.CombosSeleccionados == null ||
-                string.IsNullOrEmpty(datos.TipoMenu) || string.IsNullOrEmpty(datos.TipoVenta))
+            //if (datos.PlatosSeleccionados == null || datos.CombosSeleccionados == null ||
+            //    string.IsNullOrEmpty(datos.TipoMenu) || string.IsNullOrEmpty(datos.TipoVenta))
+            //{
+            //    return BadRequest(new { message = "Datos incompletos o inválidos." });
+            //}
+            
+            if (datos == null)
             {
                 return BadRequest(new { message = "Datos incompletos o inválidos." });
             }
