@@ -1,992 +1,989 @@
 ﻿@model SistemaRestaurante_Admin.Models.ListasModelo
 
 @{
-    ViewBag.Title = "Promociones";
-    Layout = "~/Views/Shared/LayoutPersonalizado.cshtml";
+	ViewBag.Title = "Promociones";
+	Layout = "~/Views/Shared/LayoutPersonalizado.cshtml";
 }
 
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Menús</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Gestión de Menús</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <div class="mx-5 mt-4">
-        <div class="row">
-            <!-- NUEVO MENÚ -->
-            <div class="col-md-6">
-                <div class="card p-3">
-                    <h4 id="tituloMenu">Nuevo Menú</h4>
+	<div class="mx-5 mt-4">
+		<div class="row">
+			<!-- NUEVO MENÚ -->
+			<div class="col-md-6">
+				<div class="card p-3">
+					<h4 id="tituloMenu">Nuevo Menú</h4>
 
-                    <!-- Tipo menú y tipo venta -->
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label class="form-label">Tipo de menú:</label>
-                            <select id="tipoMenu" class="form-select">
-                                <option value="Desayuno">Desayuno</option>
-                                <option value="Almuerzo">Almuerzo</option>
-                                <option value="Cena">Cena</option>
-                                <option value="Temporada">Temporada</option>
+					<!-- Tipo menú y tipo venta -->
+					<div class="row">
+						<div class="col-md-6">
+							<label class="form-label">Tipo de menú:</label>
+							<select id="tipoMenu" class="form-select">
+								<option value="Desayuno">Desayuno</option>
+								<option value="Almuerzo">Almuerzo</option>
+								<option value="Cena">Cena</option>
+								<option value="Temporada">Temporada</option>
 
-                            </select>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Tipo de venta:</label>
-                            <select id="tipoVenta" class="form-select">
-                                <option value="Restaurante">Restaurante</option>
-                                <option value="Online">Online</option>
-                            </select>
-                        </div>
-                    </div>
+							</select>
+						</div>
+						<div class="col-md-6">
+							<label class="form-label">Tipo de venta:</label>
+							<select id="tipoVenta" class="form-select">
+								<option value="Restaurante">Restaurante</option>
+								<option value="Online">Online</option>
+							</select>
+						</div>
+					</div>
 
-                    <!-- Hora inicio / fin -->
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label class="form-label">Hora inicio:</label>
-                            <input type="time" id="horaInicio" class="form-control">
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Hora fin:</label>
-                            <input type="time" id="horaFin" class="form-control">
-                        </div>
-                    </div>
+					<!-- Hora inicio / fin -->
+					<div class="row">
+						<div class="col-md-6">
+							<label class="form-label">Hora inicio:</label>
+							<input type="time" id="horaInicio" class="form-control">
+						</div>
+						<div class="col-md-6">
+							<label class="form-label">Hora fin:</label>
+							<input type="time" id="horaFin" class="form-control">
+						</div>
+					</div>
 
-                    <!-- Fecha inicio / fin -->
-                    <div class="row mt-3">
-                        <div class="col-md-6">
-                            <label class="form-label">Fecha inicio:</label>
-                            <input type="date" id="fechaInicio" class="form-control">
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Fecha fin:</label>
-                            <input type="date" id="fechaFin" class="form-control">
-                        </div>
-                    </div>
-                    <hr />
+					<!-- Fecha inicio / fin -->
+					<div class="row mt-3">
+						<div class="col-md-6">
+							<label class="form-label">Fecha inicio:</label>
+							<input type="date" id="fechaInicio" class="form-control">
+						</div>
+						<div class="col-md-6">
+							<label class="form-label">Fecha fin:</label>
+							<input type="date" id="fechaFin" class="form-control">
+						</div>
+					</div>
+					<hr />
 
-                    <!-- Selección de platos -->
-                    <h5 class="mt-3">Seleccionar plato:</h5>
-                    <div class="mb-3 d-flex justify-content-end">
-                        <button id="btnAgregarPlatos" class="btn btn-warning">Agregar</button>
-                    </div>
-
-
-                    <div class="card mx-auto" style="width: 100%; max-width: 600px; max-height: 300px; overflow-y: auto;">  
-                        <ul class="list-group list-group-flush" id="listaPlatosSeleccion">
-
-                            @foreach (var plato in Model.Platos)
-                            {
-                                <li class="list-group-item d-flex align-items-center" data-id="@plato.Id">
-                                    <input type="checkbox" class="form-check-input me-2 plato-checkbox" value="@plato.Id" />
-                                    <div class="d-flex flex-column filtro-texto">
-                                        <strong>@plato.Nombre</strong>
-                                        @plato.Descripcion<br />
-                                        Precio: @plato.Precio.ToString("C")
-                                    </div>
-                                    <div class="ms-auto">
-                                        <img src="@plato.Imagen" alt="Imagen de @plato.Nombre" style="width: 70px; height: 70px;" />
-                                    </div>
-                                </li>
-                            }
+					<!-- Selección de platos -->
+					<h5 class="mt-3">Seleccionar plato:</h5>
+					<div class="mb-3 d-flex justify-content-end">
+						<button id="btnAgregarPlatos" class="btn btn-warning">Agregar</button>
+					</div>
 
 
-                        </ul>
-                    </div>
+					<div class="card mx-auto" style="width: 100%; max-width: 600px; max-height: 300px; overflow-y: auto;">
+						<ul class="list-group list-group-flush" id="listaPlatosSeleccion">
 
-                    <br />
-
-                    <!-- Platos seleccionados -->
-                    <div class="d-flex justify-content-between align-items-center mb-3 mt-3">
-                        <h5 class="mb-0">Platos en el menú:</h5>
-                        <button id="btnQuitarPlatos" class="btn" style="background-color: #0D3752; color: white;">Quitar</button>
-                    </div>
-
-                    <div class="card mx-auto" style="width: 100%; max-width: 600px; max-height: 300px; overflow-y: auto;">
-                        <ul class="list-group list-group-flush" id="listaPlatosMenu">
-                            @* @foreach (var plato in Model.Platos) {
-                                ...
-                            } *@
-                        </ul>
-                    </div>
-                
-
-                    <!-- Selección de combo -->
-                    <h5 class="mt-5">Seleccionar combo:</h5>
-                    <div class="mb-3 d-flex justify-content-end">
-                        <button id="btnAgregarCombos" class="btn btn-warning">Agregar</button>
-                    </div>
+							@foreach (var plato in Model.Platos)
+							{
+								<li class="list-group-item d-flex align-items-center" data-id="@plato.Id">
+									<input type="checkbox" class="form-check-input me-2 plato-checkbox" value="@plato.Id" />
+									<div class="d-flex flex-column filtro-texto">
+										<strong>@plato.Nombre</strong>
+										@plato.Descripcion<br />
+										Precio: @plato.Precio.ToString("C")
+									</div>
+									<div class="ms-auto">
+										<img src="@plato.Imagen" alt="Imagen de @plato.Nombre" style="width: 70px; height: 70px;" />
+									</div>
+								</li>
+							}
 
 
-                    <div class="card mx-auto" style="width: 100%; max-width: 600px; max-height: 300px; overflow-y: auto;">
-                        <ul class="list-group" id="listaCombosSeleccion">
-                            @foreach (var combo in Model.Combos)
-                            {
-                                <li class="list-group-item d-flex align-items-center">
-                                    <input type="checkbox" class="form-check-input me-2 combo-checkbox" value="@combo.Id" />
-                                    <div class="d-flex flex-column filtro-texto">
-                                        <strong>@combo.Nombre</strong>
-                                        @combo.Descripcion
-                                    </div>
-                                    <div class="ms-auto">
-                                        <span>@combo.Precio.ToString("C")</span>
-                                    </div>
-                                </li>
-                            }
-                        </ul>
-                    </div>
+						</ul>
+					</div>
 
-                    <!-- Combos seleccionados -->
-                    <br />
-                    <div class="d-flex justify-content-between align-items-center mb-3 mt-3">
-                        <h5 class="mb-0">Combos en el menú:</h5>
-                        <button id="btnQuitarCombos" class="btn" style="background-color: #0D3752; color: white;">Quitar</button>
-                    </div>
+					<br />
 
-                    <div class="card mx-auto" style="width: 100%; max-width: 600px; max-height: 300px; overflow-y: auto;">
-                        <ul class="list-group" id="listaCombosMenu">
-                        
-                        </ul>
-                    </div>
+					<!-- Platos seleccionados -->
+					<div class="d-flex justify-content-between align-items-center mb-3 mt-3">
+						<h5 class="mb-0">Platos en el menú:</h5>
+						<button id="btnQuitarPlatos" class="btn" style="background-color: #0D3752; color: white;">Quitar</button>
+					</div>
 
-                </div>
-            </div>
+					<div class="card mx-auto" style="width: 100%; max-width: 600px; max-height: 300px; overflow-y: auto;">
+						<ul class="list-group list-group-flush" id="listaPlatosMenu">
+							@* @foreach (var plato in Model.Platos) {
+							...
+							} *@
+						</ul>
+					</div>
 
-            <!-- MENÚS EXISTENTES -->
-            <div class="col-md-6">
-                <div class="card p-3" style="max-height: 1353px; overflow-y: auto;">
-                    <h4>Menús existentes</h4>
-                    <ul class="list-group" id="listaMenus">
-                        @foreach (var menu in Model.Menus)
-                        {
-                            <li class="list-group-item menu-item" data-id="@menu.id"
-                                data-tipomenu="@menu.tipo_menu"
-                                data-tipoventa="@menu.tipo_venta"
-                                data-fechainicio="@menu.fecha_inicio?.ToString("yyyy-MM-dd")"
-                                data-fechafin="@menu.fecha_fin?.ToString("yyyy-MM-dd")"
-                                data-horainicio="@menu.hora_inicio"
-                                data-horafin="@menu.hora_fin"
 
-                                style="cursor: pointer;">
-                                <strong>Menú #@menu.id</strong><br>
-                                Tipo: @menu.tipo_menu<br />
-                                Venta: @menu.tipo_venta<br />
-                                Desde: @menu.fecha_inicio?.ToString("dd/MM/yyyy") Hasta: @menu.fecha_fin?.ToString("dd/MM/yyyy")
-                            </li>
-                        }
-                    </ul>
-                </div>
+					<!-- Selección de combo -->
+					<h5 class="mt-5">Seleccionar combo:</h5>
+					<div class="mb-3 d-flex justify-content-end">
+						<button id="btnAgregarCombos" class="btn btn-warning">Agregar</button>
+					</div>
 
-             
 
-            </div>
+					<div class="card mx-auto" style="width: 100%; max-width: 600px; max-height: 300px; overflow-y: auto;">
+						<ul class="list-group" id="listaCombosSeleccion">
+							@foreach (var combo in Model.Combos)
+							{
+								<li class="list-group-item d-flex align-items-center">
+									<input type="checkbox" class="form-check-input me-2 combo-checkbox" value="@combo.Id" />
+									<div class="d-flex flex-column filtro-texto">
+										<strong>@combo.Nombre</strong>
+										@combo.Descripcion
+									</div>
+									<div class="ms-auto">
+										<span>@combo.Precio.ToString("C")</span>
+									</div>
+								</li>
+							}
+						</ul>
+					</div>
 
-            <div class="mt-5 mb-5 d-flex justify-content-center w-50">
-                <div class="d-flex flex-column flex-md-row justify-content-center gap-3 w-100 w-md-50">
-                    <button id="CrearMenu" class="btn w-100" style="background-color: #FDD73C; color: black;">Crear menú</button>
-                    <button id="btnEditar" class="btn w-100" style="background-color: #0D3752; color: white;">Modificar menú</button>
-                    <button id="btnBorrar" class="btn w-100" style="background-color: #AB1918; color: white;">Eliminar menú</button>
-                </div>
-            </div>
+					<!-- Combos seleccionados -->
+					<br />
+					<div class="d-flex justify-content-between align-items-center mb-3 mt-3">
+						<h5 class="mb-0">Combos en el menú:</h5>
+						<button id="btnQuitarCombos" class="btn" style="background-color: #0D3752; color: white;">Quitar</button>
+					</div>
 
-            <div>
-                <button id="btnCancelar" class="btn mb-5 w-md-25" style="border: 2px solid black; color: black; width: 26vh;")'">Cancelar</button>
-                <button href="@Url.Action("VerMenuAdmin", "Home")" class="btn mb-5 w-md-25" style="border: 2px solid black; color: black; width: 26vh;" )'">Volver al menú</button>
-            </div>
-        </div>
-    </div>
+					<div class="card mx-auto" style="width: 100%; max-width: 600px; max-height: 300px; overflow-y: auto;">
+						<ul class="list-group" id="listaCombosMenu">
+						</ul>
+					</div>
+
+				</div>
+			</div>
+
+			<!-- MENÚS EXISTENTES -->
+			<div class="col-md-6">
+				<div class="card p-3" style="max-height: 1353px; overflow-y: auto;">
+					<h4>Menús existentes</h4>
+					<ul class="list-group" id="listaMenus">
+						@foreach (var menu in Model.Menus)
+						{
+							<li class="list-group-item menu-item" data-id="@menu.id"
+								data-tipomenu="@menu.tipo_menu"
+								data-tipoventa="@menu.tipo_venta"
+								data-fechainicio="@menu.fecha_inicio?.ToString("yyyy-MM-dd")"
+								data-fechafin="@menu.fecha_fin?.ToString("yyyy-MM-dd")"
+								data-horainicio="@menu.hora_inicio"
+								data-horafin="@menu.hora_fin"
+								style="cursor: pointer;">
+								<strong>Menú #@menu.id</strong><br>
+								Tipo: @menu.tipo_menu<br />
+								Venta: @menu.tipo_venta<br />
+								Desde: @menu.fecha_inicio?.ToString("dd/MM/yyyy") Hasta: @menu.fecha_fin?.ToString("dd/MM/yyyy")
+							</li>
+						}
+					</ul>
+				</div>
+
+			</div>
+
+			<div class="mt-5 mb-5 d-flex justify-content-center w-50">
+				<div class="d-flex flex-column flex-md-row justify-content-center gap-3 w-100 w-md-50">
+					<button id="CrearMenu" class="btn w-100" style="background-color: #FDD73C; color: black;">Crear menú</button>
+					<button id="btnEditar" class="btn w-100" style="background-color: #0D3752; color: white;" disabled>Modificar menú</button>
+					<button id="btnBorrar" class="btn w-100" style="background-color: #AB1918; color: white;" disabled>Eliminar menú</button>
+				</div>
+			</div>
+
+			
+
+			
+		</div>
+		<div class="mt-5 mb-5 w-50">
+			<div class="d-flex justify-content-between">
+				<button id="btnCancelar" class="btn mb-5 w-md-25" style="border: 2px solid black; color: black; width: 26vh;" )'">Cancelar</button>
+				<button onclick="location.href='@Url.Action("VerMenuAdmin", "Home")'" class="btn mb-5 w-md-25" style="border: 2px solid black; color: black; width: 26vh;" )'">Volver al menú</button>
+			</div>
+		</div>
+	</div>
 </body>
 </html>
 
 <style>
-    .menu-item.active {
-        background-color: #FDD73C !important;
-        color: black;
-        font-weight: bold;
-    }
+	.menu-item.active {
+		background-color: #FDD73C !important;
+		color: black;
+		font-weight: bold;
+	}
 </style>
 
 
 <script>
-        //____________________________________________________________________________
-        // No borrar esto
-            const pElemento = document.createElement('p');
-            pElemento.id = 'menuSeleccionado';
-            pElemento.textContent = '';
-            document.body.appendChild(pElemento);
-
-            function actualizarBotones() {
-                        const menuIdSeleccionado = document.getElementById('menuSeleccionado').innerText;
-
-
-                const btnEditar = document.getElementById('btnEditar');
-                const btnBorrar = document.getElementById('btnBorrar');
-                const btnCrearMenu = document.getElementById('CrearMenu');
-
-                if (menuIdSeleccionado && menuIdSeleccionado.trim() !== '') {
-                    // Si el menú seleccionado no está vacío, habilitar btnEditar y btnBorrar, deshabilitar btnCrearMenu
-                    btnEditar.disabled = false;
-                    btnBorrar.disabled = false;
-                    btnCrearMenu.disabled = true;
-                } else {
-                    // Si el menú seleccionado está vacío, deshabilitar btnEditar y btnBorrar, habilitar btnCrearMenu
-                    btnEditar.disabled = true;
-                    btnBorrar.disabled = true;
-                    btnCrearMenu.disabled = false;
-                }
-            }
-
-    // actualizarBotones();      
-        //____________________________________________________________________________
-
-
-
-
-
-
-    document.getElementById('CrearMenu').addEventListener('click', function () {
-        // Obtener los datos de los campos del formulario
-        const tipoMenu = document.getElementById('tipoMenu').value;
-        const tipoVenta = document.getElementById('tipoVenta').value;
-        const horaInicio = document.getElementById('horaInicio').value;
-        const horaFin = document.getElementById('horaFin').value;
-        const fechaInicio = document.getElementById('fechaInicio').value;
-        const fechaFin = document.getElementById('fechaFin').value;
-
-        // Obtener los platos seleccionados
-        const platosSeleccionados = [];
-         $('#listaPlatosMenu .plato-checkbox:checked').each(function() {
-                 platosSeleccionados.push($(this).val()); // Agregar el id del plato al array
-         });
-
-        const combosSeleccionados = [];
-         $('#listaCombosMenu .combo-checkbox:checked').each(function() {
-                 combosSeleccionados.push($(this).val()); // Agregar el id del plato al array
-         });
-
-             function formatoHora(horaStr) {
-        const [hora, minuto] = horaStr.split(':');
-        return `${hora.padStart(2, '0')}:${minuto.padStart(2, '0')}`;
-    }          
-
-        // Crear un objeto con los datos a enviar
-        const datos = {
-            platosSeleccionados: platosSeleccionados,
-            combosSeleccionados: combosSeleccionados,
-            tipoMenu: tipoMenu,
-            tipoVenta: tipoVenta,
-            horaInicio: horaInicio,
-            horaFin: horaFin,
-            fechaInicio: fechaInicio,
-            fechaFin: fechaFin
-        };
-
-        // Enviar los datos al servidor mediante Fetch
-        fetch('/Menu/CrearMenu', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(datos)
-        })
-
-           .then(response => response.json())
-    .then(data => {
-        console.log(data);
-
-        if (data.message === "Menú creado exitosamente") {
-            alert("Menú creado con éxito!");
-        } else {
-            alert("Error al crear el menú: " + data.message); 
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert("Hubo un error al crear el menú.");
-    });
-
-    });
-
-
-
+	//____________________________________________________________________________
+	// No borrar esto
+	const pElemento = document.createElement('p');
+	pElemento.id = 'menuSeleccionado';
+	pElemento.textContent = '';
+	document.body.appendChild(pElemento);
+
+	function actualizarBotones() {
+		const menuIdSeleccionado = document.getElementById('menuSeleccionado').innerText;
+
+		const btnEditar = document.getElementById('btnEditar');
+		const btnBorrar = document.getElementById('btnBorrar');
+		const btnCrearMenu = document.getElementById('CrearMenu');
+
+		if (menuIdSeleccionado && menuIdSeleccionado.trim() !== '') {
+			// Si el menú seleccionado no está vacío, habilitar btnEditar y btnBorrar, deshabilitar btnCrearMenu
+			btnEditar.disabled = false;
+			btnBorrar.disabled = false;
+			btnCrearMenu.disabled = true;
+		} else {
+			// Si el menú seleccionado está vacío, deshabilitar btnEditar y btnBorrar, habilitar btnCrearMenu
+			btnEditar.disabled = true;
+			btnBorrar.disabled = true;
+			btnCrearMenu.disabled = false;
+		}
+	}
+
+	// actualizarBotones();
+	//____________________________________________________________________________
+
+
+
+
+
+
+	document.getElementById('CrearMenu').addEventListener('click', function () {
+		// Obtener los datos de los campos del formulario
+		const tipoMenu = document.getElementById('tipoMenu').value;
+		const tipoVenta = document.getElementById('tipoVenta').value;
+		const horaInicio = document.getElementById('horaInicio').value;
+		const horaFin = document.getElementById('horaFin').value;
+		const fechaInicio = document.getElementById('fechaInicio').value;
+		const fechaFin = document.getElementById('fechaFin').value;
+
+		// Obtener los platos seleccionados
+		const platosSeleccionados = [];
+		$('#listaPlatosMenu .plato-checkbox:checked').each(function () {
+			platosSeleccionados.push($(this).val()); // Agregar el id del plato al array
+		});
+
+		const combosSeleccionados = [];
+		$('#listaCombosMenu .combo-checkbox:checked').each(function () {
+			combosSeleccionados.push($(this).val()); // Agregar el id del plato al array
+		});
+
+		function formatoHora(horaStr) {
+			const [hora, minuto] = horaStr.split(':');
+			return `${hora.padStart(2, '0')}:${minuto.padStart(2, '0')}`;
+		}
+
+		// Crear un objeto con los datos a enviar
+		const datos = {
+			platosSeleccionados: platosSeleccionados,
+			combosSeleccionados: combosSeleccionados,
+			tipoMenu: tipoMenu,
+			tipoVenta: tipoVenta,
+			horaInicio: horaInicio,
+			horaFin: horaFin,
+			fechaInicio: fechaInicio,
+			fechaFin: fechaFin
+		};
+
+		// Enviar los datos al servidor mediante Fetch
+		fetch('/Menu/CrearMenu', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(datos)
+		})
+
+			.then(response => response.json())
+			.then(data => {
+				console.log(data);
+
+				if (data.message === "Menú creado exitosamente") {
+					alert("Menú creado con éxito!");
+					location.reload(); // Recargar la página para ver el nuevo menú
+				} else {
+					alert("Error al crear el menú: " + data.message);
+				}
+			})
+			.catch(error => {
+				console.error('Error:', error);
+				alert("Hubo un error al crear el menú.");
+			});
+
+	});
+
+
+
 
 
 
 
-        document.getElementById('btnEditar').addEventListener('click', function () {
-        console.log("Botón de editar clickeado");
-        const menuIdSeleccionado = document.getElementById('menuSeleccionado').innerText;
-        if (!menuIdSeleccionado || menuIdSeleccionado === "Ninguno") {
-            alert("Por favor, selecciona un menú antes de editar.");
-            return;
-        }
-
-        const confirmacion = confirm("¿Estás seguro de que deseas editar este menú?");
-
-    if (!confirmacion) {
-        console.log("Operación de edición cancelada.");
-        return; // Si el usuario cancela, no se ejecuta el resto del código
-    }
-
-
-        // Obtener los datos del formulario
-        const tipoMenu = document.getElementById('tipoMenu').value;
-        const tipoVenta = document.getElementById('tipoVenta').value;
-        const horaInicio = document.getElementById('horaInicio').value;
-        const horaFin = document.getElementById('horaFin').value;
-        const fechaInicio = document.getElementById('fechaInicio').value;
-        const fechaFin = document.getElementById('fechaFin').value;
-
-        // Mostrar en consola los valores capturados
-        console.log("menuIdSeleccionado:", menuIdSeleccionado);
-        console.log("tipoMenu:", tipoMenu);
-        console.log("tipoVenta:", tipoVenta);
-        console.log("horaInicio:", horaInicio);
-        console.log("horaFin:", horaFin);
-        console.log("fechaInicio:", fechaInicio);
-        console.log("fechaFin:", fechaFin);
-
-        // Obtener los platos y combos seleccionados
-        const platosSeleccionados = [];
-        $('#listaPlatosMenu li').each(function () {
-            const platoId = $(this).find('input').val(); 
-            platosSeleccionados.push(platoId);
-        });
-        console.log("Platos seleccionados", platosSeleccionados); 
-
-
-        const combosSeleccionados = [];
-        $('#listaCombosMenu li').each(function () {
-            const comboId = $(this).find('input').val(); 
-            combosSeleccionados.push(comboId);
-        });
-        console.log("Combos seleccionados", combosSeleccionados); 
-
-
-        // Crear el objeto a enviar
-        const datos = {
-            id: parseInt(menuIdSeleccionado),
-            platosSeleccionados: platosSeleccionados,
-            combosSeleccionados: combosSeleccionados,
-            tipoMenu: tipoMenu,
-            tipoVenta: tipoVenta,
-            horaInicio: horaInicio,
-            horaFin: horaFin,
-            fechaInicio: fechaInicio,
-            fechaFin: fechaFin
-        };
-
-        console.log("Datos a enviar:", datos);
-
-          fetch('/Menu/EditarMenu', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(datos)
-    })
-    .then(response => {
-        console.log("Estado de la respuesta:", response.status);
-        return response.json();
-    })
-    .then(data => {
-        console.log("Datos recibidos del servidor:", data);
-        if (data.message === "Menú editado exitosamente") {
-            alert("¡Menú editado con éxito!");
-        } else {
-            alert("Error al editar el menú: " + data.message);
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert("Hubo un error al editar el menú.");
-    });
-
-    });
-
-
-
-
-
-
-
-
-    document.getElementById('btnBorrar').addEventListener('click', function () {
-        console.log("Botón de borrar clickeado");
-        const menuIdSeleccionado = document.getElementById('menuSeleccionado').innerText;
-        if (menuIdSeleccionado == null) {
-            alert("Por favor, selecciona un menú antes de borrar.");
-            return;
-        }
-        console.log(menuIdSeleccionado);
-          // Mostrar el mensaje de confirmación antes de continuar
-        const confirmacion = confirm("¿Estás seguro de que deseas borrar este menú?");
-
-        if (confirmacion) {
-            // Mostrar en consola el id del menú
-            console.log("menuIdSeleccionado:", menuIdSeleccionado);
-
-            // Crear el objeto a enviar con solo el id del menú
-            const datos = {
-                id: parseInt(menuIdSeleccionado)
-            };
-
-            console.log("Datos a enviar:", datos);
-
-            // Enviar la solicitud de eliminación al servidor
-            fetch('/Menu/EliminarMenu', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(datos)
-            })
-            .then(response => {
-                console.log("Estado de la respuesta:", response.status);
-                return response.json();
-            })
-            .then(data => {
-                console.log("Datos recibidos del servidor:", data);
-                if (data.message === "Menú eliminado exitosamente") {
-                    alert("¡Menú eliminado con éxito!");
-                } else {
-                    alert("Error al eliminar el menú: " + data.message);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert("Hubo un error al eliminar el menú.");
-            });
-        }
-        cargarListaPlatos();
-        cargarListaCombos();
-        cargarListaMenus();
-
-        
-    });
-
-    document.querySelectorAll('.menu-item').forEach(item => {
-        item.addEventListener('click', () => {
-            // Verifica si ya hay un menú seleccionado
-            const menuSeleccionado = document.querySelector('.menu-item.active');
-            // Si ya hay un menú seleccionado
-            if (menuSeleccionado) {
-                alert('Ya hay un menú seleccionado. Con el botón cancelar podra deseleccionar.');
-                 $('#listaCombosMenu').empty();
-                $('#listaPlatosMenu').empty(); 
-                menuSeleccionado.classList.add('active');              
-            } else {
-                document.querySelectorAll('.menu-item').forEach(menu => {
-                    if (menu !== item) {
-                        menu.style.pointerEvents = 'none'; 
-                    }
-                });
-            }
-        });
-    });
-
-    // Función para "cancelar" la selección (esto lo puedes poner en otro botón)
-    document.getElementById('btnCancelar').addEventListener('click', () => {
-        const menuSeleccionado = document.querySelector('.menu-item.active');
-        if (menuSeleccionado) {
-            menuSeleccionado.classList.remove('active');
-            document.querySelectorAll('.menu-item').forEach(menu => {
-                menu.style.pointerEvents = 'auto';
-            });
-        }
-    }); 
-
-
-    document.getElementById('btnCancelar').addEventListener('click', function() {
-        // Deseleccionar el menú (remover la clase 'active' de todos los elementos)
-        document.querySelectorAll('.menu-item').forEach(item => {
-            item.classList.remove('active');
-        });
-
-        // Limpiar las listas
-        $('#listaCombosMenu').empty();
-        $('#listaPlatosMenu').empty();
-        $('#listaPlatosSeleccion').empty();
-        $('#listaCombosSeleccion').empty();
-        cargarListaPlatos();
-        cargarListaCombos();
-        cargarListaMenus();
-
-    });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    //LLamar a actualizar la lista menus (aún no)
-        function cargarListaMenus() {
-        fetch('/Menu/ActualizarListaMenus', {
-            method: 'GET',
-        })
-        .then(response => response.json())
-        .then(data => {
-            const contenedor = document.getElementById('contenedorMenus');
-            contenedor.innerHTML = ''; // Limpiar contenido anterior
-
-            data.forEach(menu => {
-                const item = `
-                    <div class="card mb-3">
-                        <div class="card-body">
-                            <h5 class="card-title">${menu.tipoMenu}</h5>
-                            <p class="card-text">
-                                <strong>Tipo de venta:</strong> ${menu.tipoVenta}<br>
-                                <strong>Hora:</strong> ${menu.horaInicio} - ${menu.horaFin}<br>
-                                <strong>Fecha:</strong> ${menu.fechaInicio} - ${menu.fechaFin}
-                            </p>
-                        </div>
-                    </div>
-                `;
-                contenedor.innerHTML += item;
-            });
-        })
-        .catch(error => {
-            console.error("Error al cargar los menús:", error);
-        });
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    function cargarListaPlatos() {
-        fetch('/Menu/ActualizarListaPlatos', {
-            method: 'GET',
-        })
-        .then(response => response.json())
-        .then(data => {
-            // Aquí actualizas la lista de platos
-            data.forEach(plato => {
-                const item = `
-                    <li class="list-group-item d-flex align-items-center" data-id="${plato.id}">
-                        <input type="checkbox" class="form-check-input me-2 plato-checkbox" value="${plato.id}" />
-                        <div class="d-flex flex-column filtro-texto">
-                            <strong>${plato.nombre}</strong>
-                            ${plato.descripcion}<br />
-                            Precio: ${plato.precio.toLocaleString('es-SV', { style: 'currency', currency: 'USD' })}
-                        </div>
-                        <div class="ms-auto">
-                            <img src="${plato.imagen}" alt="Imagen de ${plato.nombre}" style="width: 70px; height: 70px;" />
-                        </div>
-                    </li>
-                `;
-                $('#listaPlatosSeleccion').append(item);  // Agregar los platos a la selección
-            });
-        })
-        .catch(error => {
-            console.error("Error al cargar los platos:", error);
-        });
-    }
-
-    function cargarListaCombos() {
-        fetch('/Menu/ActualizarListaCombos', {
-            method: 'GET',
-        })
-        .then(response => response.json())
-        .then(data => {
-            // Aquí actualizas la lista de combos
-            data.forEach(combo => {
-                   const item = `
-        <li class="list-group-item d-flex align-items-center">
-            <input type="checkbox" class="form-check-input me-2 combo-checkbox" value="${combo.id}" />
-            <div class="d-flex flex-column filtro-texto">
-                <strong>${combo.nombre}</strong>
-                ${combo.descripcion}
-            </div>
-            <div class="ms-auto d-flex align-items-center">
-                <span>${combo.precio.toLocaleString('es-SV', { style: 'currency', currency: 'USD' })}</span>
-            </div>
-        </li>
-    `;
-
-                $('#listaCombosSeleccion').append(item);  // Agregar los combos a la selección
-            });
-        })
-        .catch(error => {
-            console.error("Error al cargar los combos:", error);
-        });
-    }
-
-
-    function mostrarPlatosDelMenu(platos) {
-        const listaPlatosMenu = $('#listaPlatosMenu');
-        const listaPlatosSeleccion = $('#listaPlatosSeleccion');
-
-        // Obtener los IDs de los platos que ya están en el menú (antes de vaciar)
-        const idsPlatosEnMenu = listaPlatosMenu.find('input:checkbox').map(function () {
-            return this.value;
-        }).get();
-
-        console.log('IDs en el menú:', idsPlatosEnMenu);  // Verificar qué platos ya están
-
-        // Limpiar las listas antes de actualizarlas
-        listaPlatosMenu.empty();
-        //listaPlatosSeleccion.empty();
-
-
-        platos.forEach(plato => {
-            console.log('Procesando plato:', plato.nombrePlato, 'ID:', plato.platoId); // Verificar el plato
-
-            const item = `
-                <li class="list-group-item d-flex align-items-center">
-                    <input type="checkbox" class="form-check-input me-2 plato-checkbox" value="${plato.platoId}" />
-                    <div class="d-flex flex-column filtro-texto">
-                        <strong>${plato.nombrePlato}</strong>
-                        ${plato.descripcion}<br />
-                        Precio: ${plato.precio.toLocaleString('es-SV', { style: 'currency', currency: 'USD' })}
-                    </div>
-                    <div class="ms-auto">
-                        <img src="${plato.imagen}" alt="Imagen de ${plato.nombrePlato}" style="width: 70px; height: 70px;" />
-                    </div>
-                </li>`;
-
-            // Si el plato ya está en el menú, no lo agregamos a la selección
-            if (!idsPlatosEnMenu.includes(plato.platoId.toString())) {
-                console.log('Este plato ya está en el menú y no va a la selección:', plato.nombrePlato);
-                listaPlatosMenu.append(item); // Solo se agrega a la lista del menú si no está en selección
-            } 
-            else {
-                console.log('Este plato no está en el menú y va a la selección:', plato.nombrePlato);
-                listaPlatosSeleccion.append(item); // Agregar solo a la selección si no está en el menú
-                listaPlatosSeleccion = [];
-            }
-        });
-
-        // Eliminar los elementos de la lista de selección que ya están en el menú
-        listaPlatosMenu.find('input:checkbox').each(function () {
-            const idPlatoMenu = $(this).val();
-            listaPlatosSeleccion.find(`input[value="${idPlatoMenu}"]`).closest('li').remove();
-        });
-    }
-
-
-
-
-     function mostrarCombosDelMenu(combos) {
-        const listaCombosMenu = $('#listaCombosMenu');
-        const listaCombosSeleccion = $('#listaCombosSeleccion');
-
-        // Obtener los IDs de los combos que ya están en el menú
-        const idsCombosEnMenu = listaCombosMenu.find('input:checkbox').map(function () {
-            return this.value;
-        }).get();
-
-        console.log('IDs de combos en el menú:', idsCombosEnMenu);
-
-        // Limpiar ambas listas antes de actualizarlas
-        listaCombosMenu.empty();
-      //  listaCombosSeleccion.empty();
-
-        // Si no hay combos disponibles para el id seleccionado
-        if (combos.length === 0) {
-            listaCombosSeleccion.append('<li class="list-group-item">No hay combos disponibles para este menú.</li>');
-            return; // Salir de la función si no hay combos
-        }
-
-        combos.forEach(combo => {
-            console.log('Procesando combo:', combo.nombreCombo, 'ID:', combo.comboId);
-
-            const precioCombo = combo.precioCombo ? combo.precioCombo.toLocaleString('es-SV', { style: 'currency', currency: 'USD' }) : 'Precio no disponible';
-
-             const item = `
-        <li class="list-group-item d-flex align-items-center">
-            <input type="checkbox" class="form-check-input me-2 combo-checkbox" value="${combo.comboId}" />
-            <div class="d-flex flex-column filtro-texto">
-                <strong>${combo.nombreCombo}</strong>
-                ${combo.descripcionCombo}
-            </div>
-            <div class="ms-auto">
-                <span>${precioCombo}</span>
-            </div>
-        </li>
-    `;
-
-
-            // Si el combo ya está en el menú, lo agregamos a la lista de combos del menú
-            if (!idsCombosEnMenu.includes(combo.comboId.toString())) {
-                console.log('Este combo ya está en el menú y se agrega a la lista de combos del menú:', combo.nombreCombo);
-                listaCombosMenu.append(item);
-            } else {
-                // Si el combo no está en el menú, lo agregamos a la lista de selección
-                console.log('Este combo va a la lista de selección:', combo.nombreCombo);
-                listaCombosSeleccion.append(item);
-            }
-        });
-
-        // Eliminar combos de la selección que ya estén en el menú
-        listaCombosMenu.find('input:checkbox').each(function () {
-            const idComboMenu = $(this).val();
-            listaCombosSeleccion.find(`input[value="${idComboMenu}"]`).closest('li').remove();
-        });
-    }
-
-
-
-
-    document.querySelectorAll('.menu-item').forEach(item => {
-        item.addEventListener('click', () => {
-            document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active'));
-            item.classList.add('active');
-
-            // ID seleccionado
-            const id = item.dataset.id;
-            document.getElementById('menuSeleccionado').textContent = `${id}`;
-            const titulo = document.getElementById('tituloMenu');
-            if (id) {
-                titulo.textContent = `Menú #${id}`;
-            } else {
-                titulo.textContent = 'Nuevo menú';
-            }
-
-            if (item.dataset.tipomenu === "almuerzo") {
-                document.getElementById('tipoMenu').value = "Almuerzo"
-            }
-            else if (item.dataset.tipomenu === "desayuno") {
-                document.getElementById('tipoMenu').value = "Desayuno"
-            }
-            else if (item.dataset.tipomenu === "cena") {
-                document.getElementById('tipoMenu').value = "Cena"
-            }
-            else if (item.dataset.tipomenu === "temporada") {
-                document.getElementById('tipoMenu').value = "Temporada"
-            }
-
-            document.getElementById('tipoVenta').value = item.dataset.tipoventa;
-
-            if (item.dataset.tipoventa === "restaurante") {
-                document.getElementById('tipoVenta').value = "Restaurante"
-            }
-            else if (item.dataset.tipoventa === "online") {
-                document.getElementById('tipoVenta').value = "Online"
-            }
-
-            document.getElementById('fechaInicio').value = item.dataset.fechainicio;
-            document.getElementById('fechaFin').value = item.dataset.fechafin;
-            document.getElementById('horaInicio').value = item.dataset.horainicio;
-            document.getElementById('horaFin').value = item.dataset.horafin;
-
-            // Check platos
-            const platosSeleccionados = JSON.parse(item.dataset.platos || '[]');
-            document.querySelectorAll('.plato-checkbox').forEach(cb => {
-                cb.checked = platosSeleccionados.includes(parseInt(cb.value));
-            });
-
-            // Check combos
-            const combosSeleccionados = JSON.parse(item.dataset.combos || '[]');
-            document.querySelectorAll('.combo-checkbox').forEach(cb => {
-                cb.checked = combosSeleccionados.includes(parseInt(cb.value));
-            });
-
-
-
-            // Hacer la llamada AJAX al controlador con POST
-            $.ajax({
-                url: '/Menu/ListasPlatos',  
-                type: 'POST', 
-                data: { IdMenu: id },
-                success: function(platos) {
-                    $('#listaPlatos').empty();
-                    $('#listaPlatos').append('<option value="">Seleccione un plato</option>');  
-                    console.log(platos);
-                    if (platos.length > 0) {
-                        $.each(platos, function(index, plato) {
-                            $('#listaPlatos').append('<option value="' + plato.platoId + '">' + plato.nombrePlato + '</option>');
-                        });
-                        mostrarPlatosDelMenu(platos);
-                    }
-                },
-                error: function() {
-                    alert('Hubo un error al cargar los platos.');
-                }
-            });
-
-
-             // Hacer la llamada AJAX al controlador con POST para combos
-            $.ajax({
-                url: '/Menu/ListaCombos',  
-                type: 'POST', 
-                data: { IdMenu: id }, 
-                success: function(combos) {
-                    $('#listaCombos').empty();
-                    $('#listaCombos').append('<option value="">Seleccione un plato</option>'); 
-                    console.log(combos);
-                    if (combos.length > 0) {
-                        $.each(combos, function(index, combo) {
-                            $('#listaCombos').append('<option value="' + combo.comboId + '">' + combo.nombreCombo + '</option>');
-                        });
-                        mostrarCombosDelMenu(combos);
-                    }
-                },
-                error: function() {
-                    alert('Hubo un error al cargar los platos.');
-                }
-            });
-
-
-
-
-        });
-    });
-
-
-        document.getElementById('btnAgregarPlatos').addEventListener('click', function() {
-        const platosSeleccionados = [];
-
-        // Obtener los platos seleccionados de la lista de selección
-        document.querySelectorAll('#listaPlatosSeleccion .plato-checkbox:checked').forEach(cb => {
-            platosSeleccionados.push(cb.value);
-        });
-
-        if (platosSeleccionados.length > 0) {
-            // Mover los platos seleccionados a la lista de "Platos en el menú"
-            platosSeleccionados.forEach(id => {
-                const platoElement = document.querySelector(`#listaPlatosSeleccion .plato-checkbox[value='${id}']`).closest('li');
-
-                // Eliminar el plato de la lista de selección
-                platoElement.remove();
-
-                // Crear el nuevo elemento para la lista de platos en el menú
-                const nuevoPlato = platoElement.cloneNode(true);
-
-                // Desmarcar el checkbox antes de agregarlo a la lista de menú
-                nuevoPlato.querySelector('.plato-checkbox').checked = false;
-
-                // Agregar el nuevo plato a la lista de platos en el menú
-                document.getElementById('listaPlatosMenu').appendChild(nuevoPlato);
-            });
-        }
-    });
-
-
-
-        document.getElementById('btnQuitarPlatos').addEventListener('click', function() {
-        const listaPlatosMenu = document.getElementById('listaPlatosMenu');
-        const listaPlatosSeleccion = document.getElementById('listaPlatosSeleccion'); // Asegúrate de tener este id en el HTML
-        const platosAGuardar = [];
-
-        // Obtener los platos seleccionados de la lista de platos en el menú
-        listaPlatosMenu.querySelectorAll('input:checked').forEach(checkbox => {
-            const item = checkbox.closest('li');
-            const idPlato = checkbox.value;
-
-            // Verificar si ya existe un plato con ese ID en la lista de selección
-            const yaExiste = [...listaPlatosSeleccion.querySelectorAll('input')].some(input => input.value === idPlato);
-
-            // Siempre lo quitamos de la lista actual
-            listaPlatosMenu.removeChild(item);
-
-            // Desmarcar el checkbox antes de agregarlo a la lista de selección
-            checkbox.checked = false;
-
-            // Solo lo agregamos a la lista de platos seleccionados si no existe ya
-            if (!yaExiste) {
-                platosAGuardar.push(item);
-            }
-        });
-
-        // Agregar los platos no duplicados a la lista de selección
-        platosAGuardar.forEach(item => {
-            listaPlatosSeleccion.appendChild(item);
-        });
-    });
-
-
-        document.getElementById('btnAgregarCombos').addEventListener('click', () => {
-        const combosSeleccionados = [];
-
-        // Recorre los checkboxes de la lista de combos seleccionados
-        document.querySelectorAll('.combo-checkbox:checked').forEach(checkbox => {
-            combosSeleccionados.push(checkbox.value); // Guarda el id del combo seleccionado
-        });
-
-        // Mueve los combos seleccionados a la lista "Combos en el menú"
-        const listaCombosSeleccion = document.getElementById('listaCombosSeleccion');
-        const listaCombosMenu = document.getElementById('listaCombosMenu');
-
-        combosSeleccionados.forEach(comboId => {
-            const item = listaCombosSeleccion.querySelector(`input[value="${comboId}"]`).closest('li');
-
-            // Verificar si el combo ya existe en la lista "Combos en el menú"
-            const yaExiste = [...listaCombosMenu.querySelectorAll('input')].some(input => input.value === comboId);
-
-            // Si el combo ya está en la lista, no lo agregamos
-            if (!yaExiste) {
-                // Desmarcar el checkbox antes de mover el combo
-                const checkbox = item.querySelector('input');
-                checkbox.checked = false;
-
-                // Quita el combo de la lista de selección
-                listaCombosSeleccion.removeChild(item);
-
-                // Agrega el combo a la lista de combos en el menú
-                const nuevoItem = item.cloneNode(true);
-                listaCombosMenu.appendChild(nuevoItem);
-            }
-        });
-    });
-
-
-
-
-        document.getElementById('btnQuitarCombos').addEventListener('click', () => {
-        const listaCombosMenu = document.getElementById('listaCombosMenu');
-        const listaCombosSeleccion = document.getElementById('listaCombosSeleccion');
-        const combosAGuardar = [];
-
-        // Obtener los combos seleccionados de la lista de "Combos en el menú"
-        listaCombosMenu.querySelectorAll('input:checked').forEach(checkbox => {
-            const item = checkbox.closest('li');
-            const idCombo = checkbox.value;
-
-            // Verificar si ya existe un combo con ese ID en la lista de selección
-            const yaExiste = [...listaCombosSeleccion.querySelectorAll('input')].some(input => input.value === idCombo);
-
-            // Siempre lo quitamos de la lista actual
-            listaCombosMenu.removeChild(item);
-
-            // Desmarcar el checkbox antes de moverlo
-            checkbox.checked = false;
-
-            // Solo lo agregamos si no existe en la lista de selección
-            if (!yaExiste) {
-                combosAGuardar.push(item);
-            }
-        });
-
-        // Agregar combos no duplicados a la lista de selección
-        combosAGuardar.forEach(item => {
-            listaCombosSeleccion.appendChild(item);
-        });
-    });
+	document.getElementById('btnEditar').addEventListener('click', function () {
+		console.log("Botón de editar clickeado");
+		const menuIdSeleccionado = document.getElementById('menuSeleccionado').innerText;
+		if (!menuIdSeleccionado || menuIdSeleccionado === "Ninguno") {
+			alert("Por favor, selecciona un menú antes de editar.");
+			return;
+		}
+
+		const confirmacion = confirm("¿Estás seguro de que deseas editar este menú?");
+
+		if (!confirmacion) {
+			console.log("Operación de edición cancelada.");
+			return; // Si el usuario cancela, no se ejecuta el resto del código
+		}
+
+
+		// Obtener los datos del formulario
+		const tipoMenu = document.getElementById('tipoMenu').value;
+		const tipoVenta = document.getElementById('tipoVenta').value;
+		const horaInicio = document.getElementById('horaInicio').value;
+		const horaFin = document.getElementById('horaFin').value;
+		const fechaInicio = document.getElementById('fechaInicio').value;
+		const fechaFin = document.getElementById('fechaFin').value;
+
+		// Mostrar en consola los valores capturados
+		console.log("menuIdSeleccionado:", menuIdSeleccionado);
+		console.log("tipoMenu:", tipoMenu);
+		console.log("tipoVenta:", tipoVenta);
+		console.log("horaInicio:", horaInicio);
+		console.log("horaFin:", horaFin);
+		console.log("fechaInicio:", fechaInicio);
+		console.log("fechaFin:", fechaFin);
+
+		// Obtener los platos y combos seleccionados
+		const platosSeleccionados = [];
+		$('#listaPlatosMenu li').each(function () {
+			const platoId = $(this).find('input').val();
+			platosSeleccionados.push(platoId);
+		});
+		console.log("Platos seleccionados", platosSeleccionados);
+
+
+		const combosSeleccionados = [];
+		$('#listaCombosMenu li').each(function () {
+			const comboId = $(this).find('input').val();
+			combosSeleccionados.push(comboId);
+		});
+		console.log("Combos seleccionados", combosSeleccionados);
+
+
+		// Crear el objeto a enviar
+		const datos = {
+			id: parseInt(menuIdSeleccionado),
+			platosSeleccionados: platosSeleccionados,
+			combosSeleccionados: combosSeleccionados,
+			tipoMenu: tipoMenu,
+			tipoVenta: tipoVenta,
+			horaInicio: horaInicio,
+			horaFin: horaFin,
+			fechaInicio: fechaInicio,
+			fechaFin: fechaFin
+		};
+
+		console.log("Datos a enviar:", datos);
+
+		fetch('/Menu/EditarMenu', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(datos)
+		})
+			.then(response => {
+				console.log("Estado de la respuesta:", response.status);
+				return response.json();
+			})
+			.then(data => {
+				console.log("Datos recibidos del servidor:", data);
+				if (data.message === "Menú editado exitosamente") {
+					alert("¡Menú editado con éxito!");
+					location.reload();
+				} else {
+					alert("Error al editar el menú: " + data.message);
+				}
+			})
+			.catch(error => {
+				console.error('Error:', error);
+				alert("Hubo un error al editar el menú.");
+			});
+
+	});
+
+
+
+
+
+
+
+
+	document.getElementById('btnBorrar').addEventListener('click', function () {
+		console.log("Botón de borrar clickeado");
+		const menuIdSeleccionado = document.getElementById('menuSeleccionado').innerText;
+		if (menuIdSeleccionado == null) {
+			alert("Por favor, selecciona un menú antes de borrar.");
+			return;
+		}
+		console.log(menuIdSeleccionado);
+		// Mostrar el mensaje de confirmación antes de continuar
+		const confirmacion = confirm("¿Estás seguro de que deseas borrar este menú?");
+
+		if (confirmacion) {
+			// Mostrar en consola el id del menú
+			console.log("menuIdSeleccionado:", menuIdSeleccionado);
+
+			// Crear el objeto a enviar con solo el id del menú
+			const datos = {
+				id: parseInt(menuIdSeleccionado)
+			};
+
+			console.log("Datos a enviar:", datos);
+
+			// Enviar la solicitud de eliminación al servidor
+			fetch('/Menu/EliminarMenu', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(datos)
+			})
+				.then(response => {
+					console.log("Estado de la respuesta:", response.status);
+					return response.json();
+				})
+				.then(data => {
+					console.log("Datos recibidos del servidor:", data);
+					if (data.message === "Menú eliminado exitosamente") {
+						alert("¡Menú eliminado con éxito!");
+						location.reload(); 
+					} else {
+						alert("Error al eliminar el menú: " + data.message);
+					}
+				})
+				.catch(error => {
+					console.error('Error:', error);
+					alert("Hubo un error al eliminar el menú.");
+				});
+		}
+		cargarListaPlatos();
+		cargarListaCombos();
+		cargarListaMenus();
+
+
+	});
+
+	document.querySelectorAll('.menu-item').forEach(item => {
+		item.addEventListener('click', () => {
+			// Verifica si ya hay un menú seleccionado
+			const menuSeleccionado = document.querySelector('.menu-item.active');
+			// Si ya hay un menú seleccionado
+			if (menuSeleccionado) {
+				alert('Ya hay un menú seleccionado. Con el botón cancelar podra deseleccionar.');
+				$('#listaCombosMenu').empty();
+				$('#listaPlatosMenu').empty();
+				menuSeleccionado.classList.add('active');
+			} else {
+				document.querySelectorAll('.menu-item').forEach(menu => {
+					if (menu !== item) {
+						menu.style.pointerEvents = 'none';
+					}
+				});
+				// Marcar el ítem seleccionado como activo
+				item.classList.add('active');
+				// Actualizar el ID del menú seleccionado
+				document.getElementById('menuSeleccionado').innerText = item.getAttribute('data-id');
+
+				const tipoMenu = item.getAttribute('data-tipomenu');
+				document.getElementById('tipoMenu').value = tipoMenu;
+				// Llamar a la función para actualizar los botones
+				actualizarBotones();
+			}
+		});
+	});
+
+	// Función para "cancelar" la selección (esto lo puedes poner en otro botón)
+	document.getElementById('btnCancelar').addEventListener('click', () => {
+		location.reload();
+	});
+
+
+	document.getElementById('btnCancelar').addEventListener('click', function () {
+		// Deseleccionar el menú (remover la clase 'active' de todos los elementos)
+		document.querySelectorAll('.menu-item').forEach(item => {
+			item.classList.remove('active');
+		});
+
+		// Limpiar las listas
+		$('#listaCombosMenu').empty();
+		$('#listaPlatosMenu').empty();
+		$('#listaPlatosSeleccion').empty();
+		$('#listaCombosSeleccion').empty();
+		cargarListaPlatos();
+		cargarListaCombos();
+		cargarListaMenus();
+
+	});
+
+
+
+
+
+
+
+
+	//LLamar a actualizar la lista menus (aún no)
+	function cargarListaMenus() {
+		fetch('/Menu/ActualizarListaMenus', {
+			method: 'GET',
+		})
+			.then(response => response.json())
+			.then(data => {
+				const contenedor = document.getElementById('contenedorMenus');
+				contenedor.innerHTML = ''; // Limpiar contenido anterior
+
+				data.forEach(menu => {
+					const item = `
+							<div class="card mb-3">
+								<div class="card-body">
+									<h5 class="card-title">${menu.tipoMenu}</h5>
+									<p class="card-text">
+										<strong>Tipo de venta:</strong> ${menu.tipoVenta}<br>
+										<strong>Hora:</strong> ${menu.horaInicio} - ${menu.horaFin}<br>
+										<strong>Fecha:</strong> ${menu.fechaInicio} - ${menu.fechaFin}
+									</p>
+								</div>
+							</div>
+						`;
+					contenedor.innerHTML += item;
+				});
+			})
+			.catch(error => {
+				console.error("Error al cargar los menús:", error);
+			});
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	function cargarListaPlatos() {
+		fetch('/Menu/ActualizarListaPlatos', {
+			method: 'GET',
+		})
+			.then(response => response.json())
+			.then(data => {
+				// Aquí actualizas la lista de platos
+				data.forEach(plato => {
+					const item = `
+							<li class="list-group-item d-flex align-items-center" data-id="${plato.id}">
+								<input type="checkbox" class="form-check-input me-2 plato-checkbox" value="${plato.id}" />
+								<div class="d-flex flex-column filtro-texto">
+									<strong>${plato.nombre}</strong>
+									${plato.descripcion}<br />
+									Precio: ${plato.precio.toLocaleString('es-SV', { style: 'currency', currency: 'USD' })}
+								</div>
+								<div class="ms-auto">
+									<img src="${plato.imagen}" alt="Imagen de ${plato.nombre}" style="width: 70px; height: 70px;" />
+								</div>
+							</li>
+						`;
+					$('#listaPlatosSeleccion').append(item);  // Agregar los platos a la selección
+				});
+			})
+			.catch(error => {
+				console.error("Error al cargar los platos:", error);
+			});
+	}
+
+	function cargarListaCombos() {
+		fetch('/Menu/ActualizarListaCombos', {
+			method: 'GET',
+		})
+			.then(response => response.json())
+			.then(data => {
+				// Aquí actualizas la lista de combos
+				data.forEach(combo => {
+					const item = `
+				<li class="list-group-item d-flex align-items-center">
+					<input type="checkbox" class="form-check-input me-2 combo-checkbox" value="${combo.id}" />
+					<div class="d-flex flex-column filtro-texto">
+						<strong>${combo.nombre}</strong>
+						${combo.descripcion}
+					</div>
+					<div class="ms-auto d-flex align-items-center">
+						<span>${combo.precio.toLocaleString('es-SV', { style: 'currency', currency: 'USD' })}</span>
+					</div>
+				</li>
+			`;
+
+					$('#listaCombosSeleccion').append(item);  // Agregar los combos a la selección
+				});
+			})
+			.catch(error => {
+				console.error("Error al cargar los combos:", error);
+			});
+	}
+
+
+	function mostrarPlatosDelMenu(platos) {
+		const listaPlatosMenu = $('#listaPlatosMenu');
+		const listaPlatosSeleccion = $('#listaPlatosSeleccion');
+
+		// Obtener los IDs de los platos que ya están en el menú (antes de vaciar)
+		const idsPlatosEnMenu = listaPlatosMenu.find('input:checkbox').map(function () {
+			return this.value;
+		}).get();
+
+		console.log('IDs en el menú:', idsPlatosEnMenu);  // Verificar qué platos ya están
+
+		// Limpiar las listas antes de actualizarlas
+		listaPlatosMenu.empty();
+		//listaPlatosSeleccion.empty();
+
+
+		platos.forEach(plato => {
+			console.log('Procesando plato:', plato.nombrePlato, 'ID:', plato.platoId); // Verificar el plato
+
+			const item = `
+						<li class="list-group-item d-flex align-items-center">
+							<input type="checkbox" class="form-check-input me-2 plato-checkbox" value="${plato.platoId}" />
+							<div class="d-flex flex-column filtro-texto">
+								<strong>${plato.nombrePlato}</strong>
+								${plato.descripcion}<br />
+								Precio: ${plato.precio.toLocaleString('es-SV', { style: 'currency', currency: 'USD' })}
+							</div>
+							<div class="ms-auto">
+								<img src="${plato.imagen}" alt="Imagen de ${plato.nombrePlato}" style="width: 70px; height: 70px;" />
+							</div>
+						</li>`;
+
+			// Si el plato ya está en el menú, no lo agregamos a la selección
+			if (!idsPlatosEnMenu.includes(plato.platoId.toString())) {
+				console.log('Este plato ya está en el menú y no va a la selección:', plato.nombrePlato);
+				listaPlatosMenu.append(item); // Solo se agrega a la lista del menú si no está en selección
+			}
+			else {
+				console.log('Este plato no está en el menú y va a la selección:', plato.nombrePlato);
+				listaPlatosSeleccion.append(item); // Agregar solo a la selección si no está en el menú
+				listaPlatosSeleccion = [];
+			}
+		});
+
+		// Eliminar los elementos de la lista de selección que ya están en el menú
+		listaPlatosMenu.find('input:checkbox').each(function () {
+			const idPlatoMenu = $(this).val();
+			listaPlatosSeleccion.find(`input[value="${idPlatoMenu}"]`).closest('li').remove();
+		});
+	}
+
+
+
+
+	function mostrarCombosDelMenu(combos) {
+		const listaCombosMenu = $('#listaCombosMenu');
+		const listaCombosSeleccion = $('#listaCombosSeleccion');
+
+		// Obtener los IDs de los combos que ya están en el menú
+		const idsCombosEnMenu = listaCombosMenu.find('input:checkbox').map(function () {
+			return this.value;
+		}).get();
+
+		console.log('IDs de combos en el menú:', idsCombosEnMenu);
+
+		// Limpiar ambas listas antes de actualizarlas
+		listaCombosMenu.empty();
+		//  listaCombosSeleccion.empty();
+
+		// Si no hay combos disponibles para el id seleccionado
+		if (combos.length === 0) {
+			listaCombosSeleccion.append('<li class="list-group-item">No hay combos disponibles para este menú.</li>');
+			return; // Salir de la función si no hay combos
+		}
+
+		combos.forEach(combo => {
+			console.log('Procesando combo:', combo.nombreCombo, 'ID:', combo.comboId);
+
+			const precioCombo = combo.precioCombo ? combo.precioCombo.toLocaleString('es-SV', { style: 'currency', currency: 'USD' }) : 'Precio no disponible';
+
+			const item = `
+				<li class="list-group-item d-flex align-items-center">
+					<input type="checkbox" class="form-check-input me-2 combo-checkbox" value="${combo.comboId}" />
+					<div class="d-flex flex-column filtro-texto">
+						<strong>${combo.nombreCombo}</strong>
+						${combo.descripcionCombo}
+					</div>
+					<div class="ms-auto">
+						<span>${precioCombo}</span>
+					</div>
+				</li>
+			`;
+
+
+			// Si el combo ya está en el menú, lo agregamos a la lista de combos del menú
+			if (!idsCombosEnMenu.includes(combo.comboId.toString())) {
+				console.log('Este combo ya está en el menú y se agrega a la lista de combos del menú:', combo.nombreCombo);
+				listaCombosMenu.append(item);
+			} else {
+				// Si el combo no está en el menú, lo agregamos a la lista de selección
+				console.log('Este combo va a la lista de selección:', combo.nombreCombo);
+				listaCombosSeleccion.append(item);
+			}
+		});
+
+		// Eliminar combos de la selección que ya estén en el menú
+		listaCombosMenu.find('input:checkbox').each(function () {
+			const idComboMenu = $(this).val();
+			listaCombosSeleccion.find(`input[value="${idComboMenu}"]`).closest('li').remove();
+		});
+	}
+
+	document.querySelectorAll('.menu-item').forEach(item => {
+		item.addEventListener('click', () => {
+			document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active'));
+			item.classList.add('active');
+
+			// ID seleccionado
+			const id = item.dataset.id;
+			document.getElementById('menuSeleccionado').textContent = `${id}`;
+			const titulo = document.getElementById('tituloMenu');
+			if (id) {
+				titulo.textContent = `Menú #${id}`;
+			} else {
+				titulo.textContent = 'Nuevo menú';
+			}
+
+			if (item.dataset.tipomenu === "almuerzo") {
+				document.getElementById('tipoMenu').value = "Almuerzo"
+			}
+			else if (item.dataset.tipomenu === "desayuno") {
+				document.getElementById('tipoMenu').value = "Desayuno"
+			}
+			else if (item.dataset.tipomenu === "cena") {
+				document.getElementById('tipoMenu').value = "Cena"
+			}
+			else if (item.dataset.tipomenu === "temporada") {
+				document.getElementById('tipoMenu').value = "Temporada"
+			}
+
+			document.getElementById('tipoVenta').value = item.dataset.tipoventa;
+
+			if (item.dataset.tipoventa === "restaurante") {
+				document.getElementById('tipoVenta').value = "Restaurante"
+			}
+			else if (item.dataset.tipoventa === "online") {
+				document.getElementById('tipoVenta').value = "Online"
+			}
+
+			document.getElementById('fechaInicio').value = item.dataset.fechainicio;
+			document.getElementById('fechaFin').value = item.dataset.fechafin;
+			document.getElementById('horaInicio').value = item.dataset.horainicio;
+			document.getElementById('horaFin').value = item.dataset.horafin;
+
+			// Check platos
+			const platosSeleccionados = JSON.parse(item.dataset.platos || '[]');
+			document.querySelectorAll('.plato-checkbox').forEach(cb => {
+				cb.checked = platosSeleccionados.includes(parseInt(cb.value));
+			});
+
+			// Check combos
+			const combosSeleccionados = JSON.parse(item.dataset.combos || '[]');
+			document.querySelectorAll('.combo-checkbox').forEach(cb => {
+				cb.checked = combosSeleccionados.includes(parseInt(cb.value));
+			});
+
+
+
+			// Hacer la llamada AJAX al controlador con POST
+			$.ajax({
+				url: '/Menu/ListasPlatos',
+				type: 'POST',
+				data: { IdMenu: id },
+				success: function (platos) {
+					$('#listaPlatos').empty();
+					$('#listaPlatos').append('<option value="">Seleccione un plato</option>');
+					console.log(platos);
+					if (platos.length > 0) {
+						$.each(platos, function (index, plato) {
+							$('#listaPlatos').append('<option value="' + plato.platoId + '">' + plato.nombrePlato + '</option>');
+						});
+						mostrarPlatosDelMenu(platos);
+					}
+				},
+				error: function () {
+					alert('Hubo un error al cargar los platos.');
+				}
+			});
+
+
+			// Hacer la llamada AJAX al controlador con POST para combos
+			$.ajax({
+				url: '/Menu/ListaCombos',
+				type: 'POST',
+				data: { IdMenu: id },
+				success: function (combos) {
+					$('#listaCombos').empty();
+					$('#listaCombos').append('<option value="">Seleccione un plato</option>');
+					console.log(combos);
+					if (combos.length > 0) {
+						$.each(combos, function (index, combo) {
+							$('#listaCombos').append('<option value="' + combo.comboId + '">' + combo.nombreCombo + '</option>');
+						});
+						mostrarCombosDelMenu(combos);
+					}
+				},
+				error: function () {
+					alert('Hubo un error al cargar los platos.');
+				}
+			});
+
+
+
+
+		});
+	});
+
+
+	document.getElementById('btnAgregarPlatos').addEventListener('click', function () {
+		const platosSeleccionados = [];
+
+		// Obtener los platos seleccionados de la lista de selección
+		document.querySelectorAll('#listaPlatosSeleccion .plato-checkbox:checked').forEach(cb => {
+			platosSeleccionados.push(cb.value);
+		});
+
+		if (platosSeleccionados.length > 0) {
+			// Mover los platos seleccionados a la lista de "Platos en el menú"
+			platosSeleccionados.forEach(id => {
+				const platoElement = document.querySelector(`#listaPlatosSeleccion .plato-checkbox[value='${id}']`).closest('li');
+
+				// Eliminar el plato de la lista de selección
+				platoElement.remove();
+
+				// Crear el nuevo elemento para la lista de platos en el menú
+				const nuevoPlato = platoElement.cloneNode(true);
+
+				// Desmarcar el checkbox antes de agregarlo a la lista de menú
+				nuevoPlato.querySelector('.plato-checkbox').checked = false;
+
+				// Agregar el nuevo plato a la lista de platos en el menú
+				document.getElementById('listaPlatosMenu').appendChild(nuevoPlato);
+			});
+		}
+	});
+
+
+
+	document.getElementById('btnQuitarPlatos').addEventListener('click', function () {
+		const listaPlatosMenu = document.getElementById('listaPlatosMenu');
+		const listaPlatosSeleccion = document.getElementById('listaPlatosSeleccion'); // Asegúrate de tener este id en el HTML
+		const platosAGuardar = [];
+
+		// Obtener los platos seleccionados de la lista de platos en el menú
+		listaPlatosMenu.querySelectorAll('input:checked').forEach(checkbox => {
+			const item = checkbox.closest('li');
+			const idPlato = checkbox.value;
+
+			// Verificar si ya existe un plato con ese ID en la lista de selección
+			const yaExiste = [...listaPlatosSeleccion.querySelectorAll('input')].some(input => input.value === idPlato);
+
+			// Siempre lo quitamos de la lista actual
+			listaPlatosMenu.removeChild(item);
+
+			// Desmarcar el checkbox antes de agregarlo a la lista de selección
+			checkbox.checked = false;
+
+			// Solo lo agregamos a la lista de platos seleccionados si no existe ya
+			if (!yaExiste) {
+				platosAGuardar.push(item);
+			}
+		});
+
+		// Agregar los platos no duplicados a la lista de selección
+		platosAGuardar.forEach(item => {
+			listaPlatosSeleccion.appendChild(item);
+		});
+	});
+
+
+	document.getElementById('btnAgregarCombos').addEventListener('click', () => {
+		const combosSeleccionados = [];
+
+		// Recorre los checkboxes de la lista de combos seleccionados
+		document.querySelectorAll('.combo-checkbox:checked').forEach(checkbox => {
+			combosSeleccionados.push(checkbox.value); // Guarda el id del combo seleccionado
+		});
+
+		// Mueve los combos seleccionados a la lista "Combos en el menú"
+		const listaCombosSeleccion = document.getElementById('listaCombosSeleccion');
+		const listaCombosMenu = document.getElementById('listaCombosMenu');
+
+		combosSeleccionados.forEach(comboId => {
+			const item = listaCombosSeleccion.querySelector(`input[value="${comboId}"]`).closest('li');
+
+			// Verificar si el combo ya existe en la lista "Combos en el menú"
+			const yaExiste = [...listaCombosMenu.querySelectorAll('input')].some(input => input.value === comboId);
+
+			// Si el combo ya está en la lista, no lo agregamos
+			if (!yaExiste) {
+				// Desmarcar el checkbox antes de mover el combo
+				const checkbox = item.querySelector('input');
+				checkbox.checked = false;
+
+				// Quita el combo de la lista de selección
+				listaCombosSeleccion.removeChild(item);
+
+				// Agrega el combo a la lista de combos en el menú
+				const nuevoItem = item.cloneNode(true);
+				listaCombosMenu.appendChild(nuevoItem);
+			}
+		});
+	});
+
+
+
+
+	document.getElementById('btnQuitarCombos').addEventListener('click', () => {
+		const listaCombosMenu = document.getElementById('listaCombosMenu');
+		const listaCombosSeleccion = document.getElementById('listaCombosSeleccion');
+		const combosAGuardar = [];
+
+		// Obtener los combos seleccionados de la lista de "Combos en el menú"
+		listaCombosMenu.querySelectorAll('input:checked').forEach(checkbox => {
+			const item = checkbox.closest('li');
+			const idCombo = checkbox.value;
+
+			// Verificar si ya existe un combo con ese ID en la lista de selección
+			const yaExiste = [...listaCombosSeleccion.querySelectorAll('input')].some(input => input.value === idCombo);
+
+			// Siempre lo quitamos de la lista actual
+			listaCombosMenu.removeChild(item);
+
+			// Desmarcar el checkbox antes de moverlo
+			checkbox.checked = false;
+
+			// Solo lo agregamos si no existe en la lista de selección
+			if (!yaExiste) {
+				combosAGuardar.push(item);
+			}
+		});
+
+		// Agregar combos no duplicados a la lista de selección
+		combosAGuardar.forEach(item => {
+			listaCombosSeleccion.appendChild(item);
+		});
+	});
 
 </script>
 
