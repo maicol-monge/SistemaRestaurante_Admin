@@ -15,12 +15,10 @@ namespace SistemaRestaurante_Admin.Models
         public string descripcion { get; set; }
 
         [Range(1, 100, ErrorMessage = "El descuento debe ser entre 1% y 100%")]
-        public decimal descuento { get; set; }
+        public decimal? descuento { get; set; }
 
         [Required(ErrorMessage = "Debe seleccionar una categoría")]
         public int categoria_id { get; set; }
-
-
 
         public int estado { get; set; }
 

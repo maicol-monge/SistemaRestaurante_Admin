@@ -21,19 +21,21 @@ namespace SistemaRestaurante_Admin.Controllers.Combos
         {
             try
             {
+                // Obtener las categorías activas
                 var categorias = await _context.Categoria
                     .Where(c => c.estado == 1)
                     .ToListAsync();
 
+                // Obtener los platos activos
                 var platos = await _context.Platos
                     .Where(p => p.Estado == 1)
                     .ToListAsync();
-
                 var combos = await _context.Combos
-                    .Include(c => c.Categoria)
-                    .Where(c => c.Estado == 1)
-                    .ToListAsync();
+                            .Where(c => c.Estado == 1)  // Filtramos solo los combos activos
+                            .Include(c => c.Categoria)  // Incluir la categoría del combo
+                            .ToListAsync();
 
+                // Pasar los datos a la vista
                 ViewBag.Categorias = categorias;
                 ViewBag.Platos = platos;
                 ViewBag.Combos = combos;
@@ -45,6 +47,8 @@ namespace SistemaRestaurante_Admin.Controllers.Combos
                 return BadRequest($"Error al obtener los combos: {ex.Message}");
             }
         }
+
+
 
 
 
@@ -202,23 +206,24 @@ namespace SistemaRestaurante_Admin.Controllers.Combos
                 if (combo == null)
                     return NotFound(new { message = "Combo no encontrado" });
 
-                // Eliminar los platos asociados al combo en la tabla Platos_Combos
-                var platosCombo = _context.Platos_Combo.Where(pc => pc.ComboId == id);
-                if (platosCombo.Any())
-                {
-                    _context.Platos_Combo.RemoveRange(platosCombo);
-                }
+                // Cambiar el estado del combo a 0 (inactivo)
+                combo.Estado = 0;  // Esto asume que la columna 'estado' está en la tabla 'combos'
 
-                _context.Combos.Remove(combo);
+                // Los platos asociados al combo en la tabla Platos_Combos no se eliminan, solo desactivamos el combo
+                // No eliminar los platos de la tabla intermedia
+
+                // Guardar los cambios
                 await _context.SaveChangesAsync();
 
-                return Ok(new { message = "Combo eliminado correctamente" });
+                return Ok(new { message = "Combo desactivado correctamente, los platos no fueron eliminados." });
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = $"Error al eliminar el combo: {ex.Message}" });
+                return BadRequest(new { message = $"Error al desactivar el combo: {ex.Message}" });
             }
         }
+
+
 
 
     }

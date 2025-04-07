@@ -24,17 +24,17 @@
                     <div class="d-flex justify-content-between align-content-center">
                         <div class="col-md mb-3 pe-5">
                             <label class="form-label fw-bold">Nombre del combo:</label>
-                            <input type="text" id="nombreCombo" name="nombre" class="form-control" placeholder="Nombre del combo" required />
+                            <input type="text" id="nombreCombo" name="nombre" class="form-control" required />
                         </div>
                         <div class="col-md mb-3 pe-5">
                             <label class="form-label fw-bold">Precio:</label>
-                            <input type="text" id="precioCombo" name="precio" class="form-control" placeholder="$12.99" required />
+                            <input type="text" id="precioCombo" name="precio" class="form-control" required />
                         </div>
                     </div>
 
                     <div class="col-md-12 mb-3">
                         <label class="form-label fw-bold">Descripción:</label>
-                        <textarea id="descripcionCombo" name="descripcion" class="form-control" placeholder="Descripción del combo" required></textarea>
+                        <textarea id="descripcionCombo" name="descripcion" class="form-control" required></textarea>
                     </div>
 
                     <div class="col-md-5 mb-3">
@@ -50,22 +50,24 @@
                     <div class="col-md-12 mb-3">
                         <label class="form-label fw-bold">Buscar plato:</label>
                         <div class="input-group">
-                            <input type="text" id="searchPlato" class="form-control" placeholder="Buscar platos..." />
+                            <input type="text" id="searchPlato" class="form-control" />
                             <button class="btn btn-warning" type="button" onclick="buscarPlato()">Buscar</button>
                         </div>
                     </div>
+
                     <div class="col-md-12 mb-3">
                         <label class="form-label fw-bold">Seleccionar productos:</label>
                         <div class="card mx-auto">
                             <ul id="listaPlatos" class="list-group list-group-flush">
                                 @foreach (var plato in ViewBag.Platos)
                                 {
-                                    <li class="product-item list-group-item d-flex justify-content-between align-items-center plato-item"
-                                        data-nombre="@plato.Nombre" onclick="agregarPlato('@plato.Nombre', @plato.Precio, @plato.Id, '@plato.Imagen')">
-                                        <img src="@plato.Imagen" alt="@plato.Nombre" class="product-img">
-                                        <span class="flex-grow-1 text-truncate plato-nombre">@plato.Nombre</span>
-                                        <span class="product-price">$@plato.Precio</span>
-                                    </li>
+                                <li class="product-item list-group-item d-flex justify-content-between align-items-center plato-item"
+                                    data-nombre="@plato.Nombre" onclick="agregarPlato('@plato.Nombre', @plato.Precio, @plato.Id, '@plato.Imagen')">
+                                    <img src="@plato.Imagen" alt="@plato.Nombre" class="product-img">
+                                    <span class="flex-grow-1 text-truncate plato-nombre">@plato.Nombre</span>
+                                    <span class="product-price">$@plato.Precio</span>
+                                </li>
+
                                 }
                             </ul>
                         </div>
@@ -84,18 +86,50 @@
                     <button type="button" class="btn btn-warning" id="crearComboBtn" onclick="crearCombo()">Crear combo</button>
                     <button type="button" class="botonModificar" onclick="actualizarCombo()">Modificar combo</button>
                     <button type="button" class="btn btn-danger" onclick="eliminarCombo()">Eliminar combo</button>
-                    <button type="reset" class="btn btn-secondary" onclick="limpiarFormulario()">Limpiar</button>
                 </div>
 
                 <!-- Botón Cancelar -->
-                <div class="d-flex justify-content-start mt-3">
-                    <button type="button" class="btn btn-outline-dark" onclick="location.href='@Url.Action("VerMenuAdmin", "Home")'">Cancelar</button>
+                <div class="mt-5">
+                    <a href="@Url.Action("VerCombos")"
+                       class="btn col-md-3 col-12 mb-5 cardScale"
+                       id="btnCancelarCombo"
+                       style="border: 3px solid black; font-weight: bold;">
+                        Cancelar Combo
+                    </a>
+                    <a href="@Url.Action("VerMenuAdmin", "Home")" class="btn col-md-3 col-12 mb-5 cardScale" id="btnVolver" style="border: 3px solid black; font-weight: bold;">Volver al menú</a>
                 </div>
+
+
+
 
                 </form>
             </div>
 
             <script>
+                document.getElementById('btnCancelarCombo').addEventListener('click', function (e) {
+                    e.preventDefault();
+                    limpiarFormulario();  // Llamar a la función para limpiar el formulario
+                    window.location.href = this.href;  // Redirigir al usuario a la página de "VerCombos"
+                });
+
+                function limpiarFormulario() {
+                    // Limpiar los campos de texto
+                    document.getElementById('nombreCombo').value = '';
+                    document.getElementById('precioCombo').value = '';
+                    document.getElementById('descripcionCombo').value = '';
+                    document.getElementById('categoriaCombo').value = '';
+
+                    // Limpiar la lista de platos seleccionados
+                    const platosSeleccionados = document.getElementById('platosSeleccionados');
+                    platosSeleccionados.innerHTML = '';  // Limpiar todos los platos seleccionados
+
+                    // Limpiar el campo oculto del ID del combo
+                    document.getElementById('comboId').value = '';
+
+                    // Si hay otros elementos que necesiten ser limpiados, agrega aquí más líneas como estas.
+                }
+
+
                 function manejarSeleccionCombo() {
                     const comboSeleccionado = document.getElementById('comboId').value; // Aquí se asume que el ID del combo seleccionado se guarda en un campo oculto
                     const crearComboBtn = document.getElementById('crearComboBtn'); // Botón de "Crear combo"
@@ -223,35 +257,43 @@
                 function eliminarPlato(id) {
                     const plato = document.getElementById(`plato-${id}`);
                     if (plato) {
-                        plato.remove();
+                        plato.remove();  // Elimina el plato seleccionado de la lista
                     }
                 }
 
+
                 function buscarPlato() {
-                    const input = document.getElementById('searchPlato').value.toLowerCase().trim(); // Obtenemos la búsqueda, convertida a minúsculas y sin espacios
+                    const input = document.getElementById('searchPlato').value.toLowerCase().trim(); // Obtener el texto de búsqueda
                     const listaPlatos = document.getElementById('listaPlatos');
-                    const items = listaPlatos.getElementsByClassName('plato-item'); // Accedemos a todos los productos
+                    const items = listaPlatos.getElementsByClassName('plato-item'); // Todos los platos en la lista
                     let encontrado = false;
 
-                    // Iteramos sobre todos los platos de la lista
-                    for (let i = 0; i < items.length; i++) {
-                        // Obtenemos el nombre del plato del atributo 'data-nombre'
-                        const nombrePlato = items[i].getAttribute('data-nombre').toLowerCase().trim(); // Convertimos a minúsculas y eliminamos espacios
+                    // Aseguramos que la lista se limpia antes de agregar los resultados de la búsqueda
+                    listaPlatos.innerHTML = ''; // Limpiar la lista antes de realizar la búsqueda
 
-                        // Verificamos si el nombre del plato contiene la búsqueda ingresada
+                    // Iteramos sobre todos los platos
+                    for (let i = 0; i < items.length; i++) {
+                        // Obtenemos el nombre del plato desde el atributo 'data-nombre'
+                        const nombrePlato = items[i].getAttribute('data-nombre').toLowerCase().trim(); // Convertir a minúsculas
+
+                        // Verificamos si el nombre del plato contiene el texto de búsqueda
                         if (nombrePlato.includes(input)) {
-                            items[i].style.display = "";  // Mostrar el plato que coincide con la búsqueda
+                            // Si encontramos una coincidencia, agregamos el plato a la lista visible
+                            listaPlatos.appendChild(items[i].cloneNode(true)); // Clonamos y agregamos el plato
                             encontrado = true;
-                        } else {
-                            items[i].style.display = "none";  // Ocultar los platos que no coinciden
                         }
                     }
 
-                    // Si no se encuentra ningún plato que coincida, mostramos un mensaje
+                    // Si no se encontraron coincidencias, mostramos un mensaje
                     if (!encontrado) {
-                        alert("No se encontraron platos que coincidan con la búsqueda.");
+                        const mensaje = document.createElement('li');
+                        mensaje.classList.add('list-group-item');
+                        mensaje.textContent = 'No se encontraron platos que coincidan con la búsqueda.';
+                        listaPlatos.appendChild(mensaje);
                     }
                 }
+
+
 
                 function cargarCombo(id) {
                     fetch(`/Combos/ObtenerCombo?id=${id}`)
@@ -388,26 +430,6 @@
                         alert("Seleccione un combo existente para eliminar.");
                     }
                 }
-                function limpiarFormulario() {
-                    // Resetear el formulario
-                    document.getElementById('comboForm').reset();
-                    document.getElementById('comboId').value = ""; // Vaciar el campo oculto que guarda el ID del combo
-                    document.getElementById('tituloFormulario').innerText = "Nuevo combo";
-
-                    // Limpiar la lista de productos seleccionados
-                    const platosSeleccionados = document.getElementById('platosSeleccionados');
-                    platosSeleccionados.innerHTML = ""; // Elimina todos los elementos dentro del contenedor
-
-                    // Desmarcar todos los platos
-                    const checkboxes = document.querySelectorAll('.plato-checkbox');
-                    checkboxes.forEach(checkbox => {
-                        checkbox.checked = false;
-                    });
-
-                    // Llamar a manejarSeleccionCombo para habilitar el botón "Crear combo"
-                    manejarSeleccionCombo();  // Esto habilitará el botón de "Crear combo"
-                }
-
 
             </script>
 
@@ -418,18 +440,25 @@
                     <input type="hidden" id="comboId" name="comboId" value="" /> <!-- Este campo almacenará el ID del combo seleccionado -->
                     @if (ViewBag.Combos != null && ViewBag.Combos.Count > 0)
                     {
-                        foreach (var combo in ViewBag.Combos)
+                        @foreach (var combo in ViewBag.Combos)
                         {
-                            <div class="combo-item list-group-item d-flex justify-content-between align-items-center"
+                            <div class="combo-item list-group-item d-flex justify-content-between align-items-center @(combo.Estado == 0 ? "inactivo" : "")"
                                  onclick="seleccionarCombo(@combo.Id, this)">
-                                <!-- 'this' pasa el combo seleccionado -->
                                 <div class="combo-info">
                                     <h5 class="mb-1">@combo.Nombre</h5>
                                     <p class="mb-0 text-muted">@combo.Descripcion</p>
                                 </div>
                                 <span class="combo-price fw-bold">$@combo.Precio</span>
+
+                                <!-- Mostrar una etiqueta si el combo está inactivo -->
+                                @if (combo.Estado == 0)
+                                {
+                                    <span class="badge bg-secondary">Inactivo</span>
+                                }
                             </div>
+
                         }
+
                     }
                     else
                     {
@@ -443,21 +472,31 @@
 
 
             <script>
-                function seleccionarCombo(idCombo, comboElement) {
-                    // Asigna el ID del combo seleccionado al campo oculto
-                    document.getElementById('comboId').value = idCombo;
-
-                    // Resaltar el combo seleccionado visualmente
-                    const comboItems = document.querySelectorAll('.combo-item');
-                    comboItems.forEach(item => item.classList.remove('selected-combo')); // Eliminar el resaltado de otros combos
-                    comboElement.classList.add('selected-combo'); // Resaltar el combo seleccionado
-
-                    // Deshabilitar el botón "Crear combo" cuando se ha seleccionado un combo
-                    manejarSeleccionCombo(idCombo);
-
-                    // Cargar los detalles del combo
-                    cargarCombo(idCombo);
+            function seleccionarCombo(idCombo, comboElement, estado) {
+                // Si el combo está inactivo (estado == 0), no permitimos que se seleccione
+                if (estado == 0) {
+                    alert("Este combo está inactivo y no puede ser seleccionado.");
+                    return;  // Detenemos la ejecución de la función si el combo está inactivo
                 }
+
+                // Si el combo está activo, continuamos con la selección
+                // Asigna el ID del combo seleccionado al campo oculto
+                document.getElementById('comboId').value = idCombo;
+
+                // Resaltar el combo seleccionado visualmente
+                const comboItems = document.querySelectorAll('.combo-item');
+                comboItems.forEach(item => item.classList.remove('selected-combo')); // Eliminar el resaltado de otros combos
+                comboElement.classList.add('selected-combo'); // Resaltar el combo seleccionado
+
+                // Llamar a la función que maneja la selección (si es necesario)
+                manejarSeleccionCombo(idCombo);
+
+                // Cargar los detalles del combo seleccionado
+                cargarCombo(idCombo);  // Llamar la función que maneja los detalles del combo
+
+            }
+
+
 
                 function manejarSeleccionCombo() {
                     const comboSeleccionado = document.getElementById('comboId').value; // Obtener el valor del campo oculto
@@ -511,14 +550,20 @@
                     platos.forEach(plato => {
                         const li = document.createElement('li');
                         li.className = "product-item list-group-item d-flex justify-content-between align-items-center";
+                        li.id = `plato-${plato.id}`;
+
                         li.innerHTML = `
-                            <img src="${plato.imagen}" alt="${plato.nombre}" class="product-img">
+                            <img src="${plato.imagen}" alt="${plato.nombre}" class="product-img" style="width: 40px; height: 40px;">
                             <span class="flex-grow-1 text-truncate">${plato.nombre}</span>
                             <span class="product-price">$${parseFloat(plato.precio).toFixed(2)}</span>
+                            <button class="btn btn-sm btn-danger" onclick="eliminarPlato(${plato.id})">X</button>
+                            <input type="hidden" name="platosSeleccionados" value="${plato.id}">
                         `;
+
                         platosSeleccionados.appendChild(li);
                     });
                 }
+
 
             </script>
 
