@@ -35,7 +35,12 @@ namespace SistemaRestaurante_Admin.Controllers.Platos
                              select p)
                              .ToList();
             ViewBag.PlatillosExistentes = platillos;
-            ViewBag.Categorias = _context.Categoria.ToList();
+            //solo las categorias activas
+            var categorias = (from c in _context.Categoria
+                              where c.estado == 1
+                              select c)
+                              .ToList();
+            ViewBag.Categorias = categorias;
             return View("/Views/Platos/CrearPlatos.cshtml");
         }
 
