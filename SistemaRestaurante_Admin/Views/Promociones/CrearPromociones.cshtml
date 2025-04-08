@@ -9,7 +9,6 @@
     var fechaFinDefault = DateTime.Now.AddDays(7).ToString("yyyy-MM-dd");
 }
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -50,12 +49,12 @@
 
         .promo-seleccionada {
             background-color: #e9ecef;
-            border-left: 4px solid #0d6efd;
+            border-left: 4px solid #AB1918;
+            pointer-events: none;
         }
     </style>
 </head>
-<body >
-
+<body>
 
     <div class="row mx-5 pt-5">
         <!-- Sección Nueva Promoción -->
@@ -139,7 +138,20 @@
                         <span class="text-danger">@TempData["Error_Promocion.descripcion"]</span>
                     }
                 </div>
-
+                <div class="col-md-6 mt-1">
+                    <label class="form-label">Combos disponibles:</label>
+                    <div class="scrollable-list mb-3">
+                        <ul class="list-group" id="listaCombosDisponibles">
+                            @foreach (var combo in Model.CombosDisponibles ?? new List<SistemaRestaurante_Admin.Models.Combos>())
+                            {
+                                <li class="list-group-item d-flex justify-content-between align-items-center" data-id="@combo.Id">
+                                    @combo.Nombre
+                                    <span class="">@combo.Precio.ToString("C")</span>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
                 <!-- Sección de Combos -->
                 <div class="mb-3">
                     <label class="form-label">Seleccionar combo:</label>
@@ -156,28 +168,14 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-md-6 mt-1">
-                            <label class="form-label">Combos disponibles:</label>
-                            <div class="scrollable-list mb-3">
-                                <ul class="list-group" id="listaCombosDisponibles">
-                                    @foreach (var combo in Model.CombosDisponibles ?? new List<SistemaRestaurante_Admin.Models.Combos>())
-                                    {
-                                        <li class="list-group-item d-flex justify-content-between align-items-center" data-id="@combo.Id">
-                                            @combo.Nombre
-                                            <span class="">@combo.Precio.ToString("C")</span>
-                                        </li>
-                                    }
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
+                        <div class="col-md">
                             <div class="d-flex justify-content-between align-items-center mb-2">
                                 <label class="form-label mb-0">Combos en promoción:</label>
-                                <button type="button" class="btn btn-secondary  w-50" id="btnLimpiarCombos" style="background-color: #0D3752;">Quitar todos</button>
+                                <button type="button" class="btn btn-secondary  w-25" id="btnLimpiarCombos" style="background-color: #0D3752;">Quitar todos</button>
                             </div>
                             <div class="scrollable-list">
                                 <ul class="list-group" id="listaCombosSeleccionados">
-                                    <!-- Combos seleccionados aparecerán aquí -->
+                                    
                                 </ul>
                             </div>
                             <span id="errorCombos" class="error-message" style="display:none;">Debe seleccionar al menos un combo</span>
@@ -218,15 +216,23 @@
                         Eliminar promo
                     </button>
                 </div>
-
-
-                <div class="pt-4">
+                <div class="d-flex justify-content-between pt-4">
+                 
                     <a href="@Url.Action("VerPromociones", "Promociones")"
-                       class="btn btn-outline-dark rounded-1 px-4 py-2 w-25 w-md-auto"
-                       style="border-width: 2px; font-size: 1rem; text-align: center; width: 260px;">
+                       id="btnCancelar"
+                       class="btn btn-outline-dark rounded-1 px-4 py-2 w-55"
+                       style="border-width: 2px; font-size: 1rem; text-align: center;">
                         Cancelar
                     </a>
+
+                   
+                    <a href="@Url.Action("VerMenuAdmin", "Home")"
+                       class="btn btn-outline-dark rounded-1 px-4 py-2 w-40"
+                       style="border-width: 2px; font-size: 1rem; text-align: center;">
+                        Volver al Menú
+                    </a>
                 </div>
+
             </form>
         </div>
 
@@ -300,13 +306,19 @@
                     const fechaFinInput = document.getElementById('fechaFinInput');
                     const esEdicion = promoId > 0;
                     const hoy = new Date();
-                    hoy.setHours(0, 0, 0, 0); 
+                    hoy.setHours(0, 0, 0, 0);
                     const hoyISO = hoy.toISOString().split('T')[0];
 
                     fechaFinInput.min = hoyISO;
 
                     if (!esEdicion) {
                         fechaInicioInput.min = hoyISO;
+                    }
+
+                    // Limpiar selección de promoción si estamos creando una nueva
+                    if (!esEdicion) {
+                        const promosSeleccionadas = document.querySelectorAll('.promo-seleccionada');
+                        promosSeleccionadas.forEach(el => el.classList.remove('promo-seleccionada'));
                     }
 
                     actualizarCombosSeleccionados();
@@ -322,10 +334,9 @@
                             li.innerHTML = `
                                         <span>${combo.nombre}</span>
                                         <div class="combo-actions">
-                                                            <span class="me-2">$${parseFloat(combo.precio).toFixed(2)}</span>
-
-                                                    <button type="button" class="btn btn-outline-danger btn-quitar" style="font-size: 1rem; border-radius: 15px; padding: 0.05rem 1rem;"> X </button>  
-                                       </div>
+                                            <span class="me-2">$${parseFloat(combo.precio).toFixed(2)}</span>
+                                            <button type="button" class="btn btn-outline-danger btn-quitar" style="font-size: 1rem; border-radius: 15px; padding: 0.05rem 1rem;"> X </button>
+                                        </div>
                                     `;
                             listaCombosSeleccionados.appendChild(li);
                         });
@@ -436,16 +447,17 @@
 
                         // Validar campo Descuento (ejemplo específico)
                         const descuentoInput = document.querySelector('#Promocion_descuento');
-                        if (!descuentoInput.value.trim() || isNaN(parseInt(descuentoInput.value))) {
+                        const valor = parseFloat(descuentoInput.value);
+
+                        if (isNaN(valor) || valor <= 0 || valor > 100) {
                             const errorElement = descuentoInput.closest('.input-group').querySelector('.invalid-feedback');
                             errorElement.style.display = 'block';
-                            errorElement.querySelector('span').textContent = 'El descuento es requerido';
+                            errorElement.querySelector('span').textContent = 'El descuento debe ser entre 1% y 100%';
                             valido = false;
                         } else {
                             const errorElement = descuentoInput.closest('.input-group').querySelector('.invalid-feedback');
                             errorElement.style.display = 'none';
                         }
-
 
                         // Validar campos requeridos
                         const camposRequeridos = [
@@ -473,16 +485,22 @@
                             valido = false;
                         }
 
-                        // Tu validación de fechas existente (se mantiene igual)
+                        
                         const fechaInicio = new Date(fechaInicioInput.value);
                         const fechaFin = new Date(fechaFinInput.value);
                         fechaInicio.setHours(0, 0, 0, 0);
                         fechaFin.setHours(0, 0, 0, 0);
 
-                        
+                        if (fechaInicio > fechaFin) {
+                            const errorElement = document.querySelector('[data-valmsg-for="Promocion.FechaFinVista"]');
+                            if (errorElement) {
+                                errorElement.textContent = 'La fecha de fin no puede ser anterior a la fecha de inicio';
+                            }
+                            valido = false;
+                        }
 
                         if (!valido) {
-                            // Desplazarse al primer error
+                            
                             const primerError = document.querySelector('.text-danger:not(:empty)');
                             if (primerError) {
                                 primerError.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -493,21 +511,32 @@
                     }
                 });
 
-            @if (TempData["ErrorMessage"] != null)
-            {
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <strong>¡Error!</strong> @TempData["ErrorMessage"]
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-            }
-
             // Función para seleccionar promoción
             function seleccionarPromocion(id) {
-                combosSeleccionados = [];
-                document.getElementById('listaCombosSeleccionados').innerHTML = '';
+               
+                const promosSeleccionadas = document.querySelectorAll('.promo-seleccionada');
+                promosSeleccionadas.forEach(el => el.classList.remove('promo-seleccionada'));
 
+                
+                const promoSeleccionada = document.querySelector(`.promo-activa[data-id="${id}"]`);
+                if (promoSeleccionada) {
+                    promoSeleccionada.classList.add('promo-seleccionada');
+                }
+
+               
                 window.location.href = '@Url.Action("VerPromociones", "Promociones")?id=' + id;
             }
+
+           
+            document.addEventListener('DOMContentLoaded', function () {
+                const urlParams = new URLSearchParams(window.location.search);
+                const promoId = urlParams.get('id');
+
+                if (!promoId) {
+                    const promosSeleccionadas = document.querySelectorAll('.promo-seleccionada');
+                    promosSeleccionadas.forEach(el => el.classList.remove('promo-seleccionada'));
+                }
+            });
         </script>
     }
 </body>

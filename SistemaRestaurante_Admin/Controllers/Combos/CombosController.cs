@@ -215,7 +215,7 @@ namespace SistemaRestaurante_Admin.Controllers.Combos
                 // Guardar los cambios
                 await _context.SaveChangesAsync();
 
-                return Ok(new { message = "Combo desactivado correctamente, los platos no fueron eliminados." });
+                return Ok(new { message = "Combo eliminado correctamente." });
             }
             catch (Exception ex)
             {
